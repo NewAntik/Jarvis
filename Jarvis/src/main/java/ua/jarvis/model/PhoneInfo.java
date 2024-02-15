@@ -9,7 +9,6 @@ import jakarta.persistence.ManyToOne;
 import jakarta.validation.constraints.Size;
 
 import java.util.Objects;
-import java.util.UUID;
 
 @Entity
 public class PhoneInfo {

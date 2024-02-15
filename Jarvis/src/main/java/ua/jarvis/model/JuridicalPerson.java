@@ -12,7 +12,6 @@ import jakarta.validation.constraints.Size;
 
 import java.util.HashSet;
 import java.util.Set;
-import java.util.UUID;
 
 @Entity
 public class JuridicalPerson {
