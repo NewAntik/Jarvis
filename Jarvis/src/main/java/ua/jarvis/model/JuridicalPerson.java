@@ -8,6 +8,8 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
+import jakarta.persistence.OneToOne;
+import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.Size;
 
 import java.util.HashSet;
@@ -24,44 +26,25 @@ public class JuridicalPerson {
 	@Column(length = 8, name = "erdpo")
 	private String erdpo;
 
-	@Size(max = 50)
+	@OneToOne
+	@Column(name = "jur_adress")
+	private AddressInfo jurAdress;
+
+	@Size(max = 200)
+	@Column(length = 200, name = "type_activity")
+	private String typeActivity;
+
+	@OneToMany
 	@Column(length = 50, name = "email")
-	private String email;
+	private Email email;
 
 	@OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-	private Set<Passport> passport = new HashSet<>();
+	private Set<PhoneInfo> phones = new HashSet<>();
+
+	@OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+	private Set<CarInfo> car = new HashSet<>();
 
 	public JuridicalPerson() {}
 
-	public Long getId() {
-		return id;
-	}
 
-	public void setId(final Long id) {
-		this.id = id;
-	}
-
-	public String getErdpo() {
-		return erdpo;
-	}
-
-	public void setErdpo(final String erdpo) {
-		this.erdpo = erdpo;
-	}
-
-	public String getEmail() {
-		return email;
-	}
-
-	public void setEmail(final String email) {
-		this.email = email;
-	}
-
-	public Set<Passport> getPassport() {
-		return passport;
-	}
-
-	public void setPassport(final Set<Passport> passport) {
-		this.passport = passport;
-	}
 }

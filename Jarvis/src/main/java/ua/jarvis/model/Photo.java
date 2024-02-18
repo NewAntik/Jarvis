@@ -33,35 +33,4 @@ public class Photo {
 
 	public Photo() {}
 
-	public User getUser() {
-		return user;
-	}
-
-	public void setUser(final User user) {
-		this.user = user;
-	}
-
-	public Long getId() {
-		return id;
-	}
-
-	public void setId(final Long id) {
-		this.id = id;
-	}
-
-	public UUID getUuid() {
-		return uuid;
-	}
-
-	public void setUuid(final UUID uuid) {
-		this.uuid = uuid;
-	}
-
-	public String getFileName() {
-		return fileName;
-	}
-
-	public void setFileName(final String fileName) {
-		this.fileName = fileName;
-	}
 }
