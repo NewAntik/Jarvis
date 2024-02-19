@@ -1,17 +1,19 @@
 package ua.jarvis.model.enums;
 
 public enum CarType {
-	Sedan("Sedan"),
+	SEDAN("Sedan"),
 	SUV("SUV"),
-	Coupe("Coupe"),
-	Convertible("Convertible"),
-	Hatchback("Hatchback"),
-	Wagon("Wagon"),
-	Minivan("Minivan"),
-	Pickup("Pickup"),
-	Crossover("Crossover"),
-	Supercar("Supercar"),
-	Limousine("Limousine");
+	COUPE("Coupe"),
+	CONVERTIBLE("Convertible"),
+	HATCHBACK("Hatchback"),
+	WAGON("Wagon"),
+	MINIVAN("Minivan"),
+	PICKUP("Pickup"),
+	CROSSOVER("Crossover"),
+	SUPERCAR("Supercar"),
+	LIMOUSINE("Limousine"),
+	CABRIOLET("Cabriolet"),
+	TRUCK("Truck");
 
 	private final String value;
 
