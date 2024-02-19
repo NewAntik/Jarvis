@@ -9,13 +9,15 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
-import jakarta.validation.constraints.Email;
+import jakarta.persistence.Table;
 import jakarta.validation.constraints.Size;
 
 import java.util.HashSet;
+import java.util.Objects;
 import java.util.Set;
 
 @Entity
+@Table(name = "juridical_persons")
 public class JuridicalPerson {
 
 	@Id
@@ -26,25 +28,117 @@ public class JuridicalPerson {
 	@Column(length = 8, name = "erdpo")
 	private String erdpo;
 
-	@OneToOne
-	@Column(name = "jur_adress")
-	private AddressInfo jurAdress;
-
 	@Size(max = 200)
 	@Column(length = 200, name = "type_activity")
 	private String typeActivity;
 
-	@OneToMany
-	@Column(length = 50, name = "email")
-	private Email email;
+	@OneToOne
+	@Column(name = "jur_adress")
+	private Address jurAdress;
+
+	@OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+	private User user;
 
 	@OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-	private Set<PhoneInfo> phones = new HashSet<>();
+	private Set<Email> emails = new HashSet<>();
 
 	@OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-	private Set<CarInfo> car = new HashSet<>();
+	private Set<Phone> phones = new HashSet<>();
+
+	@OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+	private Set<Car> car = new HashSet<>();
 
 	public JuridicalPerson() {}
 
+	public Long getId() {
+		return id;
+	}
 
+	public void setId(final Long id) {
+		this.id = id;
+	}
+
+	public String getErdpo() {
+		return erdpo;
+	}
+
+	public void setErdpo(final String erdpo) {
+		this.erdpo = erdpo;
+	}
+
+	public Address getJurAdress() {
+		return jurAdress;
+	}
+
+	public void setJurAdress(final Address jurAdress) {
+		this.jurAdress = jurAdress;
+	}
+
+	public String getTypeActivity() {
+		return typeActivity;
+	}
+
+	public void setTypeActivity(final String typeActivity) {
+		this.typeActivity = typeActivity;
+	}
+
+	public User getUser() {
+		return user;
+	}
+
+	public void setUser(final User user) {
+		this.user = user;
+	}
+
+	public Set<Email> getEmails() {
+		return emails;
+	}
+
+	public void setEmails(final Set<Email> emails) {
+		this.emails = emails;
+	}
+
+	public Set<Phone> getPhones() {
+		return phones;
+	}
+
+	public void setPhones(final Set<Phone> phones) {
+		this.phones = phones;
+	}
+
+	public Set<Car> getCar() {
+		return car;
+	}
+
+	public void setCar(final Set<Car> car) {
+		this.car = car;
+	}
+
+	@Override
+	public String toString() {
+		return "JuridicalPerson{" +
+			"id=" + id +
+			", erdpo='" + erdpo + '\'' +
+			", typeActivity='" + typeActivity + '\'' +
+			'}';
+	}
+
+	@Override
+	public boolean equals(final Object o) {
+		if (this == o) {
+			return true;
+		}
+		if (o == null || getClass() != o.getClass()) {
+			return false;
+		}
+		final JuridicalPerson that = (JuridicalPerson) o;
+		return Objects.equals(id, that.id) &&
+			Objects.equals(erdpo, that.erdpo) &&
+			Objects.equals(typeActivity, that.typeActivity);
+	}
+
+	@Override
+	public int hashCode() {
+		return Objects.hash(id, erdpo, typeActivity);
+	}
 }

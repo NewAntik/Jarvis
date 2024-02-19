@@ -2,22 +2,32 @@ package ua.jarvis.model;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
+import jakarta.persistence.DiscriminatorColumn;
+import jakarta.persistence.DiscriminatorType;
+import jakarta.persistence.DiscriminatorValue;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.Inheritance;
+import jakarta.persistence.InheritanceType;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
-import jakarta.validation.constraints.Email;
+import jakarta.persistence.Table;
 import jakarta.validation.constraints.Size;
 
 import java.util.HashSet;
+import java.util.Objects;
 import java.util.Set;
 
 @Entity
-public class User {
+@Table(name = "users")
+@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
+@DiscriminatorColumn(name = "dtype", discriminatorType = DiscriminatorType.STRING)
+@DiscriminatorValue("User")
+public class User extends BaseEntity {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -43,6 +53,9 @@ public class User {
 	@Column(length = 10, name = "sex")
 	private String sex;
 
+	@OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+	private JuridicalPerson juridicalPerson;
+
 	@OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
 	private Set<Email> emails = new HashSet<>();
 
@@ -53,7 +66,7 @@ public class User {
 	private Photo photo;
 
 	@OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-	private Set<PhoneInfo> phones = new HashSet<>();
+	private Set<Phone> phones = new HashSet<>();
 
 	@OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
 	private Set<ForeignPassport> foreignPassports = new HashSet<>();
@@ -62,13 +75,164 @@ public class User {
 	private Set<Passport> passports = new HashSet<>();
 
 	@OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-	private Set<CarInfo> cars = new HashSet<>();
+	private Set<Car> cars = new HashSet<>();
 
 	@ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-	private Set<AddressInfo> addressInfos = new HashSet<>();
+	private Set<Address> addresses = new HashSet<>();
 
 	public User() {}
 
+	public Long getId() {
+		return id;
+	}
 
+	public void setId(final Long id) {
+		this.id = id;
+	}
 
+	public String getName() {
+		return name;
+	}
+
+	public void setName(final String name) {
+		this.name = name;
+	}
+
+	public String getMidlName() {
+		return midlName;
+	}
+
+	public void setMidlName(final String midlName) {
+		this.midlName = midlName;
+	}
+
+	public String getSurName() {
+		return surName;
+	}
+
+	public void setSurName(final String surName) {
+		this.surName = surName;
+	}
+
+	public String getRnokpp() {
+		return rnokpp;
+	}
+
+	public void setRnokpp(final String rnokpp) {
+		this.rnokpp = rnokpp;
+	}
+
+	public String getSex() {
+		return sex;
+	}
+
+	public void setSex(final String sex) {
+		this.sex = sex;
+	}
+
+	public JuridicalPerson getJuridicalPerson() {
+		return juridicalPerson;
+	}
+
+	public void setJuridicalPerson(final JuridicalPerson juridicalPerson) {
+		this.juridicalPerson = juridicalPerson;
+	}
+
+	public Set<Email> getEmails() {
+		return emails;
+	}
+
+	public void setEmails(final Set<Email> emails) {
+		this.emails = emails;
+	}
+
+	public Set<DriverLicense> getDriverLicense() {
+		return driverLicense;
+	}
+
+	public void setDriverLicense(final Set<DriverLicense> driverLicense) {
+		this.driverLicense = driverLicense;
+	}
+
+	public Photo getPhoto() {
+		return photo;
+	}
+
+	public void setPhoto(final Photo photo) {
+		this.photo = photo;
+	}
+
+	public Set<Phone> getPhones() {
+		return phones;
+	}
+
+	public void setPhones(final Set<Phone> phones) {
+		this.phones = phones;
+	}
+
+	public Set<ForeignPassport> getForeignPassports() {
+		return foreignPassports;
+	}
+
+	public void setForeignPassports(final Set<ForeignPassport> foreignPassports) {
+		this.foreignPassports = foreignPassports;
+	}
+
+	public Set<Passport> getPassports() {
+		return passports;
+	}
+
+	public void setPassports(final Set<Passport> passports) {
+		this.passports = passports;
+	}
+
+	public Set<Car> getCars() {
+		return cars;
+	}
+
+	public void setCars(final Set<Car> cars) {
+		this.cars = cars;
+	}
+
+	public Set<Address> getAddresses() {
+		return addresses;
+	}
+
+	public void setAddresses(final Set<Address> addresses) {
+		this.addresses = addresses;
+	}
+
+	@Override
+	public String toString() {
+		return "User{" +
+			"id=" + id +
+			", name='" + name + '\'' +
+			", midlName='" + midlName + '\'' +
+			", surName='" + surName + '\'' +
+			", rnokpp='" + rnokpp + '\'' +
+			", sex='" + sex + '\'' +
+			'}';
+	}
+
+	@Override
+	public boolean equals(final Object o) {
+		if (this == o) {
+			return true;
+		}
+		if (o == null || getClass() != o.getClass()) {
+			return false;
+		}
+		final User user = (User) o;
+		return Objects.equals(id, user.id) &&
+			Objects.equals(name, user.name) &&
+			Objects.equals(midlName, user.midlName) &&
+			Objects.equals(surName, user.surName) &&
+			Objects.equals(rnokpp, user.rnokpp) &&
+			Objects.equals(sex, user.sex);
+	}
+
+	@Override
+	public int hashCode() {
+		return Objects.hash(id, name, midlName, surName, rnokpp, sex);
+	}
 }

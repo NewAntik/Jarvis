@@ -1,16 +1,24 @@
 package ua.jarvis.model;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
+import jakarta.persistence.Table;
 import jakarta.validation.constraints.Size;
 
-import java.util.Date;
+import java.time.LocalDateTime;
+import java.util.HashSet;
+import java.util.Objects;
+import java.util.Set;
 
 @Entity
+@Table(name = "driver_licenses")
 public class DriverLicense {
 
 	@Id
@@ -18,28 +26,124 @@ public class DriverLicense {
 	private Long id;
 
 	@Column(name = "date_issue")
-	private Date dateIssue;
+	private LocalDateTime dateIssue;
 
 	@Column(name = "valid_until")
-	private Date validUntil;
+	private LocalDateTime validUntil;
 
-	@Column(name = "valid")
-	private boolean valid;
-
-	@Size(max = 200)
-	@Column(length = 200, name = "authority")
-	private String authority;
+	@Column(name = "validity")
+	private boolean validity;
 
 	@Size(max = 9)
 	@Column(length = 9, name = "license_number")
 	private String licenseNumber;
 
-	@Column(name = "categories")
-	private String categories; // перечисление "A, B, C, C1,"
+	@Size(max = 200)
+	@Column(length = 200, name = "authority")
+	private String authority;
+
+	@OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+	private Set<DriverLicenseCategory> categories = new HashSet<>();
 
 	@ManyToOne
 	private User user;
 
 	public DriverLicense() {}
 
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(final Long id) {
+		this.id = id;
+	}
+
+	public LocalDateTime getDateIssue() {
+		return dateIssue;
+	}
+
+	public void setDateIssue(final LocalDateTime dateIssue) {
+		this.dateIssue = dateIssue;
+	}
+
+	public LocalDateTime getValidUntil() {
+		return validUntil;
+	}
+
+	public void setValidUntil(final LocalDateTime validUntil) {
+		this.validUntil = validUntil;
+	}
+
+	public boolean isValidity() {
+		return validity;
+	}
+
+	public void setValidity(final boolean validity) {
+		this.validity = validity;
+	}
+
+	public String getLicenseNumber() {
+		return licenseNumber;
+	}
+
+	public void setLicenseNumber(final String licenseNumber) {
+		this.licenseNumber = licenseNumber;
+	}
+
+	public String getAuthority() {
+		return authority;
+	}
+
+	public void setAuthority(final String authority) {
+		this.authority = authority;
+	}
+
+	public Set<DriverLicenseCategory> getCategories() {
+		return categories;
+	}
+
+	public void setCategories(final Set<DriverLicenseCategory> categories) {
+		this.categories = categories;
+	}
+
+	public User getUser() {
+		return user;
+	}
+
+	public void setUser(final User user) {
+		this.user = user;
+	}
+
+	@Override
+	public String toString() {
+		return "DriverLicense{" +
+			"id=" + id +
+			", dateIssue=" + dateIssue +
+			", validUntil=" + validUntil +
+			", validity=" + validity +
+			", licenseNumber='" + licenseNumber + '\'' +
+			", authority='" + authority + '\'' +
+			'}';
+	}
+
+	@Override
+	public boolean equals(final Object o) {
+		if (this == o) {
+			return true;
+		}
+		if (o == null || getClass() != o.getClass()) {
+			return false;
+		}
+		final DriverLicense that = (DriverLicense) o;
+		return validity == that.validity &&
+			Objects.equals(id, that.id) &&
+			Objects.equals(dateIssue, that.dateIssue) &&
+			Objects.equals(validUntil, that.validUntil) &&
+			Objects.equals(licenseNumber, that.licenseNumber);
+	}
+
+	@Override
+	public int hashCode() {
+		return Objects.hash(id, dateIssue, validUntil, validity, licenseNumber);
+	}
 }
