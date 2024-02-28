@@ -1,0 +1,20 @@
+[
+  {
+    "firstName": "Anton",
+    "lastName": "Shapovalov",
+    "login": "john_doe",
+    "password": "password1",
+    "role": "ROLE_STAFF",
+    "createdDate": "2022-03-01T12:00:00",
+    "updatedDate": "2022-03-01T12:00:00"
+  },
+  {
+    "firstName": "Jane",
+    "lastName": "Smith",
+    "login": "jane_smith",
+    "password": "password2",
+    "role": "ROLE_STAFF",
+    "createdDate": "2022-03-01T12:00:00",
+    "updatedDate": "2022-03-01T12:00:00"
+  }
+]
