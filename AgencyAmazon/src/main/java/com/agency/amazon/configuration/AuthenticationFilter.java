@@ -1,6 +1,7 @@
 package com.agency.amazon.configuration;
 
 import com.agency.amazon.service.TokenService;
+import com.agency.amazon.service.impl.CustomUserDetailsService;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -18,10 +19,10 @@ public class AuthenticationFilter extends OncePerRequestFilter {
 
 	private final TokenService tokenService;
 
-	private final UserDetailsService userDetailsService;
+	private final CustomUserDetailsService userDetailsService;
 
 
-	public AuthenticationFilter(final TokenService tokenService, final UserDetailsService userDetailsService) {
+	public AuthenticationFilter(final TokenService tokenService, final CustomUserDetailsService userDetailsService) {
 		this.tokenService = tokenService;
 		this.userDetailsService = userDetailsService;
 	}
@@ -36,14 +37,16 @@ public class AuthenticationFilter extends OncePerRequestFilter {
 
 		if(tokenHeader == null || !tokenHeader.startsWith("Bearer ")){
 			filterChain.doFilter(request, response);
+			return;
 		}
 
-		String jwtToken = tokenHeader.split(" ")[1].trim();
+		final String jwtToken = tokenHeader.split(" ")[1].trim();
+
 		final String username = tokenService.getUserName(tokenHeader);
 
 		final UserDetails userValueObject = userDetailsService.loadUserByUsername(username);
 
-		if (tokenService.validateToken(jwtToken, userValueObject.getUsername())) {
+		if (tokenService.validateToken(jwtToken)) {
 
 			UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken = new UsernamePasswordAuthenticationToken(
 				userValueObject, null, userValueObject.getAuthorities());

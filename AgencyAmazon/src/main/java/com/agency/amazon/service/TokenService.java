@@ -10,5 +10,5 @@ public interface TokenService {
 
 	String getUserName(String tokenHeader);
 
-	boolean validateToken(final String jwtToken, final String userName);
+	boolean validateToken(final String jwtToken);
 }

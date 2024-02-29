@@ -49,10 +49,18 @@ public class Token {
 
 	public Token() {}
 
-	public Token(final String tokenValue, final User user, final LocalDateTime tokenExpirationDate) {
+	public Token(
+		final String tokenValue,
+		final User user,
+		final LocalDateTime tokenExpirationDate,
+		final LocalDateTime createdDate,
+		final LocalDateTime updatedDate
+	) {
 		this.tokenValue = tokenValue;
 		this.user = user;
 		this.expirationDate = tokenExpirationDate;
+		this.createdDate = createdDate;
+		this.updatedDate = updatedDate;
 	}
 
 	public Long getId() {

@@ -19,7 +19,7 @@ import static com.agency.amazon.controller.UserController.BASE_URL;
 public class UserController {
 	private static final Logger LOG = LoggerFactory.getLogger(UserController.class);
 
-	public static final String BASE_URL = "/user";
+	public static final String BASE_URL = "/v1.0";
 
 	private final UserService userService;
 
@@ -27,14 +27,14 @@ public class UserController {
 		this.userService = userService;
 	}
 
-	@GetMapping("/registration")
+	@GetMapping("/user/registration")
 	public ResponseEntity<?> registration(@RequestBody RegistrationRequest request){
 		LOG.debug("Registration method was called in UserController.");
 
 		return userService.registration(request);
 	}
 
-	@PostMapping("/login")
+	@PostMapping("/user/login")
 	public ResponseEntity<?> authenticateUser(final @RequestBody LoginRequest request){
 		LOG.debug("AuthenticateUser method was called in UserController.");
 

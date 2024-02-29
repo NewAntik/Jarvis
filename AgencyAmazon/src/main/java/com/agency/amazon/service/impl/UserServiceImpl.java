@@ -4,6 +4,7 @@ import com.agency.amazon.controller.request.LoginRequest;
 import com.agency.amazon.controller.request.RegistrationRequest;
 import com.agency.amazon.model.Token;
 import com.agency.amazon.model.User;
+import com.agency.amazon.model.dto.UserDto;
 import com.agency.amazon.repository.UserRepository;
 import com.agency.amazon.service.TokenService;
 import com.agency.amazon.service.UserService;
@@ -12,8 +13,15 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -44,12 +52,15 @@ public class UserServiceImpl implements UserService {
 			request.getFirstName(),
 			request.getLastName(),
 			request.getLogin(),
-			passwordEncoder.encode(request.getPassword())
+			passwordEncoder.encode(request.getPassword()),
+			request.getRole(),
+			getNewAsin()
 		);
+		user.setCreatedDate(new Date());
 
 		userRepository.save(user);
 
-		return ResponseEntity.ok("New user with user name: " + user.getFirstName() + ", has been successfully registered.");
+		return ResponseEntity.ok("New user with name: " + user.getFirstName() + ", was created." );
 	}
 
 	@Override
@@ -61,10 +72,64 @@ public class UserServiceImpl implements UserService {
 		}
 
 		final Token token = tokenService.generateToken(user);
-		Map<String, Token> response = new HashMap<>();
-		response.put("token", token);
 
-		return ResponseEntity.ok(response);
+		return ResponseEntity.ok(token.getTokenValue());
 	}
 
+	@Override
+	public List<UserDto> getStatisticByDate(final Date date) {
+
+		return mapToUserDto(userRepository.findByCreatedDate(date));
+	}
+
+	@Override
+	public List<UserDto> getStatisticBetweenDates(final Date fromDate, final Date toDate) {
+		return mapToUserDto(userRepository.findBetweenDates(fromDate, toDate));
+	}
+
+	@Override
+	public List<UserDto> getStatisticWithTime() {
+		return mapToUserDto(userRepository.findAllByCreatedDateIsNotNull());
+	}
+
+	@Override
+	public UserDto getStatisticByAsin(final String asin) {
+		final User user = userRepository.findByAsin(asin);
+
+		return new UserDto
+			(
+				user.getFirstName(),
+				user.getLastName(),
+				user.getRole(),
+				user.getCreatedDate(),
+				user.getAsin()
+			);
+	}
+
+	@Override
+	public List<UserDto> getStatisticByAsinsList(final List<String> asins) {
+		return mapToUserDto(userRepository.findAllByAsin(asins));
+	}
+
+	@Override
+	public List<UserDto> getStatisticWithAsins() {
+		return mapToUserDto(userRepository.findAllByAsinIsNotNull());
+	}
+
+	private List<UserDto> mapToUserDto(final List<User> users) {
+		return users.stream()
+					.map(user -> new UserDto
+						(
+							user.getFirstName(),
+							user.getLastName(),
+							user.getRole(),
+							user.getCreatedDate(),
+							user.getAsin())
+						)
+					.toList();
+	}
+
+	private String getNewAsin(){
+		return UUID.randomUUID().toString().replaceAll("-", "").substring(0, 10);
+	}
 }

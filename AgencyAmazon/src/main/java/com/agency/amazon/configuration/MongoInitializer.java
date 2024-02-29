@@ -1,58 +1,51 @@
 package com.agency.amazon.configuration;
 
-import com.mongodb.DB;
-import com.mongodb.DBCollection;
-import com.mongodb.DBObject;
-import com.mongodb.MongoClient;
+import com.agency.amazon.controller.UserController;
+import com.agency.amazon.model.User;
+import com.agency.amazon.repository.UserRepository;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
-import com.mongodb.util.JSON;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.boot.CommandLineRunner;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.util.Arrays;
 import java.util.List;
 
 @Component
 public class MongoInitializer {
+	private static final Logger LOG = LoggerFactory.getLogger(MongoInitializer.class);
 
 	private static final String PATH = "/Users/antonshapovalov/git/AgencyAmazon/src/main/resources/test_report.json";
 
-	@Value("${spring.data.mongodb.uri}")
-	private String mongoConnection;
-
 	private String databaseContent;
 
-	private MongoClient mongoClient;
+	private final UserRepository userRepository;
 
-
+	public MongoInitializer(UserRepository userRepository) {
+		this.userRepository = userRepository;
+	}
 
 	@Scheduled(fixedRate = 25000) //30 sec interval
 	private void update() {
 		try {
-			mongoClient = new MongoClient();
-			DB database = mongoClient.getDB("amazon");
-			DBCollection collection = database.getCollection("users");
 			String jsonString = Files.readString(Paths.get(PATH));
-			List<DBObject> dbObjects = (List<DBObject>) JSON.parse(jsonString);
+			ObjectMapper objectMapper = new ObjectMapper();
+			List<User> users = Arrays.asList(objectMapper.readValue(jsonString, User[].class));
 
 			if(databaseContent == null) {
-				dbObjects.forEach(collection::insert);
+				userRepository.saveAll(users);
 				databaseContent = jsonString;
-				System.out.println("Database was populated with: " + jsonString);
 			} else if (!databaseContent.equals(jsonString)) {
-				dbObjects.forEach(collection::insert);
+				userRepository.saveAll(users);
 				databaseContent = jsonString;
-				System.out.println("Data base was updated. Content: " + jsonString );
+				LOG.info("Data base was updated. Content:[{}] " + jsonString);
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
-		} finally {
-			if (mongoClient != null) {
-				mongoClient.close();
-			}
 		}
 	}
 }

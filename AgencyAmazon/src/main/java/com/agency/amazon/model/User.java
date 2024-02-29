@@ -10,18 +10,24 @@ import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.Size;
 import org.springframework.data.annotation.CreatedDate;
-import org.springframework.data.annotation.LastModifiedDate;
+import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 
-import java.time.LocalDateTime;
+import java.util.Collection;
+import java.util.Date;
+import java.util.HashSet;
 import java.util.Objects;
+import java.util.Set;
 
+@Document
 @Entity
 @Table(name = "users")
 public class User {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long id;
+	private String id;
 
 	@Column(name = "first_name")
 	@Size(max = 50)
@@ -40,41 +46,59 @@ public class User {
 	private String login;
 
 	@Column
+	@Size(max = 10)
+	private String asin;
+
+	@Column
 	@Enumerated(EnumType.STRING)
 	private Role role;
 
 	@CreatedDate
 	@Column(name = "created_date", nullable = false, updatable = false)
-	protected LocalDateTime createdDate;
-
-	@LastModifiedDate
-	@Column(name = "updated_date", nullable = false)
-	protected LocalDateTime updatedDate;
+	private Date createdDate;
 
 	public User() {}
 
-	public User(final String firstName, final String lastName, final String login, final String password) {
+	public User
+	(
+		final String firstName,
+		final String lastName,
+		final String login,
+		final String password,
+		final Role role,
+		final String asin
+	) {
 		this.firstName = firstName;
 		this.lastName = lastName;
 		this.login = login;
 		this.password = password;
+		this.role = role;
+		this.asin = asin;
 	}
 
-	public LocalDateTime getCreatedDate() {
+	public Collection<GrantedAuthority> getAuthorities() {
+		Set<GrantedAuthority> authorities = new HashSet<>();
+		authorities.add(new SimpleGrantedAuthority(role.toString()));
+
+		return authorities;
+	}
+
+	public String getAsin() {
+		return asin;
+	}
+
+	public void setAsin(final String asin) {
+		this.asin = asin;
+	}
+
+	public Date getCreatedDate() {
 		return createdDate;
 	}
 
-	public void setCreatedDate(final LocalDateTime createdDate) {
+	public void setCreatedDate(final Date createdDate) {
 		this.createdDate = createdDate;
 	}
 
-	public LocalDateTime getUpdatedDate() {
-		return updatedDate;
-	}
-
-	public void setUpdatedDate(final LocalDateTime updatedDate) {
-		this.updatedDate = updatedDate;
-	}
 
 	public Role getRole() {
 		return role;
@@ -92,11 +116,11 @@ public class User {
 		this.login = login;
 	}
 
-	public Long getId() {
+	public String getId() {
 		return id;
 	}
 
-	public void setId(final Long id) {
+	public void setId(final String id) {
 		this.id = id;
 	}
 
@@ -127,14 +151,14 @@ public class User {
 	@Override
 	public String toString() {
 		return "User{" +
-			"id=" + id +
+			"id='" + id + '\'' +
 			", firstName='" + firstName + '\'' +
 			", lastName='" + lastName + '\'' +
 			", password='" + password + '\'' +
 			", login='" + login + '\'' +
+			", asin='" + asin + '\'' +
 			", role=" + role +
 			", createdDate=" + createdDate +
-			", updatedDate=" + updatedDate +
 			'}';
 	}
 
@@ -152,13 +176,13 @@ public class User {
 			Objects.equals(lastName, user.lastName) &&
 			Objects.equals(password, user.password) &&
 			Objects.equals(login, user.login) &&
+			Objects.equals(asin, user.asin) &&
 			role == user.role &&
-			Objects.equals(createdDate, user.createdDate) &&
-			Objects.equals(updatedDate, user.updatedDate);
+			Objects.equals(createdDate, user.createdDate);
 	}
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(id, firstName, lastName, password, login, role, createdDate, updatedDate);
+		return Objects.hash(id, firstName, lastName, password, login, asin, role, createdDate);
 	}
 }

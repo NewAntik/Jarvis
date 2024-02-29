@@ -1,20 +1,18 @@
 [
   {
-    "firstName": "Anton",
-    "lastName": "Shapovalov",
+    "firstName": "Alex",
+    "lastName": "Gang",
     "login": "john_doe",
     "password": "password1",
     "role": "ROLE_STAFF",
-    "createdDate": "2022-03-01T12:00:00",
-    "updatedDate": "2022-03-01T12:00:00"
+    "createdDate": "2022-04-01T12:00:00",
+    "asin": "B08421KZQ5"
   },
   {
-    "firstName": "Jane",
-    "lastName": "Smith",
-    "login": "jane_smith",
+    "firstName": "Foo",
+    "lastName": "Bar",
+    "login": "foo_bar",
     "password": "password2",
-    "role": "ROLE_STAFF",
-    "createdDate": "2022-03-01T12:00:00",
-    "updatedDate": "2022-03-01T12:00:00"
+    "role": "ROLE_STAFF"
   }
 ]

@@ -6,6 +6,7 @@ import com.agency.amazon.service.TokenService;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
+import io.jsonwebtoken.security.Keys;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
@@ -22,7 +23,7 @@ public class TokenServiceImpl implements TokenService {
 
 	private final int tokenLifeHours;
 
-	private final String secret;
+	private final byte[] secret;
 
 	public TokenServiceImpl(
 		@Value("${token.life-in-hours}") final int tokenLifeHours,
@@ -31,7 +32,7 @@ public class TokenServiceImpl implements TokenService {
 	) {
 		this.defaultTimeZone = defaultTimeZone;
 		this.tokenLifeHours = tokenLifeHours;
-		this.secret = secret;
+		this.secret = Keys.secretKeyFor(SignatureAlgorithm.HS256).getEncoded();
 	}
 
 	@Override
@@ -39,7 +40,13 @@ public class TokenServiceImpl implements TokenService {
 		final String tokenValue = generateToken(user.getFirstName());
 		final LocalDateTime tokenExpirationDate = calculateTokenExpirationDate();
 
-		return new Token(tokenValue, user, tokenExpirationDate);
+		return new Token(
+			tokenValue,
+			user,
+			tokenExpirationDate,
+			LocalDateTime.now(),
+			LocalDateTime.now()
+		);
 	}
 
 	@Override
@@ -50,8 +57,8 @@ public class TokenServiceImpl implements TokenService {
 	}
 
 	@Override
-	public boolean validateToken(final String jwtToken, final String userName) {
-		return getUserName(jwtToken).equals(userName) && !isTokenExpired(jwtToken);
+	public boolean validateToken(final String jwtToken) {
+		return !isTokenExpired(jwtToken);
 	}
 
 	private LocalDateTime calculateTokenExpirationDate() {

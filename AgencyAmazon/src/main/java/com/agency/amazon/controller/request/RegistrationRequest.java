@@ -1,5 +1,7 @@
 package com.agency.amazon.controller.request;
 
+import com.agency.amazon.model.Role;
+
 public class RegistrationRequest {
 
 	private String firstName;
@@ -10,7 +12,19 @@ public class RegistrationRequest {
 
 	private String password;
 
-	public RegistrationRequest() {}
+	private Role role;
+
+	public RegistrationRequest() {
+		this.role = Role.ROLE_STAFF;
+	}
+
+	public Role getRole() {
+		return role;
+	}
+
+	public void setRole(final Role role) {
+		this.role = role;
+	}
 
 	public String getLogin() {
 		return login;
