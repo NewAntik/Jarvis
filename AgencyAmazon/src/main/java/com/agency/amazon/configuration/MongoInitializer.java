@@ -1,12 +1,14 @@
 package com.agency.amazon.configuration;
 
-import com.agency.amazon.controller.UserController;
 import com.agency.amazon.model.User;
 import com.agency.amazon.repository.UserRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.cache.Cache;
+import org.springframework.cache.CacheManager;
+import org.springframework.cache.concurrent.ConcurrentMapCache;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
@@ -14,6 +16,7 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 
 @Component
 public class MongoInitializer {
@@ -25,8 +28,11 @@ public class MongoInitializer {
 
 	private final UserRepository userRepository;
 
-	public MongoInitializer(UserRepository userRepository) {
+	private final CacheManager cacheManager;
+
+	public MongoInitializer(UserRepository userRepository, CacheManager cacheManager) {
 		this.userRepository = userRepository;
+		this.cacheManager = cacheManager;
 	}
 
 	@Scheduled(fixedRate = 25000) //30 sec interval

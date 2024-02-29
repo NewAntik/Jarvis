@@ -8,20 +8,18 @@ import com.agency.amazon.model.dto.UserDto;
 import com.agency.amazon.repository.UserRepository;
 import com.agency.amazon.service.TokenService;
 import com.agency.amazon.service.UserService;
+import org.springframework.data.crossstore.ChangeSetPersister;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.text.SimpleDateFormat;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
+import java.util.NoSuchElementException;
 import java.util.UUID;
+
+import static java.lang.String.format;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -44,7 +42,7 @@ public class UserServiceImpl implements UserService {
 
 	@Override
 	public ResponseEntity<?> registration(final RegistrationRequest request) {
-		if (userRepository.findByLogin(request.getLogin()) != null) {
+		if (userRepository.findByLogin(request.getLogin()).isPresent()) {
 			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("This login is already in use.");
 		}
 
@@ -65,68 +63,16 @@ public class UserServiceImpl implements UserService {
 
 	@Override
 	public ResponseEntity<?> authorization(final LoginRequest request) {
-		User user = userRepository.findByLogin(request.getLogin());
+		final User user = userRepository.findByLogin(request.getLogin())
+			.orElseThrow(() -> new NoSuchElementException("Invalid username or password"));
 
-		if (user == null || !passwordEncoder.matches(request.getPassword(), user.getPassword())) {
+		if (!passwordEncoder.matches(request.getPassword(), user.getPassword())) {
 			return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid username or password");
 		}
 
 		final Token token = tokenService.generateToken(user);
 
 		return ResponseEntity.ok(token.getTokenValue());
-	}
-
-	@Override
-	public List<UserDto> getStatisticByDate(final Date date) {
-
-		return mapToUserDto(userRepository.findByCreatedDate(date));
-	}
-
-	@Override
-	public List<UserDto> getStatisticBetweenDates(final Date fromDate, final Date toDate) {
-		return mapToUserDto(userRepository.findBetweenDates(fromDate, toDate));
-	}
-
-	@Override
-	public List<UserDto> getStatisticWithTime() {
-		return mapToUserDto(userRepository.findAllByCreatedDateIsNotNull());
-	}
-
-	@Override
-	public UserDto getStatisticByAsin(final String asin) {
-		final User user = userRepository.findByAsin(asin);
-
-		return new UserDto
-			(
-				user.getFirstName(),
-				user.getLastName(),
-				user.getRole(),
-				user.getCreatedDate(),
-				user.getAsin()
-			);
-	}
-
-	@Override
-	public List<UserDto> getStatisticByAsinsList(final List<String> asins) {
-		return mapToUserDto(userRepository.findAllByAsin(asins));
-	}
-
-	@Override
-	public List<UserDto> getStatisticWithAsins() {
-		return mapToUserDto(userRepository.findAllByAsinIsNotNull());
-	}
-
-	private List<UserDto> mapToUserDto(final List<User> users) {
-		return users.stream()
-					.map(user -> new UserDto
-						(
-							user.getFirstName(),
-							user.getLastName(),
-							user.getRole(),
-							user.getCreatedDate(),
-							user.getAsin())
-						)
-					.toList();
 	}
 
 	private String getNewAsin(){

@@ -3,6 +3,7 @@ package com.agency.amazon.controller;
 import com.agency.amazon.model.dto.AsinDto;
 import com.agency.amazon.model.dto.DateDto;
 import com.agency.amazon.model.dto.UserDto;
+import com.agency.amazon.service.StatisticService;
 import com.agency.amazon.service.UserService;
 import jakarta.validation.Valid;
 import org.slf4j.Logger;
@@ -24,10 +25,10 @@ import static com.agency.amazon.controller.UserController.BASE_URL;
 public class StatisticController {
 	private static final Logger LOG = LoggerFactory.getLogger(StatisticController.class);
 
-	private final UserService userService;
+	private final StatisticService statisticService;
 
-	public StatisticController(UserService userService) {
-		this.userService = userService;
+	public StatisticController(final StatisticService statisticService) {
+		this.statisticService = statisticService;
 	}
 
 	@PostMapping ("/statistics/dates")
@@ -35,7 +36,15 @@ public class StatisticController {
 	public List<UserDto> date(@RequestBody @DateTimeFormat(pattern="yyyy-MM-dd") Date date){
 		LOG.debug("Date method was called in StatisticController.");
 
-		return userService.getStatisticByDate(date);
+		return statisticService.getStatisticByDate(date);
+	}
+
+	@PostMapping ("/statistics/multiply/dates")
+	@PreAuthorize("hasRole('ROLE_STAFF')")
+	public List<UserDto> datesList(@RequestBody @Valid DateDto date){
+		LOG.debug("datesList method was called in StatisticController.");
+
+		return statisticService.getStatisticByDateList(date.getDates());
 	}
 
 	@PostMapping("/statistics/between/dates")
@@ -43,7 +52,7 @@ public class StatisticController {
 	public List<UserDto> betweenDates(@RequestBody @Valid DateDto date){
 		LOG.debug("BetweenDates method was called in StatisticController.");
 
-		return userService.getStatisticBetweenDates(date.getFromDate(), date.getToDate());
+		return statisticService.getStatisticBetweenDates(date.getDates().get(0), date.getDates().get(1));
 	}
 
 	@PostMapping("/statistics/all/dates")
@@ -51,23 +60,23 @@ public class StatisticController {
 	public List<UserDto> allDates(){
 		LOG.debug("AllDates method was called in StatisticController.");
 
-		return userService.getStatisticWithTime();
+		return statisticService.getStatisticWithTime();
 	}
 
 	@PostMapping ("/statistics/asins")
 	@PreAuthorize("hasRole('ROLE_STAFF')")
-	public UserDto asin(@RequestBody String asin){
+	public UserDto asin(@RequestBody @Valid AsinDto asinDto){
 		LOG.debug("Asins method was called in StatisticController.");
 
-		return userService.getStatisticByAsin(asin);
+		return statisticService.getStatisticByAsin(asinDto.getAsins().get(0));
 	}
 
 	@PostMapping ("/statistics/multiply/asins")
 	@PreAuthorize("hasRole('ROLE_STAFF')")
-	public List<UserDto> listAsins(@RequestBody @Valid AsinDto asinDto){
+	public List<UserDto> asinsList(@RequestBody @Valid AsinDto asinDto){
 		LOG.debug("ListAsins method was called in StatisticController.");
 
-		return userService.getStatisticByAsinsList(asinDto.getAsins());
+		return statisticService.getStatisticByAsinsList(asinDto.getAsins());
 	}
 
 	@PostMapping ("/statistics/all/asins")
@@ -75,6 +84,6 @@ public class StatisticController {
 	public List<UserDto> allAsins(){
 		LOG.debug("AllAsins method was called in StatisticController.");
 
-		return userService.getStatisticWithAsins();
+		return statisticService.getStatisticWithAsins();
 	}
 }

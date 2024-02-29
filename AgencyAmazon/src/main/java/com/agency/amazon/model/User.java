@@ -99,7 +99,6 @@ public class User {
 		this.createdDate = createdDate;
 	}
 
-
 	public Role getRole() {
 		return role;
 	}

@@ -21,7 +21,6 @@ public class AuthenticationFilter extends OncePerRequestFilter {
 
 	private final CustomUserDetailsService userDetailsService;
 
-
 	public AuthenticationFilter(final TokenService tokenService, final CustomUserDetailsService userDetailsService) {
 		this.tokenService = tokenService;
 		this.userDetailsService = userDetailsService;
@@ -35,7 +34,7 @@ public class AuthenticationFilter extends OncePerRequestFilter {
 	) throws ServletException, IOException {
 		final String tokenHeader = request.getHeader("Authorization");
 
-		if(tokenHeader == null || !tokenHeader.startsWith("Bearer ")){
+		if (tokenHeader == null || !tokenHeader.startsWith("Bearer ")) {
 			filterChain.doFilter(request, response);
 			return;
 		}
@@ -48,8 +47,10 @@ public class AuthenticationFilter extends OncePerRequestFilter {
 
 		if (tokenService.validateToken(jwtToken)) {
 
-			UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken = new UsernamePasswordAuthenticationToken(
-				userValueObject, null, userValueObject.getAuthorities());
+			UsernamePasswordAuthenticationToken
+				usernamePasswordAuthenticationToken =
+				new UsernamePasswordAuthenticationToken(
+					userValueObject, null, userValueObject.getAuthorities());
 			usernamePasswordAuthenticationToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
 			SecurityContextHolder.getContext().setAuthentication(usernamePasswordAuthenticationToken);
 		}

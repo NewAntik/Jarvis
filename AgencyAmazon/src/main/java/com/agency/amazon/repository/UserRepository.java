@@ -12,19 +12,22 @@ import java.util.Optional;
 @Repository
 public interface UserRepository extends MongoRepository<User, String> {
 
-	User findByLogin(String login);
+	Optional<User> findByLogin(String login);
 
-	List<User> findByCreatedDate(Date createdDate);
+	Optional<List<User>> findByCreatedDate(Date createdDate);
 
 	Optional<User> findByFirstName(String username);
+
 	@Query("select u from User u where u.createdDate between ?1 and ?2")
-	List<User> findBetweenDates(Date fromDate, Date toDate);
+	Optional<List<User>>findBetweenDates(Date fromDate, Date toDate);
 
-	List<User> findAllByCreatedDateIsNotNull();
+	Optional<List<User>> findAllByCreatedDateIsNotNull();
 
-	List<User> findAllByAsinIsNotNull();
+	Optional<List<User>> findAllByAsinIsNotNull();
 
-	List<User> findAllByAsin(List<String> asins);
+	Optional<List<User>> findAllByAsinIn(List<String> asins);
 
-	User findByAsin(String asin);
+	Optional<User>findByAsin(String asin);
+
+	Optional<List<User>> findAllByCreatedDateIn(List<Date> dates);
 }

@@ -3,27 +3,17 @@ package com.agency.amazon.model.dto;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import java.util.Date;
+import java.util.List;
 
 public class DateDto {
 	@DateTimeFormat(pattern="yyyy-MM-dd")
-	private Date fromDate;
+	private List<Date> dates;
 
-	@DateTimeFormat(pattern="yyyy-MM-dd")
-	private Date toDate;
-
-	public Date getFromDate() {
-		return fromDate;
+	public List<Date> getDates() {
+		return dates;
 	}
 
-	public void setFromDate(Date fromDate) {
-		this.fromDate = fromDate;
-	}
-
-	public Date getToDate() {
-		return toDate;
-	}
-
-	public void setToDate(Date toDate) {
-		this.toDate = toDate;
+	public void setDates(List<Date> dates) {
+		this.dates = dates;
 	}
 }
