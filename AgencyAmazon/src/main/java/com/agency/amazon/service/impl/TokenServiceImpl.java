@@ -23,7 +23,7 @@ public class TokenServiceImpl implements TokenService {
 
 	private final int tokenLifeHours;
 
-	private final byte[] secret;
+	private final String secret;
 
 	public TokenServiceImpl(
 		@Value("${token.life-in-hours}") final int tokenLifeHours,
@@ -32,7 +32,7 @@ public class TokenServiceImpl implements TokenService {
 	) {
 		this.defaultTimeZone = defaultTimeZone;
 		this.tokenLifeHours = tokenLifeHours;
-		this.secret = Keys.secretKeyFor(SignatureAlgorithm.HS256).getEncoded();
+		this.secret = secret;
 	}
 
 	@Override
@@ -79,7 +79,6 @@ public class TokenServiceImpl implements TokenService {
 		final Date expiration = getClaimFromToken(token).getExpiration();
 		return expiration.before(new Date());
 	}
-
 
 	private Claims getClaimFromToken(String token) {
 		return Jwts.parser()
