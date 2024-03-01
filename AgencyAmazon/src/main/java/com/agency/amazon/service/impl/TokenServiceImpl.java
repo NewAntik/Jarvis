@@ -2,11 +2,11 @@ package com.agency.amazon.service.impl;
 
 import com.agency.amazon.model.Token;
 import com.agency.amazon.model.User;
+import com.agency.amazon.repository.TokenRepository;
 import com.agency.amazon.service.TokenService;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
-import io.jsonwebtoken.security.Keys;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
@@ -14,6 +14,7 @@ import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.util.Date;
+import java.util.NoSuchElementException;
 import java.util.concurrent.TimeUnit;
 
 @Service
@@ -25,14 +26,18 @@ public class TokenServiceImpl implements TokenService {
 
 	private final String secret;
 
+	private final TokenRepository tokenRepository;
+
 	public TokenServiceImpl(
 		@Value("${token.life-in-hours}") final int tokenLifeHours,
 		@Value("${default.time-zone.name}") final String defaultTimeZone,
-		@Value("${token.secret}") final String secret
+		@Value("${token.secret}") final String secret,
+		final TokenRepository tokenRepository
 	) {
 		this.defaultTimeZone = defaultTimeZone;
 		this.tokenLifeHours = tokenLifeHours;
 		this.secret = secret;
+		this.tokenRepository = tokenRepository;
 	}
 
 	@Override
@@ -40,12 +45,8 @@ public class TokenServiceImpl implements TokenService {
 		final String tokenValue = generateToken(user.getFirstName());
 		final LocalDateTime tokenExpirationDate = calculateTokenExpirationDate();
 
-		return new Token(
-			tokenValue,
-			user,
-			tokenExpirationDate,
-			LocalDateTime.now(),
-			LocalDateTime.now()
+		return tokenRepository.save(
+			new Token(tokenValue, user.getId(), tokenExpirationDate, LocalDateTime.now(), LocalDateTime.now())
 		);
 	}
 
@@ -57,8 +58,33 @@ public class TokenServiceImpl implements TokenService {
 	}
 
 	@Override
-	public boolean validateToken(final String jwtToken) {
-		return !isTokenExpired(jwtToken);
+	public boolean validateToken(final Token token, final User user) {
+		final Token userToken = tokenRepository.findByUserId(user.getId())
+			.orElseThrow(() -> new NoSuchElementException("There is no such token."));
+
+		if (isTokenExpired(userToken.getValue())) {
+			refreshToken(token);
+		}
+
+		return true;
+	}
+
+	private void refreshToken(final Token token) {
+		token.setExpirationDate(calculateTokenExpirationDate());
+		token.setUpdatedDate(LocalDateTime.now());
+		tokenRepository.save(token);
+	}
+
+	@Override
+	public Token findByValue(final String value) {
+		return tokenRepository.findByValue(value)
+			.orElseThrow(() -> new NoSuchElementException("Invalid token value"));
+	}
+
+	@Override
+	public Token getTokenByUserId(final User user) {
+		return tokenRepository.findByUserId(user.getId())
+			.orElseThrow(() -> new NoSuchElementException("Invalid token value there is no token with such user id."));
 	}
 
 	private LocalDateTime calculateTokenExpirationDate() {

@@ -2,7 +2,7 @@
   {
     "firstName": "Alex",
     "lastName": "Gang",
-    "login": "john_doe",
+    "login": "alex_gang",
     "password": "password1",
     "role": "ROLE_STAFF",
     "createdDate": "2022-04-01T12:00:00",
@@ -14,5 +14,14 @@
     "login": "foo_bar",
     "password": "password2",
     "role": "ROLE_STAFF"
+  },
+  {
+    "firstName": "Patric",
+    "lastName": "Rank",
+    "login": "patric_rank",
+    "password": "password3",
+    "role": "ROLE_STAFF",
+    "createdDate": "2022-04-01T12:00:00",
+    "asin": "G23483KZV("
   }
 ]

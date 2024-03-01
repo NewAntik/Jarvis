@@ -2,7 +2,6 @@ package com.agency.amazon.model.dto;
 
 import com.agency.amazon.model.Role;
 
-import java.time.LocalDateTime;
 import java.util.Date;
 
 public class UserDto {
@@ -73,5 +72,4 @@ public class UserDto {
 	public void setCreatedDate(final Date createdDate) {
 		this.createdDate = createdDate;
 	}
-
 }

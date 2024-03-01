@@ -1,5 +1,7 @@
-package com.agency.amazon.configuration;
+package com.agency.amazon.security;
 
+import com.agency.amazon.model.Token;
+import com.agency.amazon.model.User;
 import com.agency.amazon.service.TokenService;
 import com.agency.amazon.service.impl.CustomUserDetailsService;
 import jakarta.servlet.FilterChain;
@@ -9,7 +11,6 @@ import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.web.filter.OncePerRequestFilter;
 
@@ -34,7 +35,7 @@ public class AuthenticationFilter extends OncePerRequestFilter {
 	) throws ServletException, IOException {
 		final String tokenHeader = request.getHeader("Authorization");
 
-		if (tokenHeader == null || !tokenHeader.startsWith("Bearer ")) {
+		if (tokenHeader == null) {
 			filterChain.doFilter(request, response);
 			return;
 		}
@@ -43,14 +44,16 @@ public class AuthenticationFilter extends OncePerRequestFilter {
 
 		final String username = tokenService.getUserName(tokenHeader);
 
-		final UserDetails userValueObject = userDetailsService.loadUserByUsername(username);
+		final User user = userDetailsService.loadUserByUsername(username);
 
-		if (tokenService.validateToken(jwtToken)) {
+		final Token token = tokenService.findByValue(jwtToken);
+
+		if (tokenService.validateToken(token, user)) {
 
 			UsernamePasswordAuthenticationToken
 				usernamePasswordAuthenticationToken =
 				new UsernamePasswordAuthenticationToken(
-					userValueObject, null, userValueObject.getAuthorities());
+					user, null, user.getAuthorities());
 			usernamePasswordAuthenticationToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
 			SecurityContextHolder.getContext().setAuthentication(usernamePasswordAuthenticationToken);
 		}

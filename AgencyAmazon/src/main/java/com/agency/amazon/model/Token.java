@@ -2,13 +2,9 @@ package com.agency.amazon.model;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.Size;
 import org.springframework.data.annotation.CreatedDate;
@@ -23,15 +19,15 @@ public class Token {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long id;
+	private String id;
 
 	@Column
 	@Size(max = 1000)
-	private String tokenValue;
+	private String value;
 
-	@ManyToOne
-	@JoinColumn(name = "user_id", nullable = false)
-	private User user;
+	@Column
+	@Size(max = 1000)
+	private String userId;
 
 	@Column(name = "expiration_date")
 	private LocalDateTime expirationDate;
@@ -50,41 +46,41 @@ public class Token {
 	public Token() {}
 
 	public Token(
-		final String tokenValue,
-		final User user,
+		final String value,
+		final String userId,
 		final LocalDateTime tokenExpirationDate,
 		final LocalDateTime createdDate,
 		final LocalDateTime updatedDate
 	) {
-		this.tokenValue = tokenValue;
-		this.user = user;
+		this.value = value;
+		this.userId = userId;
 		this.expirationDate = tokenExpirationDate;
 		this.createdDate = createdDate;
 		this.updatedDate = updatedDate;
 	}
 
-	public Long getId() {
+	public String getId() {
 		return id;
 	}
 
-	public void setId(final Long id) {
+	public void setId(final String id) {
 		this.id = id;
 	}
 
-	public String getTokenValue() {
-		return tokenValue;
+	public String getValue() {
+		return value;
 	}
 
-	public void setTokenValue(final String tokenValue) {
-		this.tokenValue = tokenValue;
+	public void setValue(final String tokenValue) {
+		this.value = tokenValue;
 	}
 
-	public User getUser() {
-		return user;
+	public String getUserId() {
+		return userId;
 	}
 
-	public void setUser(final User user) {
-		this.user = user;
+	public void setUserId(final String userId) {
+		this.userId = userId;
 	}
 
 	public LocalDateTime getExpirationDate() {
@@ -123,7 +119,7 @@ public class Token {
 	public String toString() {
 		return "Token{" +
 			"id=" + id +
-			", tokenValue='" + tokenValue + '\'' +
+			", tokenValue='" + value + '\'' +
 			", expirationDate=" + expirationDate +
 			", used=" + used +
 			", createdDate=" + createdDate +
@@ -142,7 +138,7 @@ public class Token {
 		final Token token = (Token) o;
 		return used == token.used &&
 			Objects.equals(id, token.id) &&
-			Objects.equals(tokenValue, token.tokenValue) &&
+			Objects.equals(value, token.value) &&
 			Objects.equals(expirationDate, token.expirationDate) &&
 			Objects.equals(createdDate, token.createdDate) &&
 			Objects.equals(updatedDate, token.updatedDate);
@@ -150,6 +146,6 @@ public class Token {
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(id, tokenValue, expirationDate, used, createdDate, updatedDate);
+		return Objects.hash(id, value, expirationDate, used, createdDate, updatedDate);
 	}
 }

@@ -9,6 +9,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.Size;
+import org.hibernate.validator.constraints.UniqueElements;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.security.core.GrantedAuthority;
@@ -31,6 +32,7 @@ public class User {
 
 	@Column(name = "first_name")
 	@Size(max = 50)
+	@UniqueElements
 	private String firstName;
 
 	@Column(name = "last_name")

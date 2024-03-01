@@ -4,7 +4,6 @@ import com.agency.amazon.model.dto.AsinDto;
 import com.agency.amazon.model.dto.DateDto;
 import com.agency.amazon.model.dto.UserDto;
 import com.agency.amazon.service.StatisticService;
-import com.agency.amazon.service.UserService;
 import jakarta.validation.Valid;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
