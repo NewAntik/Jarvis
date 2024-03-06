@@ -20,7 +20,7 @@ import java.util.Set;
 
 @Entity
 @Table(name = "addresses")
-public class Address {
+public class Address extends BaseEntity {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)

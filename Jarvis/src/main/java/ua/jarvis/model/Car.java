@@ -7,10 +7,10 @@ import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
-import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import ua.jarvis.model.enums.CarType;
@@ -28,33 +28,41 @@ public class Car {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
+	@NotNull
 	@Size(max = 20)
 	@Column(length = 20, name = "plate_number")
 	private String plateNumber;
 
-	@Size(max = 20)
-	@Column(length = 20, name = "color")
+	@NotNull
+	@Size(max = 50)
+	@Column(length = 50, name = "color")
 	private String color;
 
+	@NotNull
 	@Size(max = 50)
 	@Column(length = 50, name = "model")
 	private String model;
 
+	@NotNull
+	@Size(max = 100)
 	@Enumerated(EnumType.STRING)
-	@Column(name = "car_type")
+	@Column(length = 100, name = "car_type")
 	private CarType type;
 
+	@NotNull
 	@Size(max = 17)
 	@Column(length = 17, name = "vin_Code")
 	private String vinCode;
 
-	@Column(name = "date_release")
-	private LocalDateTime dateRelease;
+	@NotNull
+	@Column(name = "issue_date")
+	private LocalDateTime issueDate;
 
 	@ManyToMany
-	private Set<User> user = new HashSet<>();
+	private Set<Driver> drivers = new HashSet<>();
 
 	@ManyToOne
+	@JoinColumn(name = "juridical_person_id")
 	private JuridicalPerson juridicalPerson;
 
 	public Car() {}
@@ -107,20 +115,20 @@ public class Car {
 		this.vinCode = vinCode;
 	}
 
-	public LocalDateTime getDateRelease() {
-		return dateRelease;
+	public LocalDateTime getIssueDate() {
+		return issueDate;
 	}
 
-	public void setDateRelease(final LocalDateTime dateRelease) {
-		this.dateRelease = dateRelease;
+	public void setIssueDate(final LocalDateTime issueDate) {
+		this.issueDate = issueDate;
 	}
 
-	public Set<User> getUser() {
-		return user;
+	public Set<Driver> getDrivers() {
+		return drivers;
 	}
 
-	public void setUser(final Set<User> user) {
-		this.user = user;
+	public void setDrivers(final Set<Driver> driver) {
+		this.drivers = driver;
 	}
 
 	public JuridicalPerson getJuridicalPerson() {
@@ -140,7 +148,7 @@ public class Car {
 			", model='" + model + '\'' +
 			", type=" + type +
 			", vinCode='" + vinCode + '\'' +
-			", dateRelease=" + dateRelease +
+			", dateRelease=" + issueDate +
 			'}';
 	}
 
@@ -159,11 +167,11 @@ public class Car {
 			Objects.equals(model, car.model) &&
 			type == car.type &&
 			Objects.equals(vinCode, car.vinCode) &&
-			Objects.equals(dateRelease, car.dateRelease);
+			Objects.equals(issueDate, car.issueDate);
 	}
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(id, plateNumber, color, model, type, vinCode, dateRelease);
+		return Objects.hash(id, plateNumber, color, model, type, vinCode, issueDate);
 	}
 }

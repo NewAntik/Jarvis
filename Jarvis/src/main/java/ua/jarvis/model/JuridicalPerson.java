@@ -11,8 +11,10 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
+import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 
+import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
@@ -36,7 +38,11 @@ public class JuridicalPerson {
 	@OneToOne
 	private Address jurAddress;
 
-	@OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+	@NotNull
+	@Column(name = "regisrtation_date")
+	private LocalDateTime registrationDate;
+
+	@OneToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "user_id")
 	private User user;
 
@@ -50,6 +56,14 @@ public class JuridicalPerson {
 	private Set<Car> car = new HashSet<>();
 
 	public JuridicalPerson() {}
+
+	public LocalDateTime getRegistrationDate() {
+		return registrationDate;
+	}
+
+	public void setRegistrationDate(final LocalDateTime registrationDate) {
+		this.registrationDate = registrationDate;
+	}
 
 	public Long getId() {
 		return id;
@@ -121,6 +135,8 @@ public class JuridicalPerson {
 			"id=" + id +
 			", erdpo='" + erdpo + '\'' +
 			", typeActivity='" + typeActivity + '\'' +
+			", jurAddress=" + jurAddress +
+			", registrationDate=" + registrationDate +
 			'}';
 	}
 
@@ -135,11 +151,13 @@ public class JuridicalPerson {
 		final JuridicalPerson that = (JuridicalPerson) o;
 		return Objects.equals(id, that.id) &&
 			Objects.equals(erdpo, that.erdpo) &&
-			Objects.equals(typeActivity, that.typeActivity);
+			Objects.equals(typeActivity, that.typeActivity) &&
+			Objects.equals(jurAddress, that.jurAddress) &&
+			Objects.equals(registrationDate, that.registrationDate);
 	}
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(id, erdpo, typeActivity);
+		return Objects.hash(id, erdpo, typeActivity, jurAddress, registrationDate);
 	}
 }

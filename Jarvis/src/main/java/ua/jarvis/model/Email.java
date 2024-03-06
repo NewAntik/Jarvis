@@ -7,19 +7,21 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
+import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 
 import java.util.Objects;
 
 @Entity
 @Table(name = "emails")
-public class Email {
+public class Email extends BaseEntity {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
-	@Size(max = 50)
-	@Column(length = 50, name = "email_adress")
+	@NotNull
+	@Size(max = 100)
+	@Column(length = 100, name = "email_address")
 	private String emailAddress;
 
 	@ManyToOne

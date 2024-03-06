@@ -77,9 +77,6 @@ public class User extends BaseEntity {
 	@OneToMany(mappedBy = "user", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
 	private Set<Phone> phones = new HashSet<>();
 
-	@OneToMany(mappedBy = "user", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-	private Set<Car> cars = new HashSet<>();
-
 	public User() {}
 
 	public Long getId() {
@@ -184,14 +181,6 @@ public class User extends BaseEntity {
 
 	public void setPassports(final Set<Passport> passports) {
 		this.passports = passports;
-	}
-
-	public Set<Car> getCars() {
-		return cars;
-	}
-
-	public void setCars(final Set<Car> cars) {
-		this.cars = cars;
 	}
 
 	public Set<Address> getAddresses() {

@@ -19,8 +19,8 @@ public class Phone {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
-	@Size(max = 50)
-	@Column(length = 50, name = "phone_number")
+	@Size(max = 12)
+	@Column(length = 12, name = "phone_number")
 	private String phoneNumber;
 
 	@Size(max = 20)

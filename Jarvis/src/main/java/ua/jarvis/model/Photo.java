@@ -5,6 +5,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotBlank;
@@ -14,8 +15,8 @@ import java.util.Objects;
 import java.util.UUID;
 
 @Entity
-@Table(name = "photo")
-public class Photo {
+@Table(name = "photos")
+public class Photo extends BaseEntity{
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -32,6 +33,7 @@ public class Photo {
 	private String fileName;
 
 	@OneToOne
+	@JoinColumn(name = "user_id")
 	private User user;
 
 	public Photo() {}
