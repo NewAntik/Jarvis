@@ -7,8 +7,11 @@ import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToMany;
+import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
+import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 
 import java.util.HashSet;
@@ -16,13 +19,14 @@ import java.util.Objects;
 import java.util.Set;
 
 @Entity
-@Table(name = "adresses")
+@Table(name = "addresses")
 public class Address {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
+	@NotNull
 	@Size(max = 50)
 	@Column(length = 50, name = "city")
 	private String city;
@@ -39,10 +43,23 @@ public class Address {
 	@Column(length = 50, name = "flat_number")
 	private String flatNumber;
 
+	@OneToOne
+	@JoinColumn(name = "juridical_person_id")
+	private JuridicalPerson juridicalPerson;
+
+	@NotNull
 	@ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
 	private Set<User> users = new HashSet<>();
 
 	public Address() {}
+
+	public JuridicalPerson getJuridicalPerson() {
+		return juridicalPerson;
+	}
+
+	public void setJuridicalPerson(final JuridicalPerson juridicalPerson) {
+		this.juridicalPerson = juridicalPerson;
+	}
 
 	public Long getId() {
 		return id;

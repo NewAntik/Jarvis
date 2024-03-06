@@ -7,9 +7,11 @@ import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
+import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 
 import java.time.LocalDateTime;
@@ -25,27 +27,35 @@ public class DriverLicense {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
+	@NotNull
 	@Column(name = "date_issue")
 	private LocalDateTime dateIssue;
 
+	@NotNull
 	@Column(name = "valid_until")
 	private LocalDateTime validUntil;
 
+	@NotNull
 	@Column(name = "validity")
 	private boolean validity;
 
-	@Size(max = 9)
-	@Column(length = 9, name = "license_number")
-	private String licenseNumber;
-
+	@NotNull
 	@Size(max = 200)
 	@Column(length = 200, name = "authority")
 	private String authority;
 
-	@OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+	@NotNull
+	@Size(max = 9)
+	@Column(length = 9, name = "license_number")
+	private String licenseNumber;
+
+	@NotNull
+	@OneToMany(mappedBy = "driverLicense", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
 	private Set<DriverLicenseCategory> categories = new HashSet<>();
 
-	@ManyToOne
+	@NotNull
+	@ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+	@JoinColumn(name = "user_id")
 	private User user;
 
 	public DriverLicense() {}

@@ -15,7 +15,7 @@ import ua.jarvis.model.enums.CategoryType;
 import java.util.Objects;
 
 @Entity
-@Table(name = "driver_license_category")
+@Table(name = "driver_license_categories")
 public class DriverLicenseCategory {
 
 	@Id

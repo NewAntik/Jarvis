@@ -7,6 +7,7 @@ import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
@@ -33,10 +34,10 @@ public class JuridicalPerson {
 	private String typeActivity;
 
 	@OneToOne
-	@Column(name = "jur_adress")
-	private Address jurAdress;
+	private Address jurAddress;
 
 	@OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+	@JoinColumn(name = "user_id")
 	private User user;
 
 	@OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
@@ -66,12 +67,12 @@ public class JuridicalPerson {
 		this.erdpo = erdpo;
 	}
 
-	public Address getJurAdress() {
-		return jurAdress;
+	public Address getJurAddress() {
+		return jurAddress;
 	}
 
-	public void setJurAdress(final Address jurAdress) {
-		this.jurAdress = jurAdress;
+	public void setJurAddress(final Address jurAdress) {
+		this.jurAddress = jurAdress;
 	}
 
 	public String getTypeActivity() {

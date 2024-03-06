@@ -5,8 +5,10 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
+import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 
 import java.time.LocalDateTime;
@@ -20,24 +22,31 @@ public class ForeignPassport {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
+	@NotNull
 	@Size(max = 8)
 	@Column(length = 8, name = "passport_number")
 	private String passportNumber;
 
+	@NotNull
 	@Column(name = "date_issue")
 	private LocalDateTime dateIssue;
 
+	@NotNull
 	@Column(name = "valid_until")
 	private LocalDateTime validUntil;
 
+	@NotNull
 	@Column(name = "validity")
 	private boolean validity;
 
+	@NotNull
 	@Size(max = 200)
 	@Column(length = 200, name = "authority")
 	private String authority;
 
+	@NotNull
 	@ManyToOne
+	@JoinColumn(name = "user_id")
 	private User user;
 
 	public ForeignPassport() {}

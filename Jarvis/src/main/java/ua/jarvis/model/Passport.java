@@ -5,8 +5,10 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
+import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 
 import java.time.LocalDateTime;
@@ -20,24 +22,31 @@ public class Passport {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
+	@NotNull
 	@Size(max = 9)
 	@Column(length = 9, name = "passport_number")
 	private String passportNumber;
 
-	@Column(name = "date_issue")
-	private LocalDateTime dateIssue;
+	@NotNull
+	@Column(name = "issue_date")
+	private LocalDateTime issueDate;
 
+	@NotNull
 	@Column(name = "valid_until")
 	private LocalDateTime validUntil;
 
+	@NotNull
 	@Column(name = "validity")
 	private boolean validity;
 
+	@NotNull
 	@Size(max = 200)
 	@Column(length = 200, name = "authority")
 	private String authority;
 
+	@NotNull
 	@ManyToOne
+	@JoinColumn(name = "user_id")
 	private User user;
 
 	public Passport() {}
@@ -58,12 +67,12 @@ public class Passport {
 		this.passportNumber = passportNumber;
 	}
 
-	public LocalDateTime getDateIssue() {
-		return dateIssue;
+	public LocalDateTime getIssueDate() {
+		return issueDate;
 	}
 
-	public void setDateIssue(final LocalDateTime dateIssue) {
-		this.dateIssue = dateIssue;
+	public void setIssueDate(final LocalDateTime dateIssue) {
+		this.issueDate = dateIssue;
 	}
 
 	public LocalDateTime getValidUntil() {
@@ -103,7 +112,7 @@ public class Passport {
 		return "Passport{" +
 			"id=" + id +
 			", passportNumber='" + passportNumber + '\'' +
-			", dateIssue=" + dateIssue +
+			", dateIssue=" + issueDate +
 			", validUntil=" + validUntil +
 			", validity=" + validity +
 			", authority='" + authority + '\'' +
@@ -122,12 +131,12 @@ public class Passport {
 		return validity == passport.validity &&
 			Objects.equals(id, passport.id) &&
 			Objects.equals(passportNumber, passport.passportNumber) &&
-			Objects.equals(dateIssue, passport.dateIssue) &&
+			Objects.equals(issueDate, passport.issueDate) &&
 			Objects.equals(validUntil, passport.validUntil);
 	}
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(id, passportNumber, dateIssue, validUntil, validity);
+		return Objects.hash(id, passportNumber, issueDate, validUntil, validity);
 	}
 }

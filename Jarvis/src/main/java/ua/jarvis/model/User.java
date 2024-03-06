@@ -53,32 +53,32 @@ public class User extends BaseEntity {
 	@Column(length = 10, name = "sex")
 	private String sex;
 
-	@OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+	@OneToOne(mappedBy = "user", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
 	private JuridicalPerson juridicalPerson;
 
-	@OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-	private Set<Email> emails = new HashSet<>();
-
-	@OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-	private Set<DriverLicense> driverLicense = new HashSet<>();
-
-	@OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-	private Photo photo;
-
-	@OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-	private Set<Phone> phones = new HashSet<>();
-
-	@OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-	private Set<ForeignPassport> foreignPassports = new HashSet<>();
-
-	@OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+	@OneToMany(mappedBy = "user", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
 	private Set<Passport> passports = new HashSet<>();
 
-	@OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-	private Set<Car> cars = new HashSet<>();
+	@OneToMany(mappedBy = "user", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+	private Set<DriverLicense> driverLicense = new HashSet<>();
 
-	@ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+	@OneToMany(mappedBy = "user", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+	private Set<ForeignPassport> foreignPassports = new HashSet<>();
+
+	@ManyToMany(mappedBy = "user", fetch = FetchType.EAGER)
 	private Set<Address> addresses = new HashSet<>();
+
+	@OneToMany(mappedBy = "user", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+	private Set<Email> emails = new HashSet<>();
+
+	@OneToOne(mappedBy = "user", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+	private Photo photo;
+
+	@OneToMany(mappedBy = "user", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+	private Set<Phone> phones = new HashSet<>();
+
+	@OneToMany(mappedBy = "user", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+	private Set<Car> cars = new HashSet<>();
 
 	public User() {}
 
