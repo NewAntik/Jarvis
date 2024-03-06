@@ -11,12 +11,11 @@ import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 
-import java.time.LocalDateTime;
 import java.util.Objects;
 
 @Entity
 @Table(name = "foreign_passports")
-public class ForeignPassport {
+public class ForeignPassport extends DocumentEntity{
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -26,23 +25,6 @@ public class ForeignPassport {
 	@Size(max = 8)
 	@Column(length = 8, name = "passport_number")
 	private String passportNumber;
-
-	@NotNull
-	@Column(name = "date_issue")
-	private LocalDateTime dateIssue;
-
-	@NotNull
-	@Column(name = "valid_until")
-	private LocalDateTime validUntil;
-
-	@NotNull
-	@Column(name = "validity")
-	private boolean validity;
-
-	@NotNull
-	@Size(max = 200)
-	@Column(length = 200, name = "authority")
-	private String authority;
 
 	@NotNull
 	@ManyToOne
@@ -67,38 +49,6 @@ public class ForeignPassport {
 		this.passportNumber = passportNumber;
 	}
 
-	public LocalDateTime getDateIssue() {
-		return dateIssue;
-	}
-
-	public void setDateIssue(final LocalDateTime dateIssue) {
-		this.dateIssue = dateIssue;
-	}
-
-	public LocalDateTime getValidUntil() {
-		return validUntil;
-	}
-
-	public void setValidUntil(final LocalDateTime validUntil) {
-		this.validUntil = validUntil;
-	}
-
-	public boolean isValidity() {
-		return validity;
-	}
-
-	public void setValidity(final boolean validity) {
-		this.validity = validity;
-	}
-
-	public String getAuthority() {
-		return authority;
-	}
-
-	public void setAuthority(final String authority) {
-		this.authority = authority;
-	}
-
 	public User getUser() {
 		return user;
 	}
@@ -112,7 +62,7 @@ public class ForeignPassport {
 		return "ForeignPassport{" +
 			"id=" + id +
 			", passportNumber='" + passportNumber + '\'' +
-			", dateIssue=" + dateIssue +
+			", issueDate=" + issueDate +
 			", validUntil=" + validUntil +
 			", validity=" + validity +
 			", authority='" + authority + '\'' +
@@ -131,12 +81,12 @@ public class ForeignPassport {
 		return validity == that.validity &&
 			Objects.equals(id, that.id) &&
 			Objects.equals(passportNumber, that.passportNumber) &&
-			Objects.equals(dateIssue, that.dateIssue) &&
+			Objects.equals(issueDate, that.issueDate) &&
 			Objects.equals(validUntil, that.validUntil);
 	}
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(id, passportNumber, dateIssue, validUntil, validity);
+		return Objects.hash(id, passportNumber, issueDate, validUntil, validity);
 	}
 }

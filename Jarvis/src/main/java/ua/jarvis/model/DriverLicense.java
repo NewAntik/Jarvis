@@ -14,35 +14,17 @@ import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 
-import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
 
 @Entity
 @Table(name = "driver_licenses")
-public class DriverLicense {
+public class DriverLicense extends DocumentEntity{
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
-
-	@NotNull
-	@Column(name = "date_issue")
-	private LocalDateTime dateIssue;
-
-	@NotNull
-	@Column(name = "valid_until")
-	private LocalDateTime validUntil;
-
-	@NotNull
-	@Column(name = "validity")
-	private boolean validity;
-
-	@NotNull
-	@Size(max = 200)
-	@Column(length = 200, name = "authority")
-	private String authority;
 
 	@NotNull
 	@Size(max = 9)
@@ -68,44 +50,12 @@ public class DriverLicense {
 		this.id = id;
 	}
 
-	public LocalDateTime getDateIssue() {
-		return dateIssue;
-	}
-
-	public void setDateIssue(final LocalDateTime dateIssue) {
-		this.dateIssue = dateIssue;
-	}
-
-	public LocalDateTime getValidUntil() {
-		return validUntil;
-	}
-
-	public void setValidUntil(final LocalDateTime validUntil) {
-		this.validUntil = validUntil;
-	}
-
-	public boolean isValidity() {
-		return validity;
-	}
-
-	public void setValidity(final boolean validity) {
-		this.validity = validity;
-	}
-
 	public String getLicenseNumber() {
 		return licenseNumber;
 	}
 
 	public void setLicenseNumber(final String licenseNumber) {
 		this.licenseNumber = licenseNumber;
-	}
-
-	public String getAuthority() {
-		return authority;
-	}
-
-	public void setAuthority(final String authority) {
-		this.authority = authority;
 	}
 
 	public Set<DriverLicenseCategory> getCategories() {
@@ -128,7 +78,7 @@ public class DriverLicense {
 	public String toString() {
 		return "DriverLicense{" +
 			"id=" + id +
-			", dateIssue=" + dateIssue +
+			", dateIssue=" + issueDate +
 			", validUntil=" + validUntil +
 			", validity=" + validity +
 			", licenseNumber='" + licenseNumber + '\'' +
@@ -147,13 +97,13 @@ public class DriverLicense {
 		final DriverLicense that = (DriverLicense) o;
 		return validity == that.validity &&
 			Objects.equals(id, that.id) &&
-			Objects.equals(dateIssue, that.dateIssue) &&
+			Objects.equals(issueDate, that.issueDate) &&
 			Objects.equals(validUntil, that.validUntil) &&
 			Objects.equals(licenseNumber, that.licenseNumber);
 	}
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(id, dateIssue, validUntil, validity, licenseNumber);
+		return Objects.hash(id, issueDate, validUntil, validity, licenseNumber);
 	}
 }

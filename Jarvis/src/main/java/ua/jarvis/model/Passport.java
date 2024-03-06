@@ -11,12 +11,11 @@ import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 
-import java.time.LocalDateTime;
 import java.util.Objects;
 
 @Entity
 @Table(name = "passports")
-public class Passport {
+public class Passport extends DocumentEntity{
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -26,23 +25,6 @@ public class Passport {
 	@Size(max = 9)
 	@Column(length = 9, name = "passport_number")
 	private String passportNumber;
-
-	@NotNull
-	@Column(name = "issue_date")
-	private LocalDateTime issueDate;
-
-	@NotNull
-	@Column(name = "valid_until")
-	private LocalDateTime validUntil;
-
-	@NotNull
-	@Column(name = "validity")
-	private boolean validity;
-
-	@NotNull
-	@Size(max = 200)
-	@Column(length = 200, name = "authority")
-	private String authority;
 
 	@NotNull
 	@ManyToOne
@@ -65,38 +47,6 @@ public class Passport {
 
 	public void setPassportNumber(final String passportNumber) {
 		this.passportNumber = passportNumber;
-	}
-
-	public LocalDateTime getIssueDate() {
-		return issueDate;
-	}
-
-	public void setIssueDate(final LocalDateTime dateIssue) {
-		this.issueDate = dateIssue;
-	}
-
-	public LocalDateTime getValidUntil() {
-		return validUntil;
-	}
-
-	public void setValidUntil(final LocalDateTime validUntil) {
-		this.validUntil = validUntil;
-	}
-
-	public boolean isValidity() {
-		return validity;
-	}
-
-	public void setValidity(final boolean validity) {
-		this.validity = validity;
-	}
-
-	public String getAuthority() {
-		return authority;
-	}
-
-	public void setAuthority(final String authority) {
-		this.authority = authority;
 	}
 
 	public User getUser() {
