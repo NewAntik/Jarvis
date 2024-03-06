@@ -35,7 +35,7 @@ public class JuridicalPerson {
 	@Column(length = 200, name = "type_activity")
 	private String typeActivity;
 
-	@OneToOne
+	@OneToOne(mappedBy = "juridicalPerson")
 	private Address jurAddress;
 
 	@NotNull
@@ -46,13 +46,13 @@ public class JuridicalPerson {
 	@JoinColumn(name = "user_id")
 	private User user;
 
-	@OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+	@OneToMany(mappedBy = "juridicalPerson", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
 	private Set<Email> emails = new HashSet<>();
 
-	@OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+	@OneToMany(mappedBy = "juridicalPerson", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
 	private Set<Phone> phones = new HashSet<>();
 
-	@OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+	@OneToMany(mappedBy = "juridicalPerson", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
 	private Set<Car> car = new HashSet<>();
 
 	public JuridicalPerson() {}

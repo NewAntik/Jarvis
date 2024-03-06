@@ -7,6 +7,7 @@ import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -28,7 +29,18 @@ public class DriverLicenseCategory {
 	@Column(name = "category_type")
 	private CategoryType categoryType;
 
+	@ManyToOne
+	private DriverLicense driverLicense;
+
 	public DriverLicenseCategory() {}
+
+	public DriverLicense getDriverLicense() {
+		return driverLicense;
+	}
+
+	public void setDriverLicense(final DriverLicense driverLicense) {
+		this.driverLicense = driverLicense;
+	}
 
 	public Long getId() {
 		return id;

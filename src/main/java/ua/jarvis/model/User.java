@@ -65,7 +65,7 @@ public class User extends BaseEntity {
 	@OneToMany(mappedBy = "user", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
 	private Set<ForeignPassport> foreignPassports = new HashSet<>();
 
-	@ManyToMany(mappedBy = "user", fetch = FetchType.EAGER)
+	@ManyToMany(mappedBy = "users", fetch = FetchType.EAGER)
 	private Set<Address> addresses = new HashSet<>();
 
 	@OneToMany(mappedBy = "user", fetch = FetchType.EAGER, cascade = CascadeType.ALL)

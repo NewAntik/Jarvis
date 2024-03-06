@@ -28,7 +28,7 @@ public class Phone {
 	private String imei;
 
 	@ManyToOne
-	private JuridicalPerson jurPerson;
+	private JuridicalPerson juridicalPerson;
 
 	@ManyToOne
 	private User user;
@@ -59,12 +59,12 @@ public class Phone {
 		this.imei = imei;
 	}
 
-	public JuridicalPerson getJurPerson() {
-		return jurPerson;
+	public JuridicalPerson getJuridicalPerson() {
+		return juridicalPerson;
 	}
 
-	public void setJurPerson(final JuridicalPerson jurPerson) {
-		this.jurPerson = jurPerson;
+	public void setJuridicalPerson(final JuridicalPerson jurPerson) {
+		this.juridicalPerson = jurPerson;
 	}
 
 	public User getUser() {

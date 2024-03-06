@@ -18,7 +18,7 @@ import java.util.Set;
 
 @Entity
 @DiscriminatorValue("Driver")
-public class Driver extends User{
+public class Driver extends User {
 
 	@NotNull
 	@Size(max = 10)
@@ -26,7 +26,7 @@ public class Driver extends User{
 	@Column(length = 10, name = "driver_type")
 	private DriverType type;
 
-	@ManyToMany(mappedBy = "driver", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+	@ManyToMany(mappedBy = "drivers", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
 	private Set<Car> cars = new HashSet<>();
 
 	public Driver() {
