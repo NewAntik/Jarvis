@@ -111,7 +111,7 @@ CREATE TABLE phones(
 
 CREATE TABLE cars_drivers(
     drivers_id          BIGINT NOT NULL REFERENCES users(id) ON UPDATE CASCADE,
-    cars_id              BIGINT NOT NULL REFERENCES cars(id) ON UPDATE CASCADE,
+    cars_id             BIGINT NOT NULL REFERENCES cars(id) ON UPDATE CASCADE,
     PRIMARY KEY         (drivers_id, cars_id)
 );
 

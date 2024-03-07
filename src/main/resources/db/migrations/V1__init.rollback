@@ -1,0 +1,13 @@
+DROP TABLE IF EXISTS cars_drivers;
+DROP TABLE IF EXISTS phones;
+DROP TABLE IF EXISTS photos;
+DROP TABLE IF EXISTS emails;
+DROP TABLE IF EXISTS cars;
+DROP TABLE IF EXISTS addresses_users;
+DROP TABLE IF EXISTS addresses;
+DROP TABLE IF EXISTS foreign_passports;
+DROP TABLE IF EXISTS driver_license_categories;
+DROP TABLE IF EXISTS driver_licenses;
+DROP TABLE IF EXISTS passports;
+DROP TABLE IF EXISTS juridical_persons;
+DROP TABLE IF EXISTS users;
