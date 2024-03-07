@@ -7,7 +7,7 @@ CREATE TABLE users (
     sex                 VARCHAR(10),
     created_date        TIMESTAMP NOT NULL,
     updated_date        TIMESTAMP NOT NULL,
-    dtype               VARCHAR(255),
+    dtype               VARCHAR(255) NOT NULL,
     driver_type         VARCHAR(20)
 );
 
@@ -113,6 +113,12 @@ CREATE TABLE cars_drivers(
     drivers_id          BIGINT NOT NULL REFERENCES users(id) ON UPDATE CASCADE,
     cars_id             BIGINT NOT NULL REFERENCES cars(id) ON UPDATE CASCADE,
     PRIMARY KEY         (drivers_id, cars_id)
+);
+
+CREATE TABLE participants(
+    id                  BIGINT PRIMARY KEY,
+    name                VARCHAR(100) NOT NULL,
+    role                VARCHAR(5) NOT NULL
 );
 
 
