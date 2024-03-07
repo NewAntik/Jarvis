@@ -1,13 +1,7 @@
 package ua.jarvis.model.enums;
 
 public enum ParticipantRole {
-	ADMIN("Admin"),
+	ADMIN,
 
-	STAFF("Staff");
-
-	private final String value;
-
-	ParticipantRole(String value) {this.value = value;}
-
-	public String getValue() {return value;}
+	STAFF;
 }

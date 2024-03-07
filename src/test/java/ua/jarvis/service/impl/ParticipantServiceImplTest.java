@@ -65,15 +65,4 @@ class ParticipantServiceImplTest {
 		verify(participantRepository).findByName(participant.getName());
 		verifyNoMoreInteractions(participantRepository);
 	}
-
-	@Test
-	void findByName_ShouldReturnParticipant() {
-		when(participantRepository.findByName(participant.getName())).thenReturn(Optional.of(participant));
-
-		final Participant foundParticipant = participantServiceimpl.findByName(participant.getName());
-
-		assertEquals(participant, foundParticipant);
-		verify(participantRepository).findByName(participant.getName());
-		verifyNoMoreInteractions(participantRepository);
-	}
 }

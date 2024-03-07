@@ -11,6 +11,8 @@ import ua.jarvis.model.Participant;
 import ua.jarvis.service.ParticipantService;
 import ua.jarvis.service.UserService;
 
+import java.util.Optional;
+
 @Service
 public class TelegramBotService extends TelegramLongPollingBot {
 
@@ -53,9 +55,9 @@ public class TelegramBotService extends TelegramLongPollingBot {
 	}
 
 	private Participant validateParticipant(final Update update){
-		final Participant participant = participantService.findByName(update.getMessage().getChat().getUserName());
-		if(participant != null){
-			return participant;
+		final Optional<Participant> participant = participantService.findByName(update.getMessage().getChat().getUserName());
+		if(participant.isPresent()){
+			return participant.get();
 		} else {
 			sendMessage(update.getMessage().getChatId(), Constants.HAVE_NO_ACCESS);
 			return null;

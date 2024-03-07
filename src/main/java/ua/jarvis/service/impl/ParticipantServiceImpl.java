@@ -8,6 +8,8 @@ import ua.jarvis.model.enums.ParticipantRole;
 import ua.jarvis.repository.ParticipantRepository;
 import ua.jarvis.service.ParticipantService;
 
+import java.util.Optional;
+
 @Service
 public class ParticipantServiceImpl implements ParticipantService {
 	private static final Logger LOG = LoggerFactory.getLogger(ParticipantServiceImpl.class);
@@ -28,11 +30,7 @@ public class ParticipantServiceImpl implements ParticipantService {
 	}
 
 	@Override
-	public Participant findByName(final String name) {
-		final Participant participant = participantRepository.findByName(name)
-			.orElseThrow(() -> new IllegalArgumentException("Cannot find participant with name: " + name));
-		LOG.debug("In findByName: Participant: {} was successfully found.", participant);
-
-		return participant;
+	public Optional<Participant> findByName(final String name) {
+		return participantRepository.findByName(name);
 	}
 }
