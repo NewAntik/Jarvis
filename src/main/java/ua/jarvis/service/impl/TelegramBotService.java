@@ -6,36 +6,41 @@ import org.telegram.telegrambots.bots.TelegramLongPollingBot;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
+import ua.jarvis.constant.Constants;
+import ua.jarvis.model.Participant;
+import ua.jarvis.service.ParticipantService;
 import ua.jarvis.service.UserService;
-
-import java.io.IOException;
-import java.text.ParseException;
 
 @Service
 public class TelegramBotService extends TelegramLongPollingBot {
 
 	private final UserService userService;
 
+	private final ParticipantService participantService;
+
 	private final String botName;
+
+	public TelegramBotService(
+		@Value("${bot.name}") final String botName,
+		@Value("${bot.token}") final String token,
+		final UserService userService, ParticipantService participantService
+	) {
+		super(token);
+		this.botName = botName;
+		this.userService = userService;
+		this.participantService = participantService;
+	}
 
 	@Override
 	public String getBotUsername() {
 		return botName;
 	}
 
-	public TelegramBotService(
-		@Value("${bot.name}") final String botName,
-		@Value("${bot.token}") final String token,
-		final UserService userService
-	) {
-		super(token);
-		this.botName = botName;
-		this.userService = userService;
-	}
-
 	@Override
-	public void onUpdateReceived(Update update) {
-		if(update.hasMessage() && update.getMessage().hasText()){
+	public void onUpdateReceived(final Update update) {
+		final Participant participant = validateParticipant(update);
+
+		if(update.hasMessage() && update.getMessage().hasText() && participant != null ){
 			final String messageText = update.getMessage().getText();
 			final Long chatId = update.getMessage().getChatId();
 			final String answer;
@@ -44,6 +49,16 @@ public class TelegramBotService extends TelegramLongPollingBot {
 				answer = userService.getInfo();
 				sendMessage(chatId, answer);
 			}
+		}
+	}
+
+	private Participant validateParticipant(final Update update){
+		final Participant participant = participantService.findByName(update.getMessage().getChat().getUserName());
+		if(participant != null){
+			return participant;
+		} else {
+			sendMessage(update.getMessage().getChatId(), Constants.HAVE_NO_ACCESS);
+			return null;
 		}
 	}
 
