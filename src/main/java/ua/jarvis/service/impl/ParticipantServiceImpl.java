@@ -4,7 +4,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import ua.jarvis.model.Participant;
-import ua.jarvis.model.enums.ParticipantRole;
 import ua.jarvis.repository.ParticipantRepository;
 import ua.jarvis.service.ParticipantService;
 

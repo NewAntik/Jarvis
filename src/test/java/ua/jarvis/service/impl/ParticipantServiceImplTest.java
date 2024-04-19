@@ -9,13 +9,10 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import ua.jarvis.model.Participant;
 import ua.jarvis.model.enums.ParticipantRole;
 import ua.jarvis.repository.ParticipantRepository;
-import ua.jarvis.service.ParticipantService;
 
 import java.util.Optional;
-import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoMoreInteractions;
 import static org.mockito.Mockito.when;
