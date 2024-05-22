@@ -3,11 +3,15 @@ package ua.jarvis.service.impl;
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.pdmodel.PDPage;
 import org.apache.pdfbox.pdmodel.PDPageContentStream;
+import org.apache.pdfbox.pdmodel.font.PDFont;
+import org.apache.pdfbox.pdmodel.font.Standard14Fonts;
 import org.apache.pdfbox.pdmodel.graphics.image.PDImageXObject;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import ua.jarvis.model.User;
 import ua.jarvis.service.PdfService;
+import org.apache.pdfbox.pdmodel.font.PDType1Font;
+
 
 import java.io.File;
 import java.io.IOException;
@@ -27,8 +31,10 @@ public class PdfServiceImpl implements PdfService {
 		PDDocument document = new PDDocument();
 		PDPage page = new PDPage();
 		document.addPage(page);
+		final PDFont font = new PDType1Font(Standard14Fonts.FontName.COURIER_BOLD);
 
 		try (PDPageContentStream contentStream = new PDPageContentStream(document, page, PDPageContentStream.AppendMode.APPEND, true, true)) {
+			contentStream.setFont(font, 12);
 			contentStream.beginText();
 			contentStream.newLineAtOffset(25, 750);
 			contentStream.showText("User Details:");
