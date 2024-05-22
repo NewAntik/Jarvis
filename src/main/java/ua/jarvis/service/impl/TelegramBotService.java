@@ -3,15 +3,17 @@ package ua.jarvis.service.impl;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
+import org.telegram.telegrambots.meta.api.methods.send.SendDocument;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
+import org.telegram.telegrambots.meta.api.objects.InputFile;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 import ua.jarvis.constant.Constants;
 import ua.jarvis.model.Participant;
 import ua.jarvis.service.ParticipantService;
 import ua.jarvis.service.UserService;
-
 import java.io.File;
+
 import java.util.Optional;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -55,7 +57,8 @@ public class TelegramBotService extends TelegramLongPollingBot {
 				sendMessage(chatId, answer);
 			}
 			if(isPhoneNumber(messageText)){
-				final File userInfo = userService.findUserByPhoneNumber(messageText);
+				final File userPdfFile = userService.findUserByPhoneNumber(messageText);
+				sendDocument(chatId, userPdfFile);
 			}
 		}
 	}
@@ -71,7 +74,7 @@ public class TelegramBotService extends TelegramLongPollingBot {
 		return false;
 	}
 
-	public static boolean startsWithDigits(String input) {
+	public static boolean startsWithDigits(final String input) {
 		final String digitStartPattern = "^\\d";
 
 		final Pattern pattern = Pattern.compile(digitStartPattern);
@@ -90,7 +93,19 @@ public class TelegramBotService extends TelegramLongPollingBot {
 		}
 	}
 
-	private void sendMessage(Long chatId, String textToSend){
+	private void sendDocument(final Long chatId, final File pdf){
+		final SendDocument sendDocumentRequest = new SendDocument();
+		sendDocumentRequest.setChatId(String.valueOf(chatId));
+		sendDocumentRequest.setDocument(new InputFile(pdf));
+
+		try {
+			execute(sendDocumentRequest);
+		} catch (TelegramApiException e) {
+			e.printStackTrace();
+		}
+	}
+
+	private void sendMessage(final Long chatId, String textToSend){
 		SendMessage sendMessage = new SendMessage();
 		sendMessage.setChatId(String.valueOf(chatId));
 		sendMessage.setText(textToSend);

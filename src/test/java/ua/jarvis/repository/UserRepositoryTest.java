@@ -19,7 +19,7 @@ class UserRepositoryTest {
 
 	@Test
 	void findUserByPhoneNumber_ShouldReturnUser() {
-		final User result = userRepository.findUserByPhoneNumber(PHONE_NUMBER).get();
+		final User result = userRepository.findByPhoneNumber(PHONE_NUMBER).get();
 
 		assertTrue(result.getPhones()
 				.stream()
