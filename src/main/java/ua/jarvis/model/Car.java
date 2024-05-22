@@ -59,7 +59,7 @@ public class Car {
 	private LocalDateTime issueDate;
 
 	@ManyToMany
-	private Set<Driver> drivers = new HashSet<>();
+	private Set<User> drivers = new HashSet<>();
 
 	@ManyToOne
 	@JoinColumn(name = "juridical_person_id")
@@ -123,11 +123,11 @@ public class Car {
 		this.issueDate = issueDate;
 	}
 
-	public Set<Driver> getDrivers() {
+	public Set<User> getDrivers() {
 		return drivers;
 	}
 
-	public void setDrivers(final Set<Driver> driver) {
+	public void setDrivers(final Set<User> driver) {
 		this.drivers = driver;
 	}
 

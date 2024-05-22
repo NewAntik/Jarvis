@@ -11,7 +11,10 @@ import ua.jarvis.model.Participant;
 import ua.jarvis.service.ParticipantService;
 import ua.jarvis.service.UserService;
 
+import java.io.File;
 import java.util.Optional;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 @Service
 public class TelegramBotService extends TelegramLongPollingBot {
@@ -47,11 +50,34 @@ public class TelegramBotService extends TelegramLongPollingBot {
 			final Long chatId = update.getMessage().getChatId();
 			final String answer;
 
-			if(messageText.equals("/start")){
+			if(messageText.equals("/Загальна інформація.")){
 				answer = userService.getInfo();
 				sendMessage(chatId, answer);
 			}
+			if(isPhoneNumber(messageText)){
+				final File userInfo = userService.findUserByPhoneNumber(messageText);
+			}
 		}
+	}
+
+	private boolean isPhoneNumber(final String messageText) {
+		if (messageText.startsWith("+38")) {
+			return true;
+		}
+		if(startsWithDigits(messageText)){
+			return true;
+		}
+
+		return false;
+	}
+
+	public static boolean startsWithDigits(String input) {
+		final String digitStartPattern = "^\\d";
+
+		final Pattern pattern = Pattern.compile(digitStartPattern);
+		final Matcher matcher = pattern.matcher(input);
+
+		return matcher.find();
 	}
 
 	private Participant validateParticipant(final Update update){

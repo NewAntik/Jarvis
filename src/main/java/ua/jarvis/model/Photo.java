@@ -9,7 +9,10 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
+import org.hibernate.annotations.JdbcTypeCode;
+import org.hibernate.type.SqlTypes;
 
 import java.util.Objects;
 import java.util.UUID;
@@ -22,8 +25,8 @@ public class Photo extends BaseEntity{
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.UUID)
+	@NotNull
+	@JdbcTypeCode(SqlTypes.VARCHAR)
 	@Column(name = "UUID", length = 36, columnDefinition = "varchar")
 	private UUID uuid;
 
@@ -32,6 +35,7 @@ public class Photo extends BaseEntity{
 	@Size(max = 255)
 	private String fileName;
 
+	@NotNull
 	@OneToOne
 	@JoinColumn(name = "user_id")
 	private User user;

@@ -3,6 +3,8 @@ package ua.jarvis.service.impl;
 import org.springframework.stereotype.Service;
 import ua.jarvis.service.UserService;
 
+import java.io.File;
+
 @Service
 public class UserServiceImpl implements UserService {
 	@Override
@@ -15,5 +17,11 @@ public class UserServiceImpl implements UserService {
             необхідно там зареєструватися.
             """;
 
+	}
+
+	@Override
+	public File findUserByPhoneNumber(final String messageText) {
+
+		return null;
 	}
 }

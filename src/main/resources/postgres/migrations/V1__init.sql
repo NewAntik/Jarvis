@@ -7,8 +7,7 @@ CREATE TABLE users (
     sex                 VARCHAR(10),
     created_date        TIMESTAMP NOT NULL,
     updated_date        TIMESTAMP NOT NULL,
-    dtype               VARCHAR(255) NOT NULL,
-    driver_type         VARCHAR(20)
+    driver_type         VARCHAR(10)
 );
 
 CREATE TABLE juridical_persons(
@@ -103,7 +102,7 @@ CREATE TABLE photos(
 
 CREATE TABLE phones(
     id                  BIGINT PRIMARY KEY,
-    phone_number        VARCHAR(12)  NOT NULL,
+    phone_number        VARCHAR(10)  NOT NULL,
     imei                VARCHAR(20) NOT NULL,
     user_id             BIGINT NOT NULL UNIQUE REFERENCES users(id) ON DELETE CASCADE,
     juridical_person_id BIGINT UNIQUE REFERENCES juridical_persons(id)

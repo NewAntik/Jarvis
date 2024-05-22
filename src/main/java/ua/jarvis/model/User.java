@@ -2,21 +2,19 @@ package ua.jarvis.model;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
-import jakarta.persistence.DiscriminatorColumn;
-import jakarta.persistence.DiscriminatorType;
-import jakarta.persistence.DiscriminatorValue;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.Inheritance;
-import jakarta.persistence.InheritanceType;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.Size;
+import ua.jarvis.model.enums.DriverType;
 
 import java.util.HashSet;
 import java.util.Objects;
@@ -24,9 +22,6 @@ import java.util.Set;
 
 @Entity
 @Table(name = "users")
-@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
-@DiscriminatorColumn(name = "dtype", discriminatorType = DiscriminatorType.STRING)
-@DiscriminatorValue("User")
 public class User extends BaseEntity {
 
 	@Id
@@ -53,28 +48,36 @@ public class User extends BaseEntity {
 	@Column(length = 10, name = "sex")
 	private String sex;
 
-	@OneToOne(mappedBy = "user", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+	@Size(max = 10)
+	@Enumerated(EnumType.STRING)
+	@Column(length = 10, name = "driver_type")
+	private DriverType type;
+
+	@ManyToMany(mappedBy = "drivers", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	private Set<Car> cars = new HashSet<>();
+
+	@OneToOne(mappedBy = "user", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	private JuridicalPerson juridicalPerson;
 
-	@OneToMany(mappedBy = "user", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+	@OneToMany(mappedBy = "user", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	private Set<Passport> passports = new HashSet<>();
 
-	@OneToMany(mappedBy = "user", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+	@OneToMany(mappedBy = "user", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	private Set<DriverLicense> driverLicense = new HashSet<>();
 
-	@OneToMany(mappedBy = "user", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+	@OneToMany(mappedBy = "user", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	private Set<ForeignPassport> foreignPassports = new HashSet<>();
 
-	@ManyToMany(mappedBy = "users", fetch = FetchType.EAGER)
+	@ManyToMany(mappedBy = "users", fetch = FetchType.LAZY)
 	private Set<Address> addresses = new HashSet<>();
 
-	@OneToMany(mappedBy = "user", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+	@OneToMany(mappedBy = "user", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	private Set<Email> emails = new HashSet<>();
 
-	@OneToOne(mappedBy = "user", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+	@OneToOne(mappedBy = "user", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	private Photo photo;
 
-	@OneToMany(mappedBy = "user", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+	@OneToMany(mappedBy = "user", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	private Set<Phone> phones = new HashSet<>();
 
 	public User() {}
@@ -163,6 +166,7 @@ public class User extends BaseEntity {
 		return phones;
 	}
 
+
 	public void setPhones(final Set<Phone> phones) {
 		this.phones = phones;
 	}
@@ -189,6 +193,22 @@ public class User extends BaseEntity {
 
 	public void setAddresses(final Set<Address> addresses) {
 		this.addresses = addresses;
+	}
+
+	public DriverType getType() {
+		return type;
+	}
+
+	public void setType(final DriverType type) {
+		this.type = type;
+	}
+
+	public Set<Car> getCars() {
+		return cars;
+	}
+
+	public void setCars(final Set<Car> cars) {
+		this.cars = cars;
 	}
 
 	@Override

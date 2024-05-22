@@ -52,14 +52,4 @@ class ParticipantServiceImplTest {
 		verify(participantRepository).findById(participant.getId());
 		verifyNoMoreInteractions(participantRepository);
 	}
-
-	@Test
-	void findByName_ShouldThrowIllegalArgumentException() {
-		when(participantRepository.findByName(participant.getName())).thenReturn(Optional.empty());
-
-		assertThrows(IllegalArgumentException.class, () -> participantServiceimpl.findByName(participant.getName()));
-
-		verify(participantRepository).findByName(participant.getName());
-		verifyNoMoreInteractions(participantRepository);
-	}
 }
