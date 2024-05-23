@@ -11,5 +11,5 @@ public interface ParticipantService {
 	Participant findById(final Long id);
 
 	@Transactional(readOnly = true)
-	Optional<Participant> findByName(final String name);
+	Participant findByName(final String name);
 }

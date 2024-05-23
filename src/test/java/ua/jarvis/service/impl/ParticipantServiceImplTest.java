@@ -42,6 +42,7 @@ class ParticipantServiceImplTest {
 		verify(participantRepository).findById(participant.getId());
 		verifyNoMoreInteractions(participantRepository);
 	}
+
 	@Test
 	void findById_ShouldReturnParticipant() {
 		when(participantRepository.findById(participant.getId())).thenReturn(Optional.of(participant));

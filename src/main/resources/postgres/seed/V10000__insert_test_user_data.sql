@@ -63,10 +63,10 @@ VALUES
     (2, 'jane.smith@example.com', 2, '2023-01-02 10:00:00', '2023-01-02 10:00:00', 2);
 
 -- Photos
--- INSERT INTO photos (id, uuid, file_name, created_date, updated_date, user_id)
--- VALUES
---     (1, '550e8400-e29b-41d4-a716-446655440000', 'photo1.jpg', '2023-01-01 10:00:00', '2023-01-01 10:00:00', 1),
---     (2, '550e8400-e29b-41d4-a716-446655440001', 'photo2.jpg', '2023-01-02 10:00:00', '2023-01-02 10:00:00', 2);
+INSERT INTO photos (id, uuid, file_name, created_date, updated_date, user_id)
+VALUES
+    (1, '550e8400-e29b-41d4-a716-446655440000', 'photo1.png', '2023-01-01 10:00:00', '2023-01-01 10:00:00', 1),
+    (2, '550e8400-e29b-41d4-a716-446655440001', 'photo2.png', '2023-01-02 10:00:00', '2023-01-02 10:00:00', 2);
 
 -- Phones
 INSERT INTO phones (id, phone_number, imei, user_id, juridical_person_id)

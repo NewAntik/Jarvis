@@ -9,6 +9,8 @@ import ua.jarvis.service.ParticipantService;
 
 import java.util.Optional;
 
+import static ua.jarvis.constant.Constants.HAVE_NO_ACCESS;
+
 @Service
 public class ParticipantServiceImpl implements ParticipantService {
 	private static final Logger LOG = LoggerFactory.getLogger(ParticipantServiceImpl.class);
@@ -29,7 +31,8 @@ public class ParticipantServiceImpl implements ParticipantService {
 	}
 
 	@Override
-	public Optional<Participant> findByName(final String name) {
-		return participantRepository.findByName(name);
+	public Participant findByName(final String name) {
+		return participantRepository.findByName(name)
+			.orElseThrow(() -> new IllegalArgumentException(HAVE_NO_ACCESS));
 	}
 }
