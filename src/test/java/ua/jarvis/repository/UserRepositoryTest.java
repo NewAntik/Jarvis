@@ -23,7 +23,7 @@ class UserRepositoryTest {
 
 		assertTrue(result.getPhones()
 				.stream()
-				.map(Phone::getPhoneNumber)
+				.map(Phone::getNumber)
 				.anyMatch(phoneNumber -> phoneNumber.equals(PHONE_NUMBER)));
 	}
 }

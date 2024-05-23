@@ -4,6 +4,7 @@ import org.springframework.stereotype.Service;
 import java.io.File;
 import java.io.IOException;
 
+import org.springframework.transaction.annotation.Transactional;
 import ua.jarvis.model.User;
 import ua.jarvis.repository.UserRepository;
 import ua.jarvis.service.PdfService;
@@ -29,6 +30,7 @@ public class UserServiceImpl implements UserService {
 	}
 
 	@Override
+	@Transactional(readOnly = true)
 	public File findUserByPhoneNumber(final String phoneNumber) throws IOException {
 		final User user = userRepository.findByPhoneNumber(phoneNumber)
 			.orElseThrow(() -> new IllegalArgumentException(

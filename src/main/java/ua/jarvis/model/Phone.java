@@ -20,8 +20,8 @@ public class Phone {
 	private Long id;
 
 	@Size(max = 10)
-	@Column(length = 10, name = "phone_number")
-	private String phoneNumber;
+	@Column(length = 10, name = "number")
+	private String number;
 
 	@Size(max = 20)
 	@Column(length = 20, name = "imei")
@@ -43,12 +43,12 @@ public class Phone {
 		this.id = id;
 	}
 
-	public String getPhoneNumber() {
-		return phoneNumber;
+	public String getNumber() {
+		return number;
 	}
 
-	public void setPhoneNumber(final String phoneNumber) {
-		this.phoneNumber = phoneNumber;
+	public void setNumber(final String phoneNumber) {
+		this.number = phoneNumber;
 	}
 
 	public String getImei() {
@@ -79,7 +79,7 @@ public class Phone {
 	public String toString() {
 		return "Phone{" +
 			"id=" + id +
-			", phoneNumber='" + phoneNumber + '\'' +
+			", phoneNumber='" + number + '\'' +
 			", imei='" + imei + '\'' +
 			'}';
 	}
@@ -94,12 +94,12 @@ public class Phone {
 		}
 		final Phone phone = (Phone) o;
 		return Objects.equals(id, phone.id) &&
-			Objects.equals(phoneNumber, phone.phoneNumber) &&
+			Objects.equals(number, phone.number) &&
 			Objects.equals(imei, phone.imei);
 	}
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(id, phoneNumber, imei);
+		return Objects.hash(id, number, imei);
 	}
 }

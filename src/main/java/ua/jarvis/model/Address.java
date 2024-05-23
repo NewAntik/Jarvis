@@ -48,7 +48,7 @@ public class Address extends BaseEntity {
 	private JuridicalPerson juridicalPerson;
 
 	@NotNull
-	@ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+	@ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	private Set<User> users = new HashSet<>();
 
 	public Address() {}

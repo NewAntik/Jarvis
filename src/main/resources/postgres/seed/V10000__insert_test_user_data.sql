@@ -1,11 +1,11 @@
 -- Users
 INSERT INTO users (id, name, midl_name, sur_name, rnokpp, sex, created_date, updated_date, driver_type)
 VALUES
-    (1, 'John', 'John', 'Doe', '123456', 'M', '2023-01-01 10:00:00', '2023-01-01 10:00:00', 'OWNER'),
-    (2, 'Jane', 'Jane', 'Smith', '654321', 'F', '2023-01-02 10:00:00', '2023-01-02 10:00:00', 'DRIVER'),
-    (3, 'Alice', 'Alice', 'Johnson', '111222', 'F', '2023-01-03 10:00:00', '2023-01-03 10:00:00', NULL),
-    (4, 'Bob', 'Bob', 'Brown', '333444', 'M', '2023-01-04 10:00:00', '2023-01-04 10:00:00', 'DRIVER'),
-    (5, 'Charlie', 'Charlie', 'Davis', '555666', 'M', '2023-01-05 10:00:00', '2023-01-05 10:00:00', 'OWNER');
+    (1, 'John', 'John', 'Doe', '123456', 'Ч', '2023-01-01 10:00:00', '2023-01-01 10:00:00', 'OWNER'),
+    (2, 'Jane', 'Jane', 'Smith', '654321', 'Ч', '2023-01-02 10:00:00', '2023-01-02 10:00:00', 'DRIVER'),
+    (3, 'Alice', 'Alice', 'Johnson', '111222', 'Ч', '2023-01-03 10:00:00', '2023-01-03 10:00:00', NULL),
+    (4, 'Bob', 'Bob', 'Brown', '333444', 'Ж', '2023-01-04 10:00:00', '2023-01-04 10:00:00', 'DRIVER'),
+    (5, 'Charlie', 'Charlie', 'Davis', '555666', 'Ж', '2023-01-05 10:00:00', '2023-01-05 10:00:00', 'OWNER');
 
 -- Juridical Persons
 INSERT INTO juridical_persons (id, erdpo, type_activity, regisrtation_date, user_id)
@@ -35,7 +35,7 @@ VALUES
 -- Foreign Passports
 INSERT INTO foreign_passports (id, passport_number, issue_date, valid_until, validity, authority, user_id)
 VALUES
-    (1, 'FA123456', '2019-01-01', '2029-01-01', TRUE, 'Gov Authority 4', 4),
+    (1, 'FA123456', '2019-01-01', '2029-01-01', TRUE, 'Gov Authority 4', 1),
     (2, 'FB654321', '2020-01-01', '2030-01-01', TRUE, 'Gov Authority 5', 5);
 
 -- Addresses
@@ -65,11 +65,11 @@ VALUES
 -- Photos
 INSERT INTO photos (id, uuid, file_name, created_date, updated_date, user_id)
 VALUES
-    (1, '550e8400-e29b-41d4-a716-446655440000', 'photo1.png', '2023-01-01 10:00:00', '2023-01-01 10:00:00', 1),
-    (2, '550e8400-e29b-41d4-a716-446655440001', 'photo2.png', '2023-01-02 10:00:00', '2023-01-02 10:00:00', 2);
+    (1, '550e8400-e29b-41d4-a716-446655440000', 'photo2.jpg', '2023-01-01 10:00:00', '2023-01-01 10:00:00', 1),
+    (2, '550e8400-e29b-41d4-a716-446655440001', 'photo2.jpg', '2023-01-02 10:00:00', '2023-01-02 10:00:00', 2);
 
 -- Phones
-INSERT INTO phones (id, phone_number, imei, user_id, juridical_person_id)
+INSERT INTO phones (id, number, imei, user_id, juridical_person_id)
 VALUES
     (1, '1234567890', 'IMEI1234567890', 1, 1),
     (2, '0987654321', 'IMEI0987654321', 2, 2);

@@ -102,7 +102,7 @@ CREATE TABLE photos(
 
 CREATE TABLE phones(
     id                  BIGINT PRIMARY KEY,
-    phone_number        VARCHAR(10)  NOT NULL,
+    number        VARCHAR(10)  NOT NULL,
     imei                VARCHAR(20) NOT NULL,
     user_id             BIGINT NOT NULL UNIQUE REFERENCES users(id) ON DELETE CASCADE,
     juridical_person_id BIGINT UNIQUE REFERENCES juridical_persons(id)

@@ -53,31 +53,31 @@ public class User extends BaseEntity {
 	@Column(length = 10, name = "driver_type")
 	private DriverType type;
 
-	@ManyToMany(mappedBy = "drivers", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	@ManyToMany(mappedBy = "drivers", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 	private Set<Car> cars = new HashSet<>();
 
-	@OneToOne(mappedBy = "user", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	@OneToOne(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 	private JuridicalPerson juridicalPerson;
 
-	@OneToMany(mappedBy = "user", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	@OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 	private Set<Passport> passports = new HashSet<>();
 
-	@OneToMany(mappedBy = "user", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	@OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 	private Set<DriverLicense> driverLicense = new HashSet<>();
 
-	@OneToMany(mappedBy = "user", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	@OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 	private Set<ForeignPassport> foreignPassports = new HashSet<>();
 
 	@ManyToMany(mappedBy = "users", fetch = FetchType.LAZY)
 	private Set<Address> addresses = new HashSet<>();
 
-	@OneToMany(mappedBy = "user", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	@OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 	private Set<Email> emails = new HashSet<>();
 
-	@OneToOne(mappedBy = "user", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	@OneToOne(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 	private Photo photo;
 
-	@OneToMany(mappedBy = "user", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	@OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 	private Set<Phone> phones = new HashSet<>();
 
 	public User() {}
@@ -195,7 +195,7 @@ public class User extends BaseEntity {
 		this.addresses = addresses;
 	}
 
-	public DriverType getType() {
+	public DriverType getDriverType() {
 		return type;
 	}
 

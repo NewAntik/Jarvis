@@ -14,7 +14,6 @@ import ua.jarvis.service.PhoneService;
 import ua.jarvis.service.UserService;
 
 import java.io.File;
-import java.io.IOException;
 
 @Service
 public class TelegramBotService extends TelegramLongPollingBot {
@@ -55,23 +54,21 @@ public class TelegramBotService extends TelegramLongPollingBot {
 
 		if(update.hasMessage() && update.getMessage().hasText() && participant != null ){
 			final String messageText = update.getMessage().getText();
-
 			final String answer;
-
-			if(messageText.equals("/Загальна інформація.")){
-				answer = userService.getInfo();
-				sendMessage(answer);
-			}
-			if(phoneService.isPhoneNumber(messageText)){
-				final String normalizedNumber = phoneService.getNormalizedNumber();
-				final File userPdfFile;
-				try {
-					userPdfFile = userService.findUserByPhoneNumber(normalizedNumber);
-				} catch (IOException e) {
-					throw new RuntimeException(e);
+			try {
+				if (messageText.equals("/Загальна інформація.")) {
+					answer = userService.getInfo();
+					sendMessage(answer);
 				}
+				if (phoneService.isPhoneNumber(messageText)) {
+					final String normalizedNumber = phoneService.getNormalizedNumber();
+					final File userPdfFile;
+					userPdfFile = userService.findUserByPhoneNumber(normalizedNumber);
 
-				sendDocument(userPdfFile);
+					sendDocument(userPdfFile);
+				}
+			} catch (Throwable e){
+				sendMessage(e.getMessage());
 			}
 		}
 	}
