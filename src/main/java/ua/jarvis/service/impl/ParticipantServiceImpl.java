@@ -7,9 +7,7 @@ import ua.jarvis.model.Participant;
 import ua.jarvis.repository.ParticipantRepository;
 import ua.jarvis.service.ParticipantService;
 
-import java.util.Optional;
-
-import static ua.jarvis.constant.Constants.HAVE_NO_ACCESS;
+import static ua.jarvis.constant.Constants.UAMessages.HAVE_NO_ACCESS;
 
 @Service
 public class ParticipantServiceImpl implements ParticipantService {

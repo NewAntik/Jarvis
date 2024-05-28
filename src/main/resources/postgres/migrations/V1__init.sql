@@ -79,7 +79,7 @@ CREATE TABLE cars(
     car_type            VARCHAR(100) NOT NULL,
     vin_Code            VARCHAR(17) NOT NULL,
     issue_date          TIMESTAMP NOT NULL,
-    juridical_person_id BIGINT UNIQUE REFERENCES juridical_persons(id)
+    juridical_person_id BIGINT REFERENCES juridical_persons(id)
 );
 
 CREATE TABLE emails(
