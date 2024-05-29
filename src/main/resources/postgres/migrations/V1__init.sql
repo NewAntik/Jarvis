@@ -6,8 +6,7 @@ CREATE TABLE users (
     rnokpp              VARCHAR(50),
     sex                 VARCHAR(10),
     created_date        TIMESTAMP NOT NULL,
-    updated_date        TIMESTAMP NOT NULL,
-    driver_type         VARCHAR(10)
+    updated_date        TIMESTAMP NOT NULL
 );
 
 CREATE TABLE juridical_persons(
@@ -79,7 +78,8 @@ CREATE TABLE cars(
     car_type            VARCHAR(100) NOT NULL,
     vin_Code            VARCHAR(17) NOT NULL,
     issue_date          TIMESTAMP NOT NULL,
-    juridical_person_id BIGINT REFERENCES juridical_persons(id)
+    juridical_person_id BIGINT REFERENCES juridical_persons(id),
+    owner_Id             BIGINT REFERENCES users(id)
 );
 
 CREATE TABLE emails(

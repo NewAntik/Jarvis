@@ -61,11 +61,22 @@ public class Car {
 	@ManyToMany
 	private Set<User> drivers = new HashSet<>();
 
+	@Column(name = "owner_id")
+	private Long ownerId;
+
 	@ManyToOne
 	@JoinColumn(name = "juridical_person_id")
 	private JuridicalPerson juridicalPerson;
 
 	public Car() {}
+
+	public void setCarOwner(final Long userId){
+		this.ownerId = userId;
+	}
+
+	public Long getCarOwnerId(){
+		return ownerId;
+	}
 
 	public Long getId() {
 		return id;

@@ -1,11 +1,11 @@
 -- Users
-INSERT INTO users (id, name, midl_name, sur_name, rnokpp, sex, created_date, updated_date, driver_type)
+INSERT INTO users (id, name, midl_name, sur_name, rnokpp, sex, created_date, updated_date)
 VALUES
-    (1, 'John', 'John', 'Doe', '123456', 'Ч', '2023-01-01 10:00:00', '2023-01-01 10:00:00', 'OWNER'),
-    (2, 'Jane', 'Jane', 'Smith', '654321', 'Ч', '2023-01-02 10:00:00', '2023-01-02 10:00:00', 'DRIVER'),
-    (3, 'Alice', 'Alice', 'Johnson', '111222', 'Ч', '2023-01-03 10:00:00', '2023-01-03 10:00:00', NULL),
-    (4, 'Bob', 'Bob', 'Brown', '333444', 'Ж', '2023-01-04 10:00:00', '2023-01-04 10:00:00', 'DRIVER'),
-    (5, 'Charlie', 'Charlie', 'Davis', '555666', 'Ж', '2023-01-05 10:00:00', '2023-01-05 10:00:00', 'OWNER');
+    (1, 'John', 'John', 'Doe', '123456', 'MALE', '2023-01-01 10:00:00', '2023-01-01 10:00:00'),
+    (2, 'Jane', 'Jane', 'Smith', '654321', 'MALE', '2023-01-02 10:00:00', '2023-01-02 10:00:00'),
+    (3, 'Alice', 'Alice', 'Johnson', '111222', 'MALE', '2023-01-03 10:00:00', '2023-01-03 10:00:00'),
+    (4, 'Bob', 'Bob', 'Brown', '333444', 'MALE', '2023-01-04 10:00:00', '2023-01-04 10:00:00'),
+    (5, 'Charlie', 'Charlie', 'Davis', '555666', 'MALE', '2023-01-05 10:00:00', '2023-01-05 10:00:00');
 
 -- Juridical Persons
 INSERT INTO juridical_persons (id, erdpo, type_activity, regisrtation_date, user_id)
@@ -51,12 +51,12 @@ VALUES
     (2, 2);
 
 -- Cars
-INSERT INTO cars (id, plate_number, color, model, car_type, vin_Code, issue_date, juridical_person_id)
+INSERT INTO cars (id, plate_number, color, model, car_type, vin_Code, issue_date, juridical_person_id, owner_Id)
 VALUES
-    (1, 'ABC123', 'Red', 'Model X', 'SEDAN', 'VIN12345678901234', '2020-05-01', 1),
-    (2, 'ABC321', 'Yellow', 'BMW X7', 'SUV', 'VIN12347652901234', '2024-11-09', 1),
-    (3, 'ABC543', 'Pink', 'Mitsubishi Pajero', 'SUV', 'VIN12309456901234', '2019-06-19', 2),
-    (4, 'XYZ789', 'Blue', 'Model Y', 'SUV', 'VIN65432109876543', '2021-01-01', 2);
+    (1, 'ABC123', 'Red', 'Model X', 'SEDAN', 'VIN12345678901234', '2020-05-01', 1, 1),
+    (2, 'ABC321', 'Yellow', 'BMW X7', 'SUV', 'VIN12347652901234', '2024-11-09', 1, 2),
+    (3, 'ABC543', 'Pink', 'Mitsubishi Pajero', 'SUV', 'VIN12309456901234', '2019-06-19', 2, 3),
+    (4, 'XYZ789', 'Blue', 'Model Y', 'SUV', 'VIN65432109876543', '2021-01-01', 2, 4);
 
 -- Emails
 INSERT INTO emails (id, email_address, user_id, created_date, updated_date, juridical_person_id)

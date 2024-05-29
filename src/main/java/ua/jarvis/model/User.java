@@ -14,7 +14,7 @@ import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.Size;
-import ua.jarvis.model.enums.DriverType;
+import ua.jarvis.model.enums.Sex;
 
 import java.util.HashSet;
 import java.util.Objects;
@@ -45,13 +45,9 @@ public class User extends BaseEntity {
 	private String rnokpp;
 
 	@Size(max = 10)
-	@Column(length = 10, name = "sex")
-	private String sex;
-
-	@Size(max = 10)
 	@Enumerated(EnumType.STRING)
-	@Column(length = 10, name = "driver_type")
-	private DriverType type;
+	@Column(length = 10, name = "sex")
+	private Sex sex;
 
 	@ManyToMany(mappedBy = "drivers", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 	private Set<Car> cars = new HashSet<>();
@@ -122,11 +118,9 @@ public class User extends BaseEntity {
 		this.rnokpp = rnokpp;
 	}
 
-	public String getSex() {
-		return sex;
-	}
+	public Sex getSex() {return sex;}
 
-	public void setSex(final String sex) {
+	public void setSex(final Sex sex) {
 		this.sex = sex;
 	}
 
@@ -193,14 +187,6 @@ public class User extends BaseEntity {
 
 	public void setAddresses(final Set<Address> addresses) {
 		this.addresses = addresses;
-	}
-
-	public DriverType getDriverType() {
-		return type;
-	}
-
-	public void setType(final DriverType type) {
-		this.type = type;
 	}
 
 	public Set<Car> getCars() {
