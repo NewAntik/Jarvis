@@ -50,18 +50,6 @@ public class PdfServiceImpl implements PdfService {
 
 		formatter.format(user).forEach(document::add);
 
-//		// Add user's juridicalPerson if available
-//		if (user.getJuridicalPerson() != null) {
-//			document.add(new Paragraph().add(new Text("Інфо про юридичну особу : ").setFont(boldFont)).add(new Text(user.getJuridicalPerson().toString()).setFont(
-//				regularFont)).setMarginBottom(10));
-//		}
-//
-//		// Add user's addresses if available
-//		for (Address address : user.getAddresses()) {
-//			document.add(new Paragraph().add(new Text("Адреса: ").setFont(boldFont)).add(new Text(address.toString()).setFont(
-//				regularFont)).setMarginBottom(10));
-//		}
-//
 //		// Add user's passports if available
 //		for (Passport passport : user.getPassports()) {
 //			document.add(new Paragraph().add(new Text("Паспорт: ").setFont(boldFont)).add(new Text(passport.toString()).setFont(
