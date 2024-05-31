@@ -16,6 +16,7 @@ import jakarta.persistence.Table;
 import jakarta.validation.constraints.Size;
 import ua.jarvis.model.enums.Sex;
 
+import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
@@ -49,6 +50,9 @@ public class User extends BaseEntity {
 	@Column(length = 10, name = "sex")
 	private Sex sex;
 
+	@Column(name = "birthday")
+	private LocalDateTime birthday;
+
 	@ManyToMany(mappedBy = "drivers", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 	private Set<Car> cars = new HashSet<>();
 
@@ -77,6 +81,14 @@ public class User extends BaseEntity {
 	private Set<Phone> phones = new HashSet<>();
 
 	public User() {}
+
+	public LocalDateTime getBirthday() {
+		return birthday;
+	}
+
+	public void setBirthday(final LocalDateTime birthday) {
+		this.birthday = birthday;
+	}
 
 	public Long getId() {
 		return id;

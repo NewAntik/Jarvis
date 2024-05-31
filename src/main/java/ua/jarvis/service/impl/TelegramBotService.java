@@ -1,5 +1,7 @@
 package ua.jarvis.service.impl;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
@@ -9,14 +11,19 @@ import org.telegram.telegrambots.meta.api.objects.InputFile;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 import ua.jarvis.model.Participant;
+import ua.jarvis.model.User;
+import ua.jarvis.service.FileService;
 import ua.jarvis.service.ParticipantService;
 import ua.jarvis.service.PhoneService;
 import ua.jarvis.service.UserService;
 
+import java.io.ByteArrayInputStream;
 import java.io.File;
+import java.io.InputStream;
 
 @Service
 public class TelegramBotService extends TelegramLongPollingBot {
+	private static final Logger LOG = LoggerFactory.getLogger(TelegramBotService.class);
 
 	private final UserService userService;
 
@@ -28,18 +35,22 @@ public class TelegramBotService extends TelegramLongPollingBot {
 
 	private Long chatId;
 
+	private final FileService fileService;
+
 	public TelegramBotService(
 		@Value("${bot.name}") final String botName,
 		@Value("${bot.token}") final String token,
 		final UserService userService,
 		final ParticipantService participantService,
-		final PhoneService phoneService
+		final PhoneService phoneService,
+		final FileService fileService
 	) {
 		super(token);
 		this.botName = botName;
 		this.userService = userService;
 		this.participantService = participantService;
 		this.phoneService = phoneService;
+		this.fileService = fileService;
 	}
 
 	@Override
@@ -57,19 +68,39 @@ public class TelegramBotService extends TelegramLongPollingBot {
 			final String answer;
 			try {
 				if (messageText.equals("/Загальна інформація.")) {
+					LOG.info("Received about info document method was called by: {}", participant.getName());
 					answer = userService.getInfo();
+
 					sendMessage(answer);
 				}
 				if (phoneService.isPhoneNumber(messageText)) {
-					final String normalizedNumber = phoneService.getNormalizedNumber();
-					final File userPdfFile;
-					userPdfFile = userService.findUserByPhoneNumber(normalizedNumber);
+					LOG.info("Received user info document method was called by: {}", participant.getName());
 
-					sendDocument(userPdfFile);
+					final String normalizedNumber = phoneService.getNormalizedNumber();
+					final User user = userService.findUserByPhoneNumber(normalizedNumber);
+					final byte [] docxBytes = fileService.createDOCXFromUser(user);
+
+					sendDocument(docxBytes, user.getName() + "_" + user.getSurName() + "_" + user.getMidlName() + ".docx");
 				}
 			} catch (Throwable e){
+				LOG.error("An error occurred while processing the update", e);
 				sendMessage(e.getMessage());
 			}
+		}
+	}
+
+	private void sendDocument(final byte[] docBytes, final String fileName) {
+		final SendDocument sendDocumentRequest = new SendDocument();
+		sendDocumentRequest.setChatId(String.valueOf(chatId));
+		final InputStream inputStream = new ByteArrayInputStream(docBytes);
+		final InputFile inputFile = new InputFile(inputStream, fileName);
+
+		sendDocumentRequest.setDocument(inputFile);
+
+		try {
+			execute(sendDocumentRequest);
+		} catch (TelegramApiException e) {
+			e.printStackTrace();
 		}
 	}
 

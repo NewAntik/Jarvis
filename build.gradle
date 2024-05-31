@@ -23,9 +23,10 @@ dependencies {
 	implementation 'org.slf4j:slf4j-api:2.0.12'
 	implementation 'javax.xml.bind:jaxb-api:2.3.1'
 	implementation 'org.apache.shiro:shiro-core:1.13.0'
+	implementation group: 'org.slf4j', name: 'slf4j-api', version: '2.0.13'
 
+	implementation group: 'org.apache.poi', name: 'poi-ooxml', version: '5.2.5'
 	implementation group: 'org.apache.pdfbox', name: 'pdfbox', version: '3.0.2'
-
 	implementation group: 'com.itextpdf', name: 'itext7-core', version: '8.0.4', ext: 'pom'
 	implementation group: 'com.itextpdf', name: 'itextpdf', version: '5.5.13.3'
 	implementation group: 'com.itextpdf', name: 'kernel', version: '8.0.4'
@@ -42,6 +43,8 @@ dependencies {
 	implementation 'org.telegram:telegrambotsextensions:6.9.7.1'
 
 	runtimeOnly 'org.postgresql:postgresql'
+
+	//Test
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 
 }

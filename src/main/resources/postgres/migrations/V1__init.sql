@@ -5,6 +5,7 @@ CREATE TABLE users (
     sur_name            VARCHAR(50) NOT NULL,
     rnokpp              VARCHAR(50),
     sex                 VARCHAR(10),
+    birthday            TIMESTAMP,
     created_date        TIMESTAMP NOT NULL,
     updated_date        TIMESTAMP NOT NULL
 );
@@ -40,7 +41,7 @@ CREATE TABLE driver_licenses(
 CREATE TABLE driver_license_categories(
     id                  BIGINT PRIMARY KEY,
     category_type       VARCHAR(255) NOT NULL,
-    driver_license_id   BIGINT NOT NULL UNIQUE REFERENCES driver_licenses(id) ON DELETE CASCADE
+    driver_license_id   BIGINT NOT NULL REFERENCES driver_licenses(id) ON DELETE CASCADE
 );
 
 CREATE TABLE foreign_passports(
@@ -104,8 +105,8 @@ CREATE TABLE phones(
     id                  BIGINT PRIMARY KEY,
     number        VARCHAR(10)  NOT NULL,
     imei                VARCHAR(20) NOT NULL,
-    user_id             BIGINT NOT NULL UNIQUE REFERENCES users(id) ON DELETE CASCADE,
-    juridical_person_id BIGINT UNIQUE REFERENCES juridical_persons(id)
+    user_id             BIGINT NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+    juridical_person_id BIGINT REFERENCES juridical_persons(id)
 );
 
 CREATE TABLE cars_drivers(
