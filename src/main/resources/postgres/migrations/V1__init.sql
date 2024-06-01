@@ -25,7 +25,7 @@ CREATE TABLE passports(
     valid_until         TIMESTAMP NOT NULL,
     validity            BOOLEAN NOT NULL,
     authority           VARCHAR(200) NOT NULL,
-    user_id             BIGINT NOT NULL UNIQUE REFERENCES users(id) ON DELETE CASCADE
+    user_id             BIGINT NOT NULL REFERENCES users(id) ON DELETE CASCADE
 );
 
 CREATE TABLE driver_licenses(
@@ -51,7 +51,7 @@ CREATE TABLE foreign_passports(
     valid_until         TIMESTAMP NOT NULL,
     validity            BOOLEAN NOT NULL,
     authority           VARCHAR(200) NOT NULL,
-    user_id             BIGINT NOT NULL UNIQUE REFERENCES users(id) ON DELETE CASCADE
+    user_id             BIGINT NOT NULL REFERENCES users(id) ON DELETE CASCADE
 );
 
 CREATE TABLE addresses(

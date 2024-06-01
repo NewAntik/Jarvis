@@ -71,7 +71,6 @@ public class FileServiceImpl implements FileService {
 		CTPageSz pageSize = section.getPgSz();
 		pageSize.setW(BigInteger.valueOf(13700)); // width
 		pageSize.setH(BigInteger.valueOf(15840)); // height
-		pageSize.setOrient(STPageOrientation.LANDSCAPE); //orientation
 
 		if (user.getPhoto() != null) {
 			try {

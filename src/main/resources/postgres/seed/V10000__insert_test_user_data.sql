@@ -16,9 +16,11 @@ VALUES
 -- Passports
 INSERT INTO passports (id, passport_number, issue_date, valid_until, validity, authority, user_id)
 VALUES
-    (1, 'A12345678', '2020-01-01', '2030-01-01', TRUE, 'Gov Authority 1', 1),
-    (2, 'B87654321', '2021-01-01', '2031-01-01', TRUE, 'Gov Authority 2', 2),
-    (3, 'C11122233', '2022-01-01', '2032-01-01', TRUE, 'Gov Authority 3', 3);
+    (1, 'A12345678', '2020-11-15', '2030-01-01', TRUE, 'Mariupol, Prospekt Heroyev 11', 1),
+    (2, 'A98765435', '2000-12-11', '2030-01-01', TRUE, 'Mariupol, Prospekt Heroyev 11', 1),
+    (3, 'A74562345', '1999-06-04', '2030-01-01', TRUE, 'Mariupol, Prospekt Heroyev 11', 1),
+    (4, '752345435', '2024-03-30', '2031-01-01', TRUE, 'Mariupol, Prospekt Heroyev 11', 2),
+    (5, 'C11122233', '2022-01-01', '2032-01-01', TRUE, 'Gov Authority 3', 3);
 
 -- Driver Licenses
 INSERT INTO driver_licenses (id, issue_date, valid_until, validity, authority, license_number, user_id)
@@ -46,8 +48,11 @@ VALUES
 -- Foreign Passports
 INSERT INTO foreign_passports (id, passport_number, issue_date, valid_until, validity, authority, user_id)
 VALUES
-    (1, 'FA123456', '2019-01-01', '2029-01-01', TRUE, 'Gov Authority 4', 1),
-    (2, 'FB654321', '2020-01-01', '2030-01-01', TRUE, 'Gov Authority 5', 5);
+    (1, 'FA123456', '2020-01-01', '2029-01-01', TRUE, 'Kiev, Heroyev street, home number 4', 1),
+    (2, 'FA242333', '1999-01-01', '2029-01-01', TRUE, 'Kiev, Heroyev street, home number 4', 1),
+    (3, 'FA543775', '2011-01-01', '2029-01-01', TRUE, 'Kiev, Heroyev street, home number 4', 1),
+    (4, 'FA657834', '2039-01-01', '2029-01-01', TRUE, 'Kiev, Heroyev street, home number 4', 1),
+    (5, 'FB654321', '2020-01-01', '2030-01-01', TRUE, 'Kiev, Heroyev street, home number 4', 5);
 
 -- Addresses
 INSERT INTO addresses (id, city, street, home_number, flat_number, created_date, updated_date, juridical_person_id)

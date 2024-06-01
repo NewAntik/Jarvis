@@ -40,6 +40,11 @@ public class UserServiceImpl implements UserService {
 
 		Hibernate.initialize(user.getPhones());
 		Hibernate.initialize(user.getAddresses());
+		Hibernate.initialize(user.getPassports());
+		Hibernate.initialize(user.getForeignPassports());
+		Hibernate.initialize(user.getDriverLicense());
+		Hibernate.initialize(user.getCars());
+		Hibernate.initialize(user.getEmails());
 
 		LOG.info("In findUserByPhoneNumber method user was found with id: {}", user.getId());
 
