@@ -329,7 +329,7 @@ public class DOCXFileFormatterImpl implements FileFormatter <List<XWPFParagraph>
 			basicInfoRun.setText(user.getName() + DOT_WHITE_SPACE);
 		}
 
-		if(user.getName() != null){
+		if(user.getMidlName() != null){
 			basicInfoRun = basicInfoParagraph.createRun();
 			basicInfoRun.setText("По батькові: ");
 			basicInfoRun.setBold(true);
@@ -338,16 +338,16 @@ public class DOCXFileFormatterImpl implements FileFormatter <List<XWPFParagraph>
 			basicInfoRun.setText(user.getMidlName() + DOT_WHITE_SPACE);
 		}
 
-		if(user.getName() != null){
+		if(user.getBirthCertificate() != null){
 			basicInfoRun = basicInfoParagraph.createRun();
 			basicInfoRun.setText("Дата народження: ");
 			basicInfoRun.setBold(true);
 
 			basicInfoRun = basicInfoParagraph.createRun();
-			basicInfoRun.setText(user.getBirthday().format(DATE_FORMATTER) + DOT_WHITE_SPACE);
+			basicInfoRun.setText(user.getBirthCertificate().getBirthday().format(DATE_FORMATTER) + DOT_WHITE_SPACE);
 		}
 
-		if(user.getName() != null){
+		if(user.getRnokpp() != null){
 			basicInfoRun = basicInfoParagraph.createRun();
 			basicInfoRun.setText("РНОКПП: ");
 			basicInfoRun.setBold(true);

@@ -2,36 +2,39 @@ package ua.jarvis.model;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
-import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 
+import java.time.LocalDateTime;
 import java.util.Objects;
 
 @Entity
-@Table(name = "passports")
-public class Passport extends DocumentEntity{
+@Table(name = "birth_certificates")
+public class BirthCertificate extends DocumentEntity {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
-	@NotNull
-	@Size(max = 9)
-	@Column(length = 9, name = "passport_number")
-	private String passportNumber;
-
-	@NotNull
-	@ManyToOne
+	@OneToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "user_id")
 	private User user;
 
-	public Passport() {}
+	@Size(max = 10)
+	@Column(name = "birthday", length = 20)
+	private LocalDateTime birthday;
+
+	@Column(name = "number")
+	private String number;
+
+	public BirthCertificate() {
+	}
 
 	public Long getId() {
 		return id;
@@ -39,14 +42,6 @@ public class Passport extends DocumentEntity{
 
 	public void setId(final Long id) {
 		this.id = id;
-	}
-
-	public String getPassportNumber() {
-		return passportNumber;
-	}
-
-	public void setPassportNumber(final String passportNumber) {
-		this.passportNumber = passportNumber;
 	}
 
 	public User getUser() {
@@ -57,12 +52,27 @@ public class Passport extends DocumentEntity{
 		this.user = user;
 	}
 
+	public LocalDateTime getBirthday() {
+		return birthday;
+	}
+
+	public void setBirthday(final LocalDateTime birthday) {
+		this.birthday = birthday;
+	}
+
+	public String getNumber() {
+		return number;
+	}
+
+	public void setNumber(final String number) {
+		this.number = number;
+	}
+
 	@Override
 	public String toString() {
-		return "Passport{" +
-			"id=" + id +
-			", passportNumber='" + passportNumber + '\'' +
-			", user=" + user +
+		return "BirthCertificate{" +
+			"birthday=" + birthday +
+			", number='" + number + '\'' +
 			", issueDate=" + issueDate +
 			", validUntil=" + validUntil +
 			", isValid=" + isValid +
@@ -76,14 +86,15 @@ public class Passport extends DocumentEntity{
 		if (this == o) {
 			return true;
 		}
-		if (!(o instanceof final Passport passport)) {
+		if (o == null || getClass() != o.getClass()) {
 			return false;
 		}
-		return Objects.equals(passportNumber, passport.passportNumber);
+		final BirthCertificate that = (BirthCertificate) o;
+		return Objects.equals(birthday, that.birthday) && Objects.equals(number, that.number);
 	}
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(passportNumber);
+		return Objects.hash(birthday, number);
 	}
 }

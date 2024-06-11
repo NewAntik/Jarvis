@@ -62,10 +62,12 @@ public class ForeignPassport extends DocumentEntity{
 		return "ForeignPassport{" +
 			"id=" + id +
 			", passportNumber='" + passportNumber + '\'' +
+			", user=" + user +
 			", issueDate=" + issueDate +
 			", validUntil=" + validUntil +
-			", validity=" + validity +
+			", isValid=" + isValid +
 			", authority='" + authority + '\'' +
+			", isUnlimited=" + isUnlimited +
 			'}';
 	}
 
@@ -78,15 +80,11 @@ public class ForeignPassport extends DocumentEntity{
 			return false;
 		}
 		final ForeignPassport that = (ForeignPassport) o;
-		return validity == that.validity &&
-			Objects.equals(id, that.id) &&
-			Objects.equals(passportNumber, that.passportNumber) &&
-			Objects.equals(issueDate, that.issueDate) &&
-			Objects.equals(validUntil, that.validUntil);
+		return Objects.equals(passportNumber, that.passportNumber);
 	}
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(id, passportNumber, issueDate, validUntil, validity);
+		return Objects.hash(passportNumber);
 	}
 }

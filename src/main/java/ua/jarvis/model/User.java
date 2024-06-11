@@ -16,7 +16,6 @@ import jakarta.persistence.Table;
 import jakarta.validation.constraints.Size;
 import ua.jarvis.model.enums.Sex;
 
-import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
@@ -50,8 +49,15 @@ public class User extends BaseEntity {
 	@Column(length = 10, name = "sex")
 	private Sex sex;
 
-	@Column(name = "birthday")
-	private LocalDateTime birthday;
+	@Size(max = 500)
+	@Column(length = 500, name = "illegal_actions")
+	private String illegalActions;
+
+	@OneToOne(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+	private BirthCertificate birthCertificate;
+
+	@ManyToMany(fetch = FetchType.LAZY)
+	private Set<Family> families = new HashSet<>();
 
 	@ManyToMany(mappedBy = "drivers", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 	private Set<Car> cars = new HashSet<>();
@@ -82,12 +88,28 @@ public class User extends BaseEntity {
 
 	public User() {}
 
-	public LocalDateTime getBirthday() {
-		return birthday;
+	public String getIllegalActions() {
+		return illegalActions;
 	}
 
-	public void setBirthday(final LocalDateTime birthday) {
-		this.birthday = birthday;
+	public void setIllegalActions(final String illegalActions) {
+		this.illegalActions = illegalActions;
+	}
+
+	public Set<Family> getFamilies() {
+		return families;
+	}
+
+	public void setFamilies(final Set<Family> families) {
+		this.families = families;
+	}
+
+	public BirthCertificate getBirthCertificate() {
+		return birthCertificate;
+	}
+
+	public void setBirthCertificate(final BirthCertificate birthCertificate) {
+		this.birthCertificate = birthCertificate;
 	}
 
 	public Long getId() {

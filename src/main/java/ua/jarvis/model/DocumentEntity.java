@@ -18,12 +18,23 @@ public class DocumentEntity {
 	@Column(name = "valid_until", nullable = false)
 	protected LocalDateTime validUntil;
 
-	@Column(name = "validity", nullable = false)
-	protected boolean validity;
+	@Column(name = "is_valid", nullable = false)
+	protected boolean isValid;
 
 	@Size(max = 200)
 	@Column(length = 200, name = "authority", nullable = false, updatable = false)
 	protected String authority;
+
+	@Column(name = "is_unlimited")
+	protected boolean isUnlimited;
+
+	public boolean isUnlimited() {
+		return isUnlimited;
+	}
+
+	public void setUnlimited(final boolean unlimited) {
+		isUnlimited = unlimited;
+	}
 
 	public LocalDateTime getIssueDate() {
 		return issueDate;
@@ -42,11 +53,11 @@ public class DocumentEntity {
 	}
 
 	public boolean isValidity() {
-		return validity;
+		return isValid;
 	}
 
-	public void setValidity(final boolean validity) {
-		this.validity = validity;
+	public void setValidity(final boolean isValid) {
+		this.isValid = isValid;
 	}
 
 	public String getAuthority() {

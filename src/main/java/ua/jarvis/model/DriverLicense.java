@@ -78,11 +78,14 @@ public class DriverLicense extends DocumentEntity{
 	public String toString() {
 		return "DriverLicense{" +
 			"id=" + id +
-			", dateIssue=" + issueDate +
-			", validUntil=" + validUntil +
-			", validity=" + validity +
 			", licenseNumber='" + licenseNumber + '\'' +
+			", categories=" + categories +
+			", user=" + user +
+			", issueDate=" + issueDate +
+			", validUntil=" + validUntil +
+			", isValid=" + isValid +
 			", authority='" + authority + '\'' +
+			", isUnlimited=" + isUnlimited +
 			'}';
 	}
 
@@ -95,15 +98,11 @@ public class DriverLicense extends DocumentEntity{
 			return false;
 		}
 		final DriverLicense that = (DriverLicense) o;
-		return validity == that.validity &&
-			Objects.equals(id, that.id) &&
-			Objects.equals(issueDate, that.issueDate) &&
-			Objects.equals(validUntil, that.validUntil) &&
-			Objects.equals(licenseNumber, that.licenseNumber);
+		return Objects.equals(licenseNumber, that.licenseNumber);
 	}
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(id, issueDate, validUntil, validity, licenseNumber);
+		return Objects.hash(licenseNumber);
 	}
 }
