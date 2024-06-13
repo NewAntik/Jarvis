@@ -79,6 +79,9 @@ public class UserServiceImpl implements UserService {
 		if(messageText.length() != 10){
 			return false;
 		}
+		if(messageText.startsWith("0")){
+			return false;
+		}
 
 		return messageText.chars().allMatch(Character::isDigit);
 	}

@@ -90,7 +90,7 @@ VALUES
 -- Phones
 INSERT INTO phones (id, number, imei, user_id, juridical_person_id)
 VALUES
-    (1, '1234567890', 'IMEI1233457790', 1, 1),
+    (1, '0994361290', 'IMEI1233457790', 1, 1),
     (2, '0987654321', 'IMEI0987654321', 2, 2);
 
 -- Cars-Users Relationships

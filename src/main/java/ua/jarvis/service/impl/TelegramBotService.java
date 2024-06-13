@@ -75,7 +75,13 @@ public class TelegramBotService extends TelegramLongPollingBot {
 
 					sendMessage(answer);
 				}
-				if (phoneService.isPhoneNumber(messageText)) {
+				if(userService.isRnokpp(messageText)){
+					LOG.info("Received user info document method was called by: {}", participant.getName());
+					sendMessage("Триває пошук за РНОКПП: " + messageText);
+
+					final User user = userService.findUserByRnokpp(messageText);
+					createDOCXDocumentAndSend(user);
+				} else if (phoneService.isPhoneNumber(messageText)) {
 					LOG.info("Received user info document method was called by: {}", participant.getName());
 
 					final String normalizedNumber = phoneService.getNormalizedNumber();
@@ -86,15 +92,7 @@ public class TelegramBotService extends TelegramLongPollingBot {
 						createDOCXDocumentAndSend(user);
 					}
 				}
-				if(userService.isRnokpp(messageText)){
-					LOG.info("Received user info document method was called by: {}", participant.getName());
-					sendMessage("Триває пошук за РНОКПП: " + messageText);
-
-					final User user = userService.findUserByRnokpp(messageText);
-					createDOCXDocumentAndSend(user);
-				}
-
-			} catch (Throwable e){
+			} catch (final Throwable e){
 				LOG.error("An error occurred while processing the update", e);
 				sendMessage(e.getMessage());
 			}
