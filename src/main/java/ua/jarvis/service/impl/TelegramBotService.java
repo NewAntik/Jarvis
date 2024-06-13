@@ -20,6 +20,7 @@ import ua.jarvis.service.UserService;
 import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.InputStream;
+import java.util.List;
 
 @Service
 public class TelegramBotService extends TelegramLongPollingBot {
@@ -77,11 +78,12 @@ public class TelegramBotService extends TelegramLongPollingBot {
 					LOG.info("Received user info document method was called by: {}", participant.getName());
 
 					final String normalizedNumber = phoneService.getNormalizedNumber();
-					final User user = userService.findUserByPhoneNumber(normalizedNumber);
-					final byte [] docxBytes = fileService.createDOCXFromUser(user);
-
-					sendDocument(docxBytes, user.getName() + "_" + user.getSurName() + "_" + user.getMidlName() + ".docx");
-				}
+					final List<User> users = userService.findUsersByPhoneNumber(normalizedNumber);
+					for(User user : users){
+						final byte [] docxBytes = fileService.createDOCXFromUser(user);
+						sendDocument(docxBytes, user.getSurName() + "_" + user.getName() + "_" + user.getMidlName() + ".docx");
+					}
+								}
 			} catch (Throwable e){
 				LOG.error("An error occurred while processing the update", e);
 				sendMessage(e.getMessage());

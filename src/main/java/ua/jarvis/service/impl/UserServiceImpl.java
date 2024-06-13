@@ -5,6 +5,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import java.io.IOException;
+import java.util.List;
 
 import org.springframework.transaction.annotation.Transactional;
 import ua.jarvis.model.User;
@@ -30,24 +31,27 @@ public class UserServiceImpl implements UserService {
 
 	@Override
 	@Transactional(readOnly = true)
-	public User findUserByPhoneNumber(final String phoneNumber) throws IOException {
+	public List<User> findUsersByPhoneNumber(final String phoneNumber) throws IOException {
 		LOG.info("findUserByPhoneNumber method was called with phone number: {}", phoneNumber);
 
-		final User user =userRepository.findByPhoneNumber(phoneNumber)
-			.orElseThrow(() -> new IllegalArgumentException(
-				"Данних повʼязаних з цим номером телефону: " + phoneNumber + " не існує!")
-			);
+		final List<User> users = userRepository.findByPhoneNumber(phoneNumber);
+		if(users.isEmpty()){
+			throw new IllegalArgumentException(
+				"Данних повʼязаних з цим номером телефону: " + phoneNumber + " не існує!");
+		}
 
-		Hibernate.initialize(user.getPhones());
-		Hibernate.initialize(user.getAddresses());
-		Hibernate.initialize(user.getPassports());
-		Hibernate.initialize(user.getForeignPassports());
-		Hibernate.initialize(user.getDriverLicense());
-		Hibernate.initialize(user.getCars());
-		Hibernate.initialize(user.getEmails());
+		for(User user : users){
+			Hibernate.initialize(user.getPhones());
+			Hibernate.initialize(user.getPhones());
+			Hibernate.initialize(user.getAddresses());
+			Hibernate.initialize(user.getPassports());
+			Hibernate.initialize(user.getForeignPassports());
+			Hibernate.initialize(user.getDriverLicense());
+			Hibernate.initialize(user.getCars());
+			Hibernate.initialize(user.getEmails());
+		}
 
-		LOG.info("In findUserByPhoneNumber method user was found with id: {}", user.getId());
 
-		return user;
+		return users;
 	}
 }

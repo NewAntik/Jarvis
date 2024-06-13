@@ -1,10 +1,11 @@
-package ua.jarvis.service;
+package ua.jarvis.service.impl;
 
 import org.apache.poi.xwpf.usermodel.XWPFDocument;
 import org.apache.poi.xwpf.usermodel.XWPFParagraph;
 import org.apache.poi.xwpf.usermodel.XWPFRun;
 import org.springframework.stereotype.Service;
 import ua.jarvis.model.Address;
+import ua.jarvis.model.BirthCertificate;
 import ua.jarvis.model.Car;
 import ua.jarvis.model.DriverLicense;
 import ua.jarvis.model.DriverLicenseCategory;
@@ -14,16 +15,18 @@ import ua.jarvis.model.JuridicalPerson;
 import ua.jarvis.model.Passport;
 import ua.jarvis.model.Phone;
 import ua.jarvis.model.User;
+import ua.jarvis.service.FileFormatter;
 
 import java.io.IOException;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 import static ua.jarvis.constant.Constants.UAMessages.INFO_NOT_PRESENT_MESSAGE;
 
 @Service
-public class DOCXFileFormatterImpl implements FileFormatter <List<XWPFParagraph>, User>{
+public class DOCXFileFormatterImpl implements FileFormatter<List<XWPFParagraph>, User> {
 	private static final DateTimeFormatter DATE_FORMATTER = DateTimeFormatter.ofPattern("yyyy.MM.dd");
 	private static final String DOT_WHITE_SPACE = ". ";
 	private static final String DOT = ".";
@@ -39,17 +42,117 @@ public class DOCXFileFormatterImpl implements FileFormatter <List<XWPFParagraph>
 
 		docxParagraphs.add(getBasicInfoParagraph());
 		docxParagraphs.add(getPhonesInfoParagraph());
-		docxParagraphs.add(getUserJuridicalPersonsInfoParagraph());
+
+		docxParagraphs.add(getBirthAddressInfoParagraph());
 		docxParagraphs.add(getAddressesInfoParagraph());
+		docxParagraphs.add(getBirthCertificateInfoParagraph());
+
+		docxParagraphs.add(getUserJuridicalPersonsInfoParagraph());
 		docxParagraphs.add(getPassportsInfoParagraph());
 		docxParagraphs.add(getForeignPassportInfoParagraph());
 		docxParagraphs.add(getDriverLicenseInfoParagraph());
 		docxParagraphs.add(getUserCarsInfoParagraph());
 		docxParagraphs.add(getUserEmailsInfoParagraph());
 
+		docxParagraphs.add(getIllegalActionsInfoParagraph());
+
 		document.close();
 
 		return docxParagraphs;
+	}
+
+	private XWPFParagraph getIllegalActionsInfoParagraph() {
+		final XWPFParagraph illegalActionsInfo = document.createParagraph();
+		XWPFRun basicInfoRun = illegalActionsInfo.createRun();
+		basicInfoRun.addBreak();
+		basicInfoRun.setText("Причетність до протиправної діяльності: ");
+		basicInfoRun.setBold(true);
+
+		if(user.getIllegalActions() != null){
+			basicInfoRun.addBreak();
+			basicInfoRun  = illegalActionsInfo.createRun();
+			basicInfoRun.setText(user.getIllegalActions() + DOT_WHITE_SPACE);
+
+		} else {
+			basicInfoRun  = illegalActionsInfo.createRun();
+			basicInfoRun.setText(INFO_NOT_PRESENT_MESSAGE);
+			basicInfoRun.setColor("FF0000");
+		}
+
+		return illegalActionsInfo;
+	}
+
+	private XWPFParagraph getBirthCertificateInfoParagraph() {
+		final XWPFParagraph bithInfo = document.createParagraph();
+		XWPFRun basicInfoRun = bithInfo.createRun();
+		basicInfoRun.addBreak();
+		basicInfoRun.setText("Місце проживання/перебування: ");
+		basicInfoRun.setBold(true);
+
+
+		if(user.getBirthCertificate() != null){
+			final BirthCertificate certificate = user.getBirthCertificate();
+			basicInfoRun = bithInfo.createRun();
+
+			if(certificate.getNumber() != null){
+				basicInfoRun.setText(certificate.getNumber() + DOT_WHITE_SPACE);
+			}
+			if(certificate.getIssueDate() != null){
+				basicInfoRun.setText("Дата видачі: " +
+					certificate.getIssueDate().format(DATE_FORMATTER) + DOT_WHITE_SPACE
+				);
+			}
+			if(certificate.isUnlimited()){
+				basicInfoRun.setText("Дійсний до: необмежений" + DOT_WHITE_SPACE);
+			} else if(certificate.getValidUntil() != null){
+				basicInfoRun.setText("Дійсний до: " +
+					certificate.getIssueDate().format(DATE_FORMATTER) + DOT_WHITE_SPACE
+				);
+			}
+			if(certificate.getAuthority() != null){
+				basicInfoRun.addBreak();
+				basicInfoRun.setText("Орган видачі:" + certificate.getAuthority() + DOT_WHITE_SPACE);
+			}
+		}else{
+			basicInfoRun  = bithInfo.createRun();
+			basicInfoRun.setText(INFO_NOT_PRESENT_MESSAGE);
+			basicInfoRun.setColor("FF0000");
+		}
+
+		return bithInfo;
+	}
+
+	private XWPFParagraph getBirthAddressInfoParagraph() {
+		final XWPFParagraph addressInfo = document.createParagraph();
+		XWPFRun basicInfoRun = addressInfo.createRun();
+		basicInfoRun.addBreak();
+		basicInfoRun.setText("Місце народження: ");
+		basicInfoRun.setBold(true);
+
+		if(user.getBirthCertificate() != null){
+			final BirthCertificate certificate = user.getBirthCertificate();
+
+			if(certificate.getBirthAddress() != null){
+				final Address address = certificate.getBirthAddress();
+				basicInfoRun = addressInfo.createRun();
+				basicInfoRun.setText("  м." + address.getCity() + DOT_WHITE_SPACE);
+				if(address.getStreet() != null){
+					basicInfoRun.setText("вул." + address.getStreet() + DOT_WHITE_SPACE);
+				}
+				if(address.getHomeNumber() != null){
+					basicInfoRun.setText("буд." + address.getHomeNumber() + DOT_WHITE_SPACE);
+				}
+				if(address.getFlatNumber() != null){
+					basicInfoRun.setText("кв." + address.getFlatNumber() + DOT_WHITE_SPACE);
+				}
+			}
+		}else{
+			basicInfoRun  = addressInfo.createRun();
+			basicInfoRun.setText(INFO_NOT_PRESENT_MESSAGE);
+			basicInfoRun.setColor("FF0000");
+		}
+
+		return addressInfo;
 	}
 
 	private XWPFParagraph getUserJuridicalPersonsInfoParagraph() {
@@ -155,10 +258,12 @@ public class DOCXFileFormatterImpl implements FileFormatter <List<XWPFParagraph>
 					basicInfoRun.setText(category.getCategoryType() + DOT_WHITE_SPACE);
 				}
 				if(license.getIssueDate() != null){
-					basicInfoRun.setText("Дата видачі: " + license.getIssueDate().format(DATE_FORMATTER) + DOT_WHITE_SPACE);
+					basicInfoRun.setText("Дата видачі: " + license.getIssueDate().format(DATE_FORMATTER) +
+						DOT_WHITE_SPACE);
 				}
 				if(license.getValidUntil() != null){
-					basicInfoRun.setText("Дійсний до: " + license.getValidUntil().format(DATE_FORMATTER) + DOT_WHITE_SPACE);
+					basicInfoRun.setText("Дійсний до: " + license.getValidUntil().format(DATE_FORMATTER) +
+						DOT_WHITE_SPACE);
 				}
 				if(license.getAuthority() != null){
 					basicInfoRun.addBreak();
@@ -193,10 +298,12 @@ public class DOCXFileFormatterImpl implements FileFormatter <List<XWPFParagraph>
 				basicInfoRun.setText("Номер: " + passport.getPassportNumber() + DOT_WHITE_SPACE);
 
 				if(passport.getIssueDate() != null){
-					basicInfoRun.setText("Дата видачі: " + passport.getIssueDate().format(DATE_FORMATTER) + DOT_WHITE_SPACE);
+					basicInfoRun.setText("Дата видачі: " + passport.getIssueDate().format(DATE_FORMATTER) +
+						DOT_WHITE_SPACE);
 				}
 				if(passport.getValidUntil() != null){
-					basicInfoRun.setText("Дійсний до: " + passport.getValidUntil().format(DATE_FORMATTER) + DOT_WHITE_SPACE);
+					basicInfoRun.setText("Дійсний до: " + passport.getValidUntil().format(DATE_FORMATTER) +
+						DOT_WHITE_SPACE);
 				}
 				if(passport.getAuthority() != null){
 					basicInfoRun.addBreak();
@@ -231,10 +338,12 @@ public class DOCXFileFormatterImpl implements FileFormatter <List<XWPFParagraph>
 				basicInfoRun.setText("Номер: " + passport.getPassportNumber() + DOT_WHITE_SPACE);
 
 				if(passport.getIssueDate() != null){
-					basicInfoRun.setText("Дата видачі: " + passport.getIssueDate().format(DATE_FORMATTER) + DOT_WHITE_SPACE);
+					basicInfoRun.setText("Дата видачі: " + passport.getIssueDate().format(DATE_FORMATTER) +
+						DOT_WHITE_SPACE);
 				}
 				if(passport.getValidUntil() != null){
-					basicInfoRun.setText("Дійсний до: " + passport.getValidUntil().format(DATE_FORMATTER) + DOT_WHITE_SPACE);
+					basicInfoRun.setText("Дійсний до: " + passport.getValidUntil().format(DATE_FORMATTER) +
+						DOT_WHITE_SPACE);
 				}
 				if(passport.getAuthority() != null){
 					basicInfoRun.addBreak();
@@ -259,7 +368,8 @@ public class DOCXFileFormatterImpl implements FileFormatter <List<XWPFParagraph>
 	private XWPFParagraph getAddressesInfoParagraph() {
 		final XWPFParagraph addresses = document.createParagraph();
 		XWPFRun basicInfoRun = addresses.createRun();
-		basicInfoRun.setText("Адреси: ");
+		basicInfoRun.addBreak();
+		basicInfoRun.setText("Місце проживання/перебування: ");
 		basicInfoRun.setBold(true);
 
 		if(!user.getAddresses().isEmpty()){
@@ -290,6 +400,7 @@ public class DOCXFileFormatterImpl implements FileFormatter <List<XWPFParagraph>
 	private XWPFParagraph getPhonesInfoParagraph() {
 		final XWPFParagraph phones = document.createParagraph();
 		XWPFRun basicInfoRun = phones.createRun();
+		basicInfoRun.addBreak();
 		basicInfoRun.setText("Телефони: ");
 		basicInfoRun.setBold(true);
 
@@ -313,41 +424,23 @@ public class DOCXFileFormatterImpl implements FileFormatter <List<XWPFParagraph>
 		XWPFRun basicInfoRun = basicInfoParagraph.createRun();
 
 		if(user.getSurName() != null){
-			basicInfoRun.setText("Прізвище: ");
-			basicInfoRun.setBold(true);
-
-			basicInfoRun = basicInfoParagraph.createRun();
-			basicInfoRun.setText(user.getSurName() + DOT_WHITE_SPACE);
+			basicInfoRun.setText(user.getSurName().toUpperCase(Locale.ROOT) + DOT_WHITE_SPACE);
 		}
 
 		if(user.getName() != null){
-			basicInfoRun = basicInfoParagraph.createRun();
-			basicInfoRun.setText("Імʼя: ");
-			basicInfoRun.setBold(true);
-
-			basicInfoRun = basicInfoParagraph.createRun();
 			basicInfoRun.setText(user.getName() + DOT_WHITE_SPACE);
 		}
 
 		if(user.getMidlName() != null){
-			basicInfoRun = basicInfoParagraph.createRun();
-			basicInfoRun.setText("По батькові: ");
-			basicInfoRun.setBold(true);
-
-			basicInfoRun = basicInfoParagraph.createRun();
 			basicInfoRun.setText(user.getMidlName() + DOT_WHITE_SPACE);
 		}
 
 		if(user.getBirthCertificate() != null){
-			basicInfoRun = basicInfoParagraph.createRun();
-			basicInfoRun.setText("Дата народження: ");
-			basicInfoRun.setBold(true);
-
-			basicInfoRun = basicInfoParagraph.createRun();
 			basicInfoRun.setText(user.getBirthCertificate().getBirthday().format(DATE_FORMATTER) + DOT_WHITE_SPACE);
 		}
 
 		if(user.getRnokpp() != null){
+			basicInfoRun.addBreak();
 			basicInfoRun = basicInfoParagraph.createRun();
 			basicInfoRun.setText("РНОКПП: ");
 			basicInfoRun.setBold(true);

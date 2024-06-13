@@ -2,11 +2,11 @@ package ua.jarvis.service;
 
 import ua.jarvis.model.User;
 
-import java.io.File;
 import java.io.IOException;
+import java.util.List;
 
 public interface UserService {
 	String getInfo();
 
-	User findUserByPhoneNumber(final String messageText) throws IOException;
+	List<User> findUsersByPhoneNumber(final String phone) throws IOException;
 }

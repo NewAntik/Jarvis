@@ -1,7 +1,7 @@
 -- Users
 INSERT INTO users (id, name, midl_name, sur_name, rnokpp, sex, illegal_actions, created_date, updated_date)
 VALUES
-    (1, 'John', 'John', 'Doe', '1234567890', 'MALE', 'Протиправна діяльність №199', '2023-01-01 10:00:00', '2023-01-01 10:00:00'),
+    (1, 'Іван', 'Іванович', 'Іванов', '1234567890', 'MALE', 'Протиправна діяльність №199', '2023-01-01 10:00:00', '2023-01-01 10:00:00'),
     (2, 'Jane', 'Jane', 'Smith', '654321', 'FEMALE', 'Протиправна діяльність №200', '2023-01-02 10:00:00', '2023-01-02 10:00:00'),
     (3, 'Alice', 'Alice', 'Johnson', '111222', 'FEMALE', 'Протиправна діяльність відсутня.', '2023-01-03 10:00:00', '2023-01-03 10:00:00'),
     (4, 'Bob', 'Bob', 'Brown', '333444', 'MALE', 'Протиправна діяльність відсутня.', '2023-01-04 10:00:00', '2023-01-04 10:00:00'),
@@ -84,7 +84,7 @@ VALUES
 -- Photos
 INSERT INTO photos (id, uuid, file_name, created_date, updated_date, user_id)
 VALUES
-    (1, '550e8400-e29b-41d4-a716-446655440000', 'photo1.png', '2023-01-01 10:00:00', '2023-01-01 10:00:00', 1),
+    (1, '550e8400-e29b-41d4-a716-446655440000', 'photo2.jpg', '2023-01-01 10:00:00', '2023-01-01 10:00:00', 1),
     (2, '550e8400-e29b-41d4-a716-446655440001', 'photo2.jpg', '2023-01-02 10:00:00', '2023-01-02 10:00:00', 2);
 
 -- Phones
@@ -113,9 +113,9 @@ VALUES
     (1, 5);
 
 -- Birth Certificates
-INSERT INTO birth_certificates (id, user_id, birthday, number, issue_date, valid_until, is_valid, is_Unlimited, authority)
+INSERT INTO birth_certificates (id, user_id, birthday, number, issue_date, valid_until, is_valid, is_Unlimited, authority, address_id)
 VALUES
-    (1, 1, '1980-01-01', 'BC123456', '2020-01-01', '2029-01-01', TRUE, TRUE, 'Kiev, Heroyev street');
+    (1, 1, '1980-01-01', 'BC123456', '2020-01-01', '2029-01-01', TRUE, TRUE, 'Kiev, Heroyev street', 1);
 
 INSERT INTO users_families (families_id, user_id)
 VALUES

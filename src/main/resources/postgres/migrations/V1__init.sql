@@ -165,7 +165,9 @@ CREATE TABLE birth_certificates (
     is_Valid              BOOLEAN,
     is_Unlimited          BOOLEAN,
     authority             VARCHAR(200) NOT NULL,
-    CONSTRAINT fk_user    FOREIGN KEY (user_id) REFERENCES users(id)
+    address_id            BIGINT,
+    CONSTRAINT fk_user    FOREIGN KEY (user_id) REFERENCES users(id),
+    CONSTRAINT fk_address    FOREIGN KEY (address_id) REFERENCES addresses(id)
 );
 
 

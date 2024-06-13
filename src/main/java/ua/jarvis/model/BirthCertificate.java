@@ -7,6 +7,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.Size;
@@ -33,7 +34,19 @@ public class BirthCertificate extends DocumentEntity {
 	@Column(name = "number")
 	private String number;
 
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "address_id")
+	private Address birthAddress;
+
 	public BirthCertificate() {
+	}
+
+	public Address getBirthAddress() {
+		return birthAddress;
+	}
+
+	public void setBirthAddress(final Address birthAddress) {
+		this.birthAddress = birthAddress;
 	}
 
 	public Long getId() {
@@ -71,8 +84,11 @@ public class BirthCertificate extends DocumentEntity {
 	@Override
 	public String toString() {
 		return "BirthCertificate{" +
-			"birthday=" + birthday +
+			"id=" + id +
+			", user=" + user +
+			", birthday=" + birthday +
 			", number='" + number + '\'' +
+			", birthAddress=" + birthAddress +
 			", issueDate=" + issueDate +
 			", validUntil=" + validUntil +
 			", isValid=" + isValid +
