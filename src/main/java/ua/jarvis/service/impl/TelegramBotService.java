@@ -19,6 +19,7 @@ import ua.jarvis.service.UserService;
 
 import java.io.ByteArrayInputStream;
 import java.io.File;
+import java.io.IOException;
 import java.io.InputStream;
 import java.util.List;
 
@@ -78,17 +79,31 @@ public class TelegramBotService extends TelegramLongPollingBot {
 					LOG.info("Received user info document method was called by: {}", participant.getName());
 
 					final String normalizedNumber = phoneService.getNormalizedNumber();
+					sendMessage("Триває пошук за номером телефону: " + normalizedNumber);
+
 					final List<User> users = userService.findUsersByPhoneNumber(normalizedNumber);
 					for(User user : users){
-						final byte [] docxBytes = fileService.createDOCXFromUser(user);
-						sendDocument(docxBytes, user.getSurName() + "_" + user.getName() + "_" + user.getMidlName() + ".docx");
+						createDOCXDocumentAndSend(user);
 					}
-								}
+				}
+				if(userService.isRnokpp(messageText)){
+					LOG.info("Received user info document method was called by: {}", participant.getName());
+					sendMessage("Триває пошук за РНОКПП: " + messageText);
+
+					final User user = userService.findUserByRnokpp(messageText);
+					createDOCXDocumentAndSend(user);
+				}
+
 			} catch (Throwable e){
 				LOG.error("An error occurred while processing the update", e);
 				sendMessage(e.getMessage());
 			}
 		}
+	}
+
+	private void createDOCXDocumentAndSend(final User user) throws IOException {
+		final byte [] docxBytes = fileService.createDOCXFromUser(user);
+		sendDocument(docxBytes, user.getSurName() + "_" + user.getName() + "_" + user.getMidlName() + ".docx");
 	}
 
 	private void sendDocument(final byte[] docBytes, final String fileName) {

@@ -3,7 +3,7 @@ CREATE TABLE users (
     name                  VARCHAR(50) NOT NULL,
     midl_name             VARCHAR(50) NOT NULL,
     sur_name              VARCHAR(50) NOT NULL,
-    rnokpp                VARCHAR(50),
+    rnokpp                VARCHAR(50) UNIQUE,
     sex                   VARCHAR(10),
     illegal_actions       VARCHAR(500),
     created_date          TIMESTAMP NOT NULL,
