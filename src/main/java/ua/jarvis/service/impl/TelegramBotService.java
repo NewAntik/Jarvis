@@ -5,54 +5,35 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
-import org.telegram.telegrambots.meta.api.methods.send.SendDocument;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
-import org.telegram.telegrambots.meta.api.objects.InputFile;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
+import ua.jarvis.facade.CommandExecuterFacade;
 import ua.jarvis.model.Participant;
-import ua.jarvis.model.User;
-import ua.jarvis.service.FileService;
 import ua.jarvis.service.ParticipantService;
-import ua.jarvis.service.PhoneService;
-import ua.jarvis.service.UserService;
-
-import java.io.ByteArrayInputStream;
-import java.io.File;
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.List;
 
 @Service
 public class TelegramBotService extends TelegramLongPollingBot {
 	private static final Logger LOG = LoggerFactory.getLogger(TelegramBotService.class);
 
-	private final UserService userService;
-
 	private final ParticipantService participantService;
-
-	private final PhoneService phoneService;
 
 	private final String botName;
 
 	private Long chatId;
 
-	private final FileService fileService;
+	private final CommandExecuterFacade facade;
 
 	public TelegramBotService(
 		@Value("${bot.name}") final String botName,
 		@Value("${bot.token}") final String token,
-		final UserService userService,
 		final ParticipantService participantService,
-		final PhoneService phoneService,
-		final FileService fileService
+		final CommandExecuterFacade facade
 	) {
 		super(token);
 		this.botName = botName;
-		this.userService = userService;
 		this.participantService = participantService;
-		this.phoneService = phoneService;
-		this.fileService = fileService;
+		this.facade = facade;
 	}
 
 	@Override
@@ -67,67 +48,13 @@ public class TelegramBotService extends TelegramLongPollingBot {
 
 		if(update.hasMessage() && update.getMessage().hasText() && participant != null ){
 			final String messageText = update.getMessage().getText();
-			final String answer;
 			try {
-				if (messageText.equals("/Загальна інформація.")) {
-					LOG.info("Received about info document method was called by: {}", participant.getName());
-					answer = userService.getInfo();
-
-					sendMessage(answer);
-				}
-				if(userService.isRnokpp(messageText)){
-					LOG.info("Received user info document method was called by: {}", participant.getName());
-					sendMessage("Триває пошук за РНОКПП: " + messageText);
-
-					final User user = userService.findUserByRnokpp(messageText);
-					createDOCXDocumentAndSend(user);
-				} else if (phoneService.isPhoneNumber(messageText)) {
-					LOG.info("Received user info document method was called by: {}", participant.getName());
-
-					final String normalizedNumber = phoneService.getNormalizedNumber();
-					sendMessage("Триває пошук за номером телефону: " + normalizedNumber);
-
-					final List<User> users = userService.findUsersByPhoneNumber(normalizedNumber);
-					for(User user : users){
-						createDOCXDocumentAndSend(user);
-					}
-				}
+				LOG.info("Received user info document method was called by: {}", participant.getName());
+				facade.execute(messageText, chatId);
 			} catch (final Throwable e){
 				LOG.error("An error occurred while processing the update", e);
 				sendMessage(e.getMessage());
 			}
-		}
-	}
-
-	private void createDOCXDocumentAndSend(final User user) throws IOException {
-		final byte [] docxBytes = fileService.createDOCXFromUser(user);
-		sendDocument(docxBytes, user.getSurName() + "_" + user.getName() + "_" + user.getMidlName() + ".docx");
-	}
-
-	private void sendDocument(final byte[] docBytes, final String fileName) {
-		final SendDocument sendDocumentRequest = new SendDocument();
-		sendDocumentRequest.setChatId(String.valueOf(chatId));
-		final InputStream inputStream = new ByteArrayInputStream(docBytes);
-		final InputFile inputFile = new InputFile(inputStream, fileName);
-
-		sendDocumentRequest.setDocument(inputFile);
-
-		try {
-			execute(sendDocumentRequest);
-		} catch (TelegramApiException e) {
-			e.printStackTrace();
-		}
-	}
-
-	private void sendDocument(final File pdf){
-		final SendDocument sendDocumentRequest = new SendDocument();
-		sendDocumentRequest.setChatId(String.valueOf(chatId));
-		sendDocumentRequest.setDocument(new InputFile(pdf));
-
-		try {
-			execute(sendDocumentRequest);
-		} catch (TelegramApiException e) {
-			e.printStackTrace();
 		}
 	}
 

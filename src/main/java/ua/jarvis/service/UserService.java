@@ -11,8 +11,6 @@ public interface UserService {
 
 	User findUserByRnokpp(final String rnokpp) throws IOException;
 
-	boolean isRnokpp(final String messageText);
-
 	String getInfo();
 
 }

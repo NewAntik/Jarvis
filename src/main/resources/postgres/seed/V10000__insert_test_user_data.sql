@@ -91,7 +91,7 @@ VALUES
 INSERT INTO phones (id, number, imei, user_id, juridical_person_id)
 VALUES
     (1, '0994361290', 'IMEI1233457790', 1, 1),
-    (2, '0987654321', 'IMEI0987654321', 2, 2);
+    (2, '0994361290', 'IMEI0987654321', 2, 2);
 
 -- Cars-Users Relationships
 INSERT INTO cars_drivers (drivers_id, cars_id)

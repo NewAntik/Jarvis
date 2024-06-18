@@ -24,7 +24,8 @@ public class UserServiceImpl implements UserService {
 	@Override
 	public String getInfo() {
 		return """
-            Hello here will be some info about this bot.
+           	Пошук за номером телефону(В будьякому форматі. Якщо 10 цифр то має починатись з 0(з нуля)).
+           	Пошук за РНОКПП (не може починатись з 0 та бути меньше ніж 10 цифр).
             """;
 	}
 
@@ -40,7 +41,6 @@ public class UserServiceImpl implements UserService {
 		}
 
 		users.forEach(this::initialiseHibernateSessions);
-
 
 		return users;
 	}
@@ -62,27 +62,11 @@ public class UserServiceImpl implements UserService {
 
 	private void initialiseHibernateSessions(final User user) {
 		Hibernate.initialize(user.getPhones());
-		Hibernate.initialize(user.getPhones());
 		Hibernate.initialize(user.getAddresses());
 		Hibernate.initialize(user.getPassports());
 		Hibernate.initialize(user.getForeignPassports());
 		Hibernate.initialize(user.getDriverLicense());
 		Hibernate.initialize(user.getCars());
 		Hibernate.initialize(user.getEmails());
-	}
-
-	@Override
-	public boolean isRnokpp(final String messageText){
-		if (messageText == null) {
-			return false;
-		}
-		if(messageText.length() != 10){
-			return false;
-		}
-		if(messageText.startsWith("0")){
-			return false;
-		}
-
-		return messageText.chars().allMatch(Character::isDigit);
 	}
 }

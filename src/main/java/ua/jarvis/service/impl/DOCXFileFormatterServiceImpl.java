@@ -15,7 +15,7 @@ import ua.jarvis.model.JuridicalPerson;
 import ua.jarvis.model.Passport;
 import ua.jarvis.model.Phone;
 import ua.jarvis.model.User;
-import ua.jarvis.service.FileFormatter;
+import ua.jarvis.service.FileFormatterService;
 
 import java.io.IOException;
 import java.time.format.DateTimeFormatter;
@@ -26,7 +26,7 @@ import java.util.Locale;
 import static ua.jarvis.constant.Constants.UAMessages.INFO_NOT_PRESENT_MESSAGE;
 
 @Service
-public class DOCXFileFormatterImpl implements FileFormatter<List<XWPFParagraph>, User> {
+public class DOCXFileFormatterServiceImpl implements FileFormatterService<List<XWPFParagraph>, User> {
 	private static final DateTimeFormatter DATE_FORMATTER = DateTimeFormatter.ofPattern("dd.MM.yyyy");
 	private static final String DOT_WHITE_SPACE = ". ";
 	private static final String WHITE_SPACE = " ";

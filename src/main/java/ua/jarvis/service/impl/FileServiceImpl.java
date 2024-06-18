@@ -19,7 +19,7 @@ import org.openxmlformats.schemas.wordprocessingml.x2006.main.CTSectPr;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import ua.jarvis.model.User;
-import ua.jarvis.service.FileFormatter;
+import ua.jarvis.service.FileFormatterService;
 import ua.jarvis.service.FileService;
 
 import java.io.ByteArrayInputStream;
@@ -37,14 +37,14 @@ public class FileServiceImpl implements FileService {
 
 	private final String photoPath;
 
-	private final FileFormatter pdfFormatter;
+	private final FileFormatterService pdfFormatter;
 
-	private final FileFormatter docxFormatter;
+	private final FileFormatterService docxFormatter;
 
 	public FileServiceImpl(
 		@Value("${photo.path}") final String photoPath,
-		final PDFFileFormatterImpl pdfFormatter,
-		final DOCXFileFormatterImpl docxFormatter
+		final PDFFileFormatterServiceImpl pdfFormatter,
+		final DOCXFileFormatterServiceImpl docxFormatter
 
 	) {
 		this.photoPath = photoPath;

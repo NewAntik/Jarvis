@@ -18,7 +18,7 @@ import ua.jarvis.model.ForeignPassport;
 import ua.jarvis.model.JuridicalPerson;
 import ua.jarvis.model.Passport;
 import ua.jarvis.model.User;
-import ua.jarvis.service.FileFormatter;
+import ua.jarvis.service.FileFormatterService;
 
 import java.io.IOException;
 import java.time.format.DateTimeFormatter;
@@ -29,7 +29,7 @@ import static ua.jarvis.constant.Constants.UAMessages.INFO_NOT_PRESENT_MESSAGE;
 import static ua.jarvis.model.enums.Sex.MALE;
 
 @Service
-public class PDFFileFormatterImpl implements FileFormatter <List<IBlockElement>, User> {
+public class PDFFileFormatterServiceImpl implements FileFormatterService<List<IBlockElement>, User> {
 	private static final UnitValue TABLE_SIZE = UnitValue.createPercentValue(100);
 	private static final DeviceRgb greenColor = new DeviceRgb(185, 200, 185); // green color
 	private static final DeviceRgb redColor = new DeviceRgb(211, 185, 185); // Light red color

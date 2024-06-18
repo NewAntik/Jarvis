@@ -2,6 +2,6 @@ package ua.jarvis.service;
 
 import java.io.IOException;
 
-public interface FileFormatter<T, R> {
+public interface FileFormatterService<T, R> {
 	T format(R source) throws IOException;
 }
