@@ -19,11 +19,14 @@ public final class Constants {
 	}
 
 	public final class ExecuterType{
-		private ExecuterType(){}
+		public static final String NAME_SUR_NAME_MIDL_NAME = "Name SurName MidlName";
 		public static final String INFO = "Info";
 		public static final String RNOKPP = "Rnokpp";
 		public static final String PHONE_NUMBER = "Phone number";
 		public static final String PASSPORT = "Passport";
 		public static final String FOREIGN_PASSPORT = "Foreign passport";
+
+		private ExecuterType(){}
+
 	}
 }

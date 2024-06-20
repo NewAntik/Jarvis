@@ -46,6 +46,21 @@ public class UserServiceImpl implements UserService {
 
 	@Override
 	@Transactional(readOnly = true)
+	public User findUserByThreeNames(final String surName, final String name, final String midlName) {
+		LOG.info("findUserByThreeNames method was called with names: {}, {}, {}", surName, name, midlName);
+
+		final User user = userRepository.findUserByThreeNames(surName, name, midlName).orElseThrow( () ->
+			new IllegalArgumentException(
+				"Данних повʼязаних з цим ПІБ не інує: " + surName + ", " + name + ", " + midlName + " не існує!")
+		);
+
+		initialiseHibernateSessions(user);
+
+		return user;
+	}
+
+	@Override
+	@Transactional(readOnly = true)
 	public User findUserByPassportNumber(final String passportNumber) {
 		LOG.info("findUserByPassportNumber method was called with passport number: {}", passportNumber);
 

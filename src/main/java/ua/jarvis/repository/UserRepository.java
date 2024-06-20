@@ -20,4 +20,7 @@ public interface UserRepository extends JpaRepository<User, Long> {
 
 	@Query("SELECT u FROM User u JOIN u.foreignPassports p WHERE p.passportNumber = :foreignPassportNumber")
 	Optional<User> findUserByForeignPassportNumber(@Param("foreignPassportNumber") String foreignPassportNumber);
+
+	@Query("SELECT u FROM User u WHERE u.surName = :surName AND u.name = :name AND u.midlName = :midlName")
+	Optional<User> findUserByThreeNames(@Param("surName")String surName, @Param("name")String name, @Param("midlName")String midlName);
 }

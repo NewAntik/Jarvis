@@ -17,4 +17,5 @@ public interface UserService {
 
 	User findUserByForeignPassportNumber(final String foreingPassportNumber);
 
+	User findUserByThreeNames(String surName, String name, String midlName);
 }

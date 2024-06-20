@@ -59,6 +59,8 @@ public class CommandExecuterFacadeImpl implements CommandExecuterFacade {
 			return getFromRegistry(Constants.ExecuterType.PASSPORT);
 		} else if(MessageChecker.isForeignPassport(text)){
 			return getFromRegistry(Constants.ExecuterType.FOREIGN_PASSPORT);
+		} else if(MessageChecker.isNameSurNameMidlName(text)){
+			return getFromRegistry(Constants.ExecuterType.NAME_SUR_NAME_MIDL_NAME);
 		}
 
 		return Optional.empty();
