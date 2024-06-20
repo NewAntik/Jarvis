@@ -31,10 +31,40 @@ public class UserServiceImpl implements UserService {
 
 	@Override
 	@Transactional(readOnly = true)
+	public User findUserByForeignPassportNumber(final String foreignPassportNumber) {
+		LOG.info("findUserByForeignPassportNumber method was called with foreign passport number: {}", foreignPassportNumber);
+
+		final User user = userRepository.findUserByForeignPassportNumber(foreignPassportNumber).orElseThrow( () ->
+			new IllegalArgumentException(
+				"Данних повʼязаних з цим номером закордонного паспорту: " + foreignPassportNumber + " не існує!")
+		);
+
+		initialiseHibernateSessions(user);
+
+		return user;
+	}
+
+	@Override
+	@Transactional(readOnly = true)
+	public User findUserByPassportNumber(final String passportNumber) {
+		LOG.info("findUserByPassportNumber method was called with passport number: {}", passportNumber);
+
+		final User user = userRepository.findUserByPassportNumber(passportNumber).orElseThrow( () ->
+			new IllegalArgumentException(
+				"Данних повʼязаних з цим номером паспорту: " + passportNumber + " не існує!")
+		);
+
+		initialiseHibernateSessions(user);
+
+		return user;
+	}
+
+	@Override
+	@Transactional(readOnly = true)
 	public List<User> findUsersByPhoneNumber(final String phoneNumber) {
 		LOG.info("findUserByPhoneNumber method was called with phone number: {}", phoneNumber);
 
-		final List<User> users = userRepository.findByPhoneNumber(phoneNumber);
+		final List<User> users = userRepository.findUsersByPhoneNumber(phoneNumber);
 		if(users.isEmpty()){
 			throw new IllegalArgumentException(
 				"Данних повʼязаних з цим номером телефону: " + phoneNumber + " не існує!");

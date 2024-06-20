@@ -2,7 +2,7 @@
 INSERT INTO users (id, name, midl_name, sur_name, rnokpp, sex, illegal_actions, created_date, updated_date)
 VALUES
     (1, 'Іван', 'Іванович', 'Іванов', '1234567890', 'MALE', 'Протиправна діяльність №199', '2023-01-01 10:00:00', '2023-01-01 10:00:00'),
-    (2, 'Jane', 'Jane', 'Smith', '7890654321', 'FEMALE', 'Протиправна діяльність №200', '2023-01-02 10:00:00', '2023-01-02 10:00:00'),
+    (2, 'Тарас', 'Григорович', 'Шевченко', '7890654321', 'MALE', 'Протиправна діяльність №200', '2023-01-02 10:00:00', '2023-01-02 10:00:00'),
     (3, 'Alice', 'Alice', 'Johnson', '1112225555', 'FEMALE', 'Протиправна діяльність відсутня.', '2023-01-03 10:00:00', '2023-01-03 10:00:00'),
     (4, 'Bob', 'Bob', 'Brown', '3334448888', 'MALE', 'Протиправна діяльність відсутня.', '2023-01-04 10:00:00', '2023-01-04 10:00:00'),
     (5, 'Charlie', 'Charlie', 'Davis', '5556660945', 'MALE', 'Протиправна діяльність відсутня.', '2023-01-05 10:00:00', '2023-01-05 10:00:00');
@@ -16,8 +16,8 @@ VALUES
 -- Passports
 INSERT INTO passports (id, passport_number, issue_date, valid_until, is_valid, is_Unlimited, authority, user_id)
 VALUES
-    (1, 'A12345678', '2020-11-15', '2030-01-01', TRUE, TRUE, 'Mariupol, Prospekt Heroyev 11', 1),
-    (2, 'A98765435', '2000-12-11', '2030-01-01', TRUE, TRUE, 'Mariupol, Prospekt Heroyev 11', 2),
+    (1, '123456789', '2020-11-15', '2030-01-01', TRUE, TRUE, 'Mariupol, Prospekt Heroyev 11', 1),
+    (2, 'СЕ123456', '2000-12-11', '2030-01-01', TRUE, TRUE, 'Mariupol, Prospekt Heroyev 11', 2),
     (3, 'A74562345', '1999-06-04', '2030-01-01', TRUE, TRUE, 'Mariupol, Prospekt Heroyev 11', 3),
     (4, '752345435', '2024-03-30', '2031-01-01', TRUE, TRUE, 'Mariupol, Prospekt Heroyev 11', 4),
     (5, 'C11122233', '2022-01-01', '2032-01-01', TRUE, TRUE, 'Gov Authority 3', 5);
@@ -48,7 +48,7 @@ VALUES
 -- Foreign Passports
 INSERT INTO foreign_passports (id, passport_number, issue_date, valid_until, is_valid, is_Unlimited, authority, user_id)
 VALUES
-    (1, 'FA123456', '2020-01-01', '2029-01-01', TRUE, FALSE, 'Kiev, Heroyev street, home number 4', 1),
+    (1, 'FG123456', '2020-01-01', '2029-01-01', TRUE, FALSE, 'Kiev, Heroyev street, home number 4', 1),
     (2, 'FA242333', '1999-01-01', '2029-01-01', TRUE, FALSE, 'Kiev, Heroyev street, home number 4', 2),
     (3, 'FA543775', '2011-01-01', '2029-01-01', TRUE, FALSE, 'Kiev, Heroyev street, home number 4', 3),
     (4, 'FA657834', '2039-01-01', '2029-01-01', TRUE, FALSE, 'Kiev, Heroyev street, home number 4', 4),

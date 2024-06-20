@@ -13,39 +13,34 @@ public final class MessageChecker {
 	}
 
 	public static boolean isForeignPassport(final String messageText) {
-		if (messageText.length() != 8) {
-			return false;
-		} else {
-			final String twoFirstLetters = messageText.substring(0, 2);
-			return isEnglishLetters(twoFirstLetters);
-		}
+		return messageText.length() == 8 && containsEnglishLetters(messageText);
 	}
 
-	private static boolean isEnglishLetters(final String text) {
-		if (text.length() != 2) {
-			return false;
-		}
-		final char firstChar = text.charAt(0);
-		final char secondChar = text.charAt(1);
+	private static boolean containsEnglishLetters(final String text) {
+		final String twoFirstLetters = text.substring(0, 2);
+
+		final char firstChar = twoFirstLetters.charAt(0);
+		final char secondChar = twoFirstLetters.charAt(1);
+
 		return Character.isLetter(firstChar) && Character.isLetter(secondChar) &&
 			Character.isUpperCase(firstChar) && Character.isUpperCase(secondChar);
 	}
 
 	public static boolean isPassport(final String messageText) {
-		if (messageText.length() != 8) {
-			return false;
-		} else {
-			final String twoFirstLetters = messageText.substring(0, 2);
-			return isCyrillicLetters(twoFirstLetters);
+		if(messageText.length() == 8 && containsCyrillicLetters(messageText)){
+			return true;
 		}
+		if(messageText.length() == 9 && messageText.chars().allMatch(Character::isDigit)){
+			return true;
+		}
+
+		return false;
 	}
 
-	private static boolean isCyrillicLetters(final String text) {
-		if (text.length() != 2) {
-			return false;
-		}
-		final char firstChar = text.charAt(0);
-		final char secondChar = text.charAt(1);
+	private static boolean containsCyrillicLetters(final String text) {
+		final String twoFirstLetters = text.substring(0, 2);
+		final char firstChar = twoFirstLetters.charAt(0);
+		final char secondChar = twoFirstLetters.charAt(1);
 
 		return isCyrillicLetter(firstChar) && isCyrillicLetter(secondChar);
 	}

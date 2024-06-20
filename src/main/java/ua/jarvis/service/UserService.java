@@ -13,4 +13,8 @@ public interface UserService {
 
 	String getInfo();
 
+	User findUserByPassportNumber(final String passportNum);
+
+	User findUserByForeignPassportNumber(final String foreingPassportNumber);
+
 }
