@@ -22,21 +22,13 @@ public class UserServiceImpl implements UserService {
 	}
 
 	@Override
-	public String getInfo() {
-		return """
-           	Пошук за номером телефону(В будьякому форматі. Якщо 10 цифр то має починатись з 0(з нуля)).
-           	Пошук за РНОКПП (не може починатись з 0 та бути меньше ніж 10 цифр).
-            """;
-	}
-
-	@Override
 	@Transactional(readOnly = true)
 	public User findUserByForeignPassportNumber(final String foreignPassportNumber) {
 		LOG.info("findUserByForeignPassportNumber method was called with foreign passport number: {}", foreignPassportNumber);
 
 		final User user = userRepository.findUserByForeignPassportNumber(foreignPassportNumber).orElseThrow( () ->
 			new IllegalArgumentException(
-				"Данних повʼязаних з цим номером закордонного паспорту: " + foreignPassportNumber + " не існує!")
+				"Данних повʼязаних з цим номером закордонного паспорту: " + foreignPassportNumber + " - не існує!")
 		);
 
 		initialiseHibernateSessions(user);
@@ -51,7 +43,37 @@ public class UserServiceImpl implements UserService {
 
 		final User user = userRepository.findUserByThreeNames(surName, name, midlName).orElseThrow( () ->
 			new IllegalArgumentException(
-				"Данних повʼязаних з цим ПІБ не інує: " + surName + ", " + name + ", " + midlName + " не існує!")
+				"Данних повʼязаних з цим ПІБ: " + surName + " " + name + " " + midlName + " - не існує!")
+		);
+
+		initialiseHibernateSessions(user);
+
+		return user;
+	}
+
+	@Override
+	@Transactional(readOnly = true)
+	public User findUserBySurNameAndName(final String surName, final String name) {
+		LOG.info("findUserBySurNameAndName method was called with names: {}, {}", surName, name);
+
+		final User user = userRepository.findUserBySurNameAndName(surName, name).orElseThrow( () ->
+			new IllegalArgumentException(
+				"Данних повʼязаних з цим прізвищем та імʼям: " + surName + " " + name + " - не існує!")
+		);
+
+		initialiseHibernateSessions(user);
+
+		return user;
+	}
+
+	@Override
+	@Transactional(readOnly = true)
+	public User findUserBySurNameAndMidlName(final String surName, final String midlName) {
+		LOG.info("findUserBySurNameAndMidlName method was called with names: {}, {}", surName, midlName);
+
+		final User user = userRepository.findUserBySurNameAndMidlName(surName, midlName).orElseThrow( () ->
+			new IllegalArgumentException(
+				"Данних повʼязаних з цим прізвищем та по батькові: " + surName + " " + midlName + " - не існує!")
 		);
 
 		initialiseHibernateSessions(user);
@@ -66,7 +88,7 @@ public class UserServiceImpl implements UserService {
 
 		final User user = userRepository.findUserByPassportNumber(passportNumber).orElseThrow( () ->
 			new IllegalArgumentException(
-				"Данних повʼязаних з цим номером паспорту: " + passportNumber + " не існує!")
+				"Данних повʼязаних з цим номером паспорту: " + passportNumber + " - не існує!")
 		);
 
 		initialiseHibernateSessions(user);
@@ -82,7 +104,7 @@ public class UserServiceImpl implements UserService {
 		final List<User> users = userRepository.findUsersByPhoneNumber(phoneNumber);
 		if(users.isEmpty()){
 			throw new IllegalArgumentException(
-				"Данних повʼязаних з цим номером телефону: " + phoneNumber + " не існує!");
+				"Данних повʼязаних з цим номером телефону: " + phoneNumber + " - не існує!");
 		}
 
 		users.forEach(this::initialiseHibernateSessions);
@@ -97,7 +119,7 @@ public class UserServiceImpl implements UserService {
 
 		final User user = userRepository.findUserByRnokpp(rnokpp).orElseThrow( () ->
 			new IllegalArgumentException(
-				"Данних повʼязаних з цим РНОКПП: " + rnokpp + " не існує!")
+				"Данних повʼязаних з цим РНОКПП: " + rnokpp + " - не існує!")
 		);
 
 		initialiseHibernateSessions(user);

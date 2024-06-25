@@ -1,23 +1,24 @@
-package ua.jarvis.service.impl;
+package ua.jarvis.service.executer.impl;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import ua.jarvis.constant.Constants;
-import ua.jarvis.service.CommandExecuter;
 import ua.jarvis.service.UserService;
+import ua.jarvis.service.executer.CommandExecuterService;
+import ua.jarvis.service.impl.ResponderServiceImpl;
 
 import java.io.IOException;
 
 @Service
-public class RnokppCommandExecuterImpl implements CommandExecuter {
-	private static final Logger LOG = LoggerFactory.getLogger(RnokppCommandExecuterImpl.class);
+public class RnokppCommandExecuterServiceImpl implements CommandExecuterService {
+	private static final Logger LOG = LoggerFactory.getLogger(RnokppCommandExecuterServiceImpl.class);
 
 	private final ResponderServiceImpl responder;
 
 	private final UserService userService;
 
-	public RnokppCommandExecuterImpl(
+	public RnokppCommandExecuterServiceImpl(
 		final ResponderServiceImpl responder,
 		final UserService userService
 	) {

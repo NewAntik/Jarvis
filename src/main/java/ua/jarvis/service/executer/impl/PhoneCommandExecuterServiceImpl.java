@@ -1,26 +1,27 @@
-package ua.jarvis.service.impl;
+package ua.jarvis.service.executer.impl;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import ua.jarvis.constant.Constants;
 import ua.jarvis.model.User;
-import ua.jarvis.service.CommandExecuter;
 import ua.jarvis.service.UserService;
+import ua.jarvis.service.executer.CommandExecuterService;
+import ua.jarvis.service.impl.ResponderServiceImpl;
 import ua.jarvis.service.utils.MessageChecker;
 
 import java.io.IOException;
 import java.util.List;
 
 @Service
-public class PhoneCommandExecuterImpl implements CommandExecuter {
-	private static final Logger LOG = LoggerFactory.getLogger(PhoneCommandExecuterImpl.class);
+public class PhoneCommandExecuterServiceImpl implements CommandExecuterService {
+	private static final Logger LOG = LoggerFactory.getLogger(PhoneCommandExecuterServiceImpl.class);
 
 	private final ResponderServiceImpl responder;
 
 	private final UserService userService;
 
-	public PhoneCommandExecuterImpl(
+	public PhoneCommandExecuterServiceImpl(
 		final ResponderServiceImpl responder,
 		final UserService userService
 	) {

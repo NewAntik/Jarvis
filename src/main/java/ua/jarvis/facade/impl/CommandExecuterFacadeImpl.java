@@ -4,7 +4,7 @@ import jakarta.annotation.PostConstruct;
 import org.springframework.stereotype.Component;
 import ua.jarvis.constant.Constants;
 import ua.jarvis.facade.CommandExecuterFacade;
-import ua.jarvis.service.CommandExecuter;
+import ua.jarvis.service.executer.CommandExecuterService;
 import ua.jarvis.service.utils.MessageChecker;
 
 import java.io.IOException;
@@ -16,18 +16,18 @@ import java.util.Optional;
 @Component
 public class CommandExecuterFacadeImpl implements CommandExecuterFacade {
 
-	private final List<CommandExecuter> executers;
+	private final List<CommandExecuterService> executers;
 
-	private final Map<String, CommandExecuter> executerRegistry = new HashMap<>();
+	private final Map<String, CommandExecuterService> executerRegistry = new HashMap<>();
 
-	public CommandExecuterFacadeImpl(final List<CommandExecuter> executers){
+	public CommandExecuterFacadeImpl(final List<CommandExecuterService> executers){
 		this.executers = executers;
 	}
 
 	@PostConstruct
 	protected void populateExecuterRegistry() {
-		for (CommandExecuter executer : executers) {
-			final CommandExecuter alreadyRegistered = executerRegistry.put(executer.getType(), executer);
+		for (CommandExecuterService executer : executers) {
+			final CommandExecuterService alreadyRegistered = executerRegistry.put(executer.getType(), executer);
 
 			if (alreadyRegistered != null) {
 				throw new IllegalArgumentException(
@@ -39,16 +39,16 @@ public class CommandExecuterFacadeImpl implements CommandExecuterFacade {
 
 	@Override
 	public void execute(final String text, final Long chatId) throws IOException {
-		final Optional<CommandExecuter> executerOpt = getExecuterFor(text);
+		final Optional<CommandExecuterService> executerOpt = getExecuterFor(text);
 		if(executerOpt.isPresent()){
-			final CommandExecuter executer = executerOpt.get();
+			final CommandExecuterService executer = executerOpt.get();
 			executer.execute(text, chatId);
 		} else {
 			throw new IllegalArgumentException(Constants.UAMessages.COMMAND_NOT_FOUND_MESSAGE);
 		}
 	}
 
-	private Optional<CommandExecuter> getExecuterFor(final String text){
+	private Optional<CommandExecuterService> getExecuterFor(final String text){
 		if(MessageChecker.isInfo(text)){
 			return getFromRegistry(Constants.ExecuterType.INFO);
 		} else if(MessageChecker.isRnokpp(text)){
@@ -61,12 +61,16 @@ public class CommandExecuterFacadeImpl implements CommandExecuterFacade {
 			return getFromRegistry(Constants.ExecuterType.FOREIGN_PASSPORT);
 		} else if(MessageChecker.isNameSurNameMidlName(text)){
 			return getFromRegistry(Constants.ExecuterType.NAME_SUR_NAME_MIDL_NAME);
+		} else if(MessageChecker.isNameAndSurName(text)){
+			return getFromRegistry(Constants.ExecuterType.SUR_NAME_NAME);
+		}else if(MessageChecker.isSurNameAndMidlName(text)){
+			return getFromRegistry(Constants.ExecuterType.SUR_NAME_MIDL_NAME);
 		}
 
 		return Optional.empty();
 	}
 
-	private Optional<CommandExecuter> getFromRegistry(final String text){
+		private Optional<CommandExecuterService> getFromRegistry(final String text){
 		return Optional.ofNullable(executerRegistry.get(text));
 	}
 }

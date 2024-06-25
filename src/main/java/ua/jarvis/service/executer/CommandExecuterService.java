@@ -1,8 +1,8 @@
-package ua.jarvis.service;
+package ua.jarvis.service.executer;
 
 import java.io.IOException;
 
-public interface CommandExecuter {
+public interface CommandExecuterService {
 
 	String getType();
 

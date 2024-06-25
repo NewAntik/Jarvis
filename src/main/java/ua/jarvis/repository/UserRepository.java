@@ -23,4 +23,8 @@ public interface UserRepository extends JpaRepository<User, Long> {
 
 	@Query("SELECT u FROM User u WHERE u.surName = :surName AND u.name = :name AND u.midlName = :midlName")
 	Optional<User> findUserByThreeNames(@Param("surName")String surName, @Param("name")String name, @Param("midlName")String midlName);
+
+	Optional<User> findUserBySurNameAndName(String surName, String name);
+
+	Optional<User> findUserBySurNameAndMidlName(String surName, String midlName);
 }

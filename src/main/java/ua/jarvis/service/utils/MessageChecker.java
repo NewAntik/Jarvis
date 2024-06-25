@@ -7,9 +7,21 @@ import java.util.List;
 
 public final class MessageChecker {
 
-	private static String phoneNumber;
+	private static String normalizedText;
 
 	private MessageChecker(){}
+
+	public static boolean isSurNameAndMidlName(final String messageText) {
+		final String[] surNameAndMidlName = messageText.split(" ", -1);
+
+		return surNameAndMidlName.length == 3 && "_".equals(surNameAndMidlName[1]);
+	}
+
+	public static boolean isNameAndSurName(final String messageText){
+		final String[] names = messageText.split(" ", -1);
+
+		return names.length == 2 && isCyrillicStrings(names);
+	}
 
 	public static boolean isNameSurNameMidlName(final String messageText){
 		final String[] names = messageText.split(" ", -1);
@@ -49,8 +61,6 @@ public final class MessageChecker {
 		return isCyrillicLetter(firstChar) && isCyrillicLetter(secondChar);
 	}
 
-
-
 	public static boolean isInfo(final String messageText){
 		return messageText.equals(Constants.BASE_INFO);
 	}
@@ -81,14 +91,14 @@ public final class MessageChecker {
 	}
 
 	public static boolean isPhoneNumber(final String messageText) {
-		phoneNumber = null;
+		normalizedText = null;
 		normalizePhoneNumber(messageText);
 
-		return phoneNumber != null;
+		return normalizedText != null;
 	}
 
 	public static String getNormalizedNumber(){
-		return phoneNumber;
+		return normalizedText;
 	}
 
 	private static void normalizePhoneNumber(String number) {
@@ -101,7 +111,7 @@ public final class MessageChecker {
 		}
 
 		if (number.length() == Constants.PHONE_NUMBER_LENGTH) {
-			phoneNumber = number;
+			normalizedText = number;
 		}
 	}
 

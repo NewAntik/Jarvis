@@ -1,23 +1,24 @@
-package ua.jarvis.service.impl;
+package ua.jarvis.service.executer.impl;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 import ua.jarvis.constant.Constants;
-import ua.jarvis.service.CommandExecuter;
 import ua.jarvis.service.UserService;
+import ua.jarvis.service.executer.CommandExecuterService;
+import ua.jarvis.service.impl.ResponderServiceImpl;
 
 import java.io.IOException;
 
 @Component
-public class PassportCommandExecuterImpl implements CommandExecuter {
-	private static final Logger LOG = LoggerFactory.getLogger(PassportCommandExecuterImpl.class);
+public class PassportCommandExecuterServiceImpl implements CommandExecuterService {
+	private static final Logger LOG = LoggerFactory.getLogger(PassportCommandExecuterServiceImpl.class);
 
 	private final ResponderServiceImpl responder;
 
 	private final UserService userService;
 
-	public PassportCommandExecuterImpl(
+	public PassportCommandExecuterServiceImpl(
 		final ResponderServiceImpl responder,
 		final UserService userService
 	) {
