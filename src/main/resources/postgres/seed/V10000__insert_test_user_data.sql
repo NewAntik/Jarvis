@@ -113,9 +113,10 @@ VALUES
     (1, 5);
 
 -- Birth Certificates
-INSERT INTO birth_certificates (id, user_id, birthday, number, issue_date, valid_until, is_valid, is_Unlimited, authority, address_id)
+INSERT INTO birth_certificates (id, user_id, day, month, year, number, issue_date, valid_until, is_valid, is_Unlimited, authority, address_id)
 VALUES
-    (1, 1, '1980-01-01', 'BC123456', '2020-01-01', '2029-01-01', TRUE, TRUE, 'Kiev, Heroyev street', 1);
+    (1, 2, '05', '03', '1814', 'BC123456', '2020-01-01', '2029-01-01', TRUE, TRUE, 'Kiev, Heroyev street', 2),
+    (2, 1, '09', '02', '1815', 'BC654321', '2020-01-01', '2029-01-01', TRUE, TRUE, 'Kiev, Heroyev street', 1);
 
 INSERT INTO users_families (families_id, user_id)
 VALUES

@@ -158,7 +158,9 @@ CREATE TABLE users_families(
 CREATE TABLE birth_certificates (
     id                    BIGINT PRIMARY KEY,
     user_id               BIGINT,
-    birthday              TIMESTAMP,
+    day                   VARCHAR(2),
+    month                 VARCHAR(2),
+    year                  VARCHAR(4),
     number                VARCHAR(20),
     issue_date            TIMESTAMP NOT NULL,
     valid_until           TIMESTAMP NOT NULL,
@@ -167,7 +169,7 @@ CREATE TABLE birth_certificates (
     authority             VARCHAR(200) NOT NULL,
     address_id            BIGINT,
     CONSTRAINT fk_user    FOREIGN KEY (user_id) REFERENCES users(id),
-    CONSTRAINT fk_address    FOREIGN KEY (address_id) REFERENCES addresses(id)
+    CONSTRAINT fk_address FOREIGN KEY (address_id) REFERENCES addresses(id)
 );
 
 

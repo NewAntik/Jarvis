@@ -18,7 +18,7 @@ public class CommandExecuterFacadeImpl implements CommandExecuterFacade {
 
 	private final List<CommandExecuterService> executers;
 
-	private final Map<String, CommandExecuterService> executerRegistry = new HashMap<>();
+	private static final Map<String, CommandExecuterService> executerRegistry = new HashMap<>();
 
 	public CommandExecuterFacadeImpl(final List<CommandExecuterService> executers){
 		this.executers = executers;
@@ -39,7 +39,7 @@ public class CommandExecuterFacadeImpl implements CommandExecuterFacade {
 
 	@Override
 	public void execute(final String text, final Long chatId) throws IOException {
-		final Optional<CommandExecuterService> executerOpt = getExecuterFor(text);
+		final Optional<CommandExecuterService> executerOpt = ExecuteProvider.getExecuterFor(text);
 		if(executerOpt.isPresent()){
 			final CommandExecuterService executer = executerOpt.get();
 			executer.execute(text, chatId);
@@ -48,29 +48,34 @@ public class CommandExecuterFacadeImpl implements CommandExecuterFacade {
 		}
 	}
 
-	private Optional<CommandExecuterService> getExecuterFor(final String text){
-		if(MessageChecker.isInfo(text)){
-			return getFromRegistry(Constants.ExecuterType.INFO);
-		} else if(MessageChecker.isRnokpp(text)){
-			return getFromRegistry(Constants.ExecuterType.RNOKPP);
-		} else if(MessageChecker.isPhoneNumber(text)){
-			return getFromRegistry(Constants.ExecuterType.PHONE_NUMBER);
-		} else if(MessageChecker.isPassport(text)){
-			return getFromRegistry(Constants.ExecuterType.PASSPORT);
-		} else if(MessageChecker.isForeignPassport(text)){
-			return getFromRegistry(Constants.ExecuterType.FOREIGN_PASSPORT);
-		} else if(MessageChecker.isNameSurNameMidlName(text)){
-			return getFromRegistry(Constants.ExecuterType.NAME_SUR_NAME_MIDL_NAME);
-		} else if(MessageChecker.isNameAndSurName(text)){
-			return getFromRegistry(Constants.ExecuterType.SUR_NAME_NAME);
-		}else if(MessageChecker.isSurNameAndMidlName(text)){
-			return getFromRegistry(Constants.ExecuterType.SUR_NAME_MIDL_NAME);
+	private static class ExecuteProvider {
+
+		public static Optional<CommandExecuterService> getExecuterFor(final String text){
+			if(MessageChecker.isInfo(text)){
+				return getFromRegistry(Constants.ExecuterType.INFO);
+			} else if(MessageChecker.isRnokpp(text)){
+				return getFromRegistry(Constants.ExecuterType.RNOKPP);
+			} else if(MessageChecker.isPhoneNumber(text)){
+				return getFromRegistry(Constants.ExecuterType.PHONE_NUMBER);
+			} else if(MessageChecker.isPassport(text)){
+				return getFromRegistry(Constants.ExecuterType.PASSPORT);
+			} else if(MessageChecker.isForeignPassport(text)){
+				return getFromRegistry(Constants.ExecuterType.FOREIGN_PASSPORT);
+			} else if(MessageChecker.isNameSurNameMidlName(text)){
+				return getFromRegistry(Constants.ExecuterType.NAME_SUR_NAME_MIDL_NAME);
+			} else if(MessageChecker.isNameAndSurName(text)){
+				return getFromRegistry(Constants.ExecuterType.SUR_NAME_NAME);
+			} else if(MessageChecker.isSurNameAndMidlName(text)){
+				return getFromRegistry(Constants.ExecuterType.SUR_NAME_MIDL_NAME);
+			} else if(MessageChecker.isNameSurNameMidlNameDate(text)){
+				return getFromRegistry(Constants.ExecuterType.NAME_SUR_NAME_MIDL_NAME_DATE);
+			}
+
+			return Optional.empty();
 		}
 
-		return Optional.empty();
-	}
-
-		private Optional<CommandExecuterService> getFromRegistry(final String text){
-		return Optional.ofNullable(executerRegistry.get(text));
+		private static Optional<CommandExecuterService> getFromRegistry(final String text){
+			return Optional.ofNullable(executerRegistry.get(text));
+		}
 	}
 }

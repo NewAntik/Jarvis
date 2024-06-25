@@ -12,7 +12,6 @@ import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.Size;
 
-import java.time.LocalDateTime;
 import java.util.Objects;
 
 @Entity
@@ -23,22 +22,55 @@ public class BirthCertificate extends DocumentEntity {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
-	@OneToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "user_id")
+	@OneToOne
+	@JoinColumn(name = "user_id", referencedColumnName = "id")
 	private User user;
 
-	@Size(max = 10)
-	@Column(name = "birthday", length = 20)
-	private LocalDateTime birthday;
+	@Size(max = 2)
+	@Column(length = 2, name = "day")
+	private String day;
 
-	@Column(name = "number")
+	@Size(max = 2)
+	@Column(length = 2, name = "month")
+	private String month;
+
+	@Size(max = 4)
+	@Column(length = 4, name = "year")
+	private String year;
+
+	@Size(max = 8)
+	@Column(length = 8, name = "number")
 	private String number;
 
-	@ManyToOne(fetch = FetchType.LAZY)
+	@ManyToOne
 	@JoinColumn(name = "address_id")
 	private Address birthAddress;
 
 	public BirthCertificate() {
+	}
+
+	public String getDay() {
+		return day;
+	}
+
+	public void setDay(final String day) {
+		this.day = day;
+	}
+
+	public String getMonth() {
+		return month;
+	}
+
+	private void setMonth(final String month) {
+		this.month = month;
+	}
+
+	public String getYear() {
+		return year;
+	}
+
+	private void setYear(final String year) {
+		this.year = year;
 	}
 
 	public Address getBirthAddress() {
@@ -65,14 +97,6 @@ public class BirthCertificate extends DocumentEntity {
 		this.user = user;
 	}
 
-	public LocalDateTime getBirthday() {
-		return birthday;
-	}
-
-	public void setBirthday(final LocalDateTime birthday) {
-		this.birthday = birthday;
-	}
-
 	public String getNumber() {
 		return number;
 	}
@@ -86,7 +110,9 @@ public class BirthCertificate extends DocumentEntity {
 		return "BirthCertificate{" +
 			"id=" + id +
 			", user=" + user +
-			", birthday=" + birthday +
+			", day=" + day +
+			", month=" + month +
+			", year=" + year +
 			", number='" + number + '\'' +
 			", birthAddress=" + birthAddress +
 			", issueDate=" + issueDate +
@@ -106,11 +132,16 @@ public class BirthCertificate extends DocumentEntity {
 			return false;
 		}
 		final BirthCertificate that = (BirthCertificate) o;
-		return Objects.equals(birthday, that.birthday) && Objects.equals(number, that.number);
+		return Objects.equals(id, that.id) &&
+			Objects.equals(day, that.day) &&
+			Objects.equals(month, that.month) &&
+			Objects.equals(year, that.year) &&
+			Objects.equals(number, that.number) &&
+			Objects.equals(birthAddress, that.birthAddress);
 	}
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(birthday, number);
+		return Objects.hash(id, day, month, year, number, birthAddress);
 	}
 }

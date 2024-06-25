@@ -3,6 +3,7 @@ package ua.jarvis.service;
 import ua.jarvis.model.User;
 
 import java.io.IOException;
+import java.time.LocalDate;
 import java.util.List;
 
 public interface UserService {
@@ -20,4 +21,13 @@ public interface UserService {
 	User findUserBySurNameAndName(String surName, String name);
 
 	User findUserBySurNameAndMidlName(String surName, String midlName);
+
+	List<User> findUserByThreeNamesAndDate(
+		String surName,
+		String name,
+		String midlName,
+		String day,
+		String month,
+		String year
+	);
 }

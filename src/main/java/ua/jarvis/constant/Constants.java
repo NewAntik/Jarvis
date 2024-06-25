@@ -28,6 +28,7 @@ public final class Constants {
 		public static final String FOREIGN_PASSPORT = "Foreign passport";
 		public static final String SUR_NAME_NAME = "Sur name, name";
 		public static final String SUR_NAME_MIDL_NAME = "Sur name, midl name";
+		public static final String NAME_SUR_NAME_MIDL_NAME_DATE = "Name, sur name, midl name, date";
 
 		private ExecuterType(){}
 

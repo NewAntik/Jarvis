@@ -9,7 +9,39 @@ public final class MessageChecker {
 
 	private static String normalizedText;
 
+	private static String[] date;
+
 	private MessageChecker(){}
+
+	public static String[] getDate(){
+		return date;
+	}
+
+	public static boolean isNameSurNameMidlNameDate(final String messageText){
+		final String[] text = messageText.split(" ", -1);
+
+		return text.length == 4 && isDate(text[3]);
+	}
+
+	private static boolean isDate(final String text) {
+		date = null;
+		final String[] parts = text.split("\\.");
+		if (parts.length != 3) {
+			return false;
+		}
+		for (String part : parts) {
+			if (!part.chars().allMatch(Character::isDigit)) {
+				return false;
+			}
+		}
+
+		date = new String[3];
+		date[0] = parts[0];
+		date[1] = parts[1];
+		date[2] = parts[2];
+
+		return true;
+	}
 
 	public static boolean isSurNameAndMidlName(final String messageText) {
 		final String[] surNameAndMidlName = messageText.split(" ", -1);

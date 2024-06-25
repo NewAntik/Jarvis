@@ -494,7 +494,11 @@ public class DOCXFileFormatterServiceImpl implements FileFormatterService<List<X
 		}
 
 		if(user.getBirthCertificate() != null){
-			basicInfoRun.setText(user.getBirthCertificate().getBirthday().format(DATE_FORMATTER) + WHITE_SPACE);
+			final BirthCertificate certificate = user.getBirthCertificate();
+			basicInfoRun.setText(
+				certificate.getDay() + DOT + certificate.getMonth() + DOT + certificate.getYear()
+					+ WHITE_SPACE
+			);
 		}
 
 		if(user.getRnokpp() != null){
