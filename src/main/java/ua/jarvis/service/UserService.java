@@ -23,11 +23,18 @@ public interface UserService {
 	User findUserBySurNameAndMidlName(String surName, String midlName);
 
 	List<User> findUserByThreeNamesAndDate(
-		String surName,
-		String name,
-		String midlName,
-		String day,
-		String month,
-		String year
+		String surName, String name, String midlName, String day, String month, String year
+	);
+
+	List<User> findUserByNameMidlNameAndDate(
+		String name, String midlName, String day, String month, String year
+	);
+
+	List<User> findUserBySurNameMidlNameAndDate(
+		String surName, String midlName, String day, String month, String year
+	);
+
+	List<User> findUserBySurNameNameAndDate(
+		String surName, String name, String day, String month, String year
 	);
 }

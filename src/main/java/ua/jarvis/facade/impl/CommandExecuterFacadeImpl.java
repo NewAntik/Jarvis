@@ -69,6 +69,12 @@ public class CommandExecuterFacadeImpl implements CommandExecuterFacade {
 				return getFromRegistry(Constants.ExecuterType.SUR_NAME_MIDL_NAME);
 			} else if(MessageChecker.isNameSurNameMidlNameDate(text)){
 				return getFromRegistry(Constants.ExecuterType.NAME_SUR_NAME_MIDL_NAME_DATE);
+			} else if(MessageChecker.isUnderscoreNameMidlNameAndDate(text)){
+				return getFromRegistry(Constants.ExecuterType.UNDERSCORE_NAME_MIDL_NAME_DATE);
+			} else if(MessageChecker.isSurNameMidlNameAndDate(text)){
+				return getFromRegistry(Constants.ExecuterType.SUR_NAME_UNDERSCORE_MIDL_NAME_DATE);
+			} else if(MessageChecker.isSurNameNameAndDate(text)){
+				return getFromRegistry(Constants.ExecuterType.NAME_SUR_NAME_UNDERSCORE_DATE);
 			}
 
 			return Optional.empty();

@@ -4,6 +4,7 @@ import ua.jarvis.constant.Constants;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public final class MessageChecker {
 
@@ -17,9 +18,43 @@ public final class MessageChecker {
 		return date;
 	}
 
-	public static boolean isNameSurNameMidlNameDate(final String messageText){
+	public static boolean isSurNameNameAndDate(final String messageText){
 		final String[] text = messageText.split(" ", -1);
 
+		if (text.length == 4 && "_".equals(text[2]) && isCyrillicStrings(text[0], text[1])) {
+			isDate(text[3]);
+			return true;
+		}
+
+		return false;
+	}
+
+
+	public static boolean isSurNameMidlNameAndDate(final String messageText) {
+		final String[] text = messageText.split(" ", -1);
+
+		if (text.length == 4 && "_".equals(text[1]) && isCyrillicStrings(text[0], text[2])) {
+			isDate(text[3]);
+			return true;
+		}
+		return false;
+	}
+
+	public static boolean isUnderscoreNameMidlNameAndDate(final String messageText) {
+		final String[] text = messageText.split(" ", -1);
+
+		if (text.length == 4 && "_".equals(text[0]) && isCyrillicStrings(text[1], text[2])) {
+			isDate(text[3]);
+			return true;
+		}
+		return false;
+	}
+
+	public static boolean isNameSurNameMidlNameDate(final String messageText){
+		final String[] text = messageText.split(" ", -1);
+		if(Objects.equals(text[0], "_") || Objects.equals(text[1], "_") || Objects.equals(text[2], "_")){
+			return false;
+		}
 		return text.length == 4 && isDate(text[3]);
 	}
 
@@ -46,7 +81,9 @@ public final class MessageChecker {
 	public static boolean isSurNameAndMidlName(final String messageText) {
 		final String[] surNameAndMidlName = messageText.split(" ", -1);
 
-		return surNameAndMidlName.length == 3 && "_".equals(surNameAndMidlName[1]);
+		return surNameAndMidlName.length == 3 &&
+			"_".equals(surNameAndMidlName[1]) &&
+			isCyrillicStrings(surNameAndMidlName[0], surNameAndMidlName[2]);
 	}
 
 	public static boolean isNameAndSurName(final String messageText){
@@ -61,7 +98,7 @@ public final class MessageChecker {
 		return names.length == 3 && isCyrillicStrings(names);
 	}
 
-	private static boolean isCyrillicStrings(final String[] strings) {
+	private static boolean isCyrillicStrings(final String... strings) {
 		List<Boolean> answer = new ArrayList<>();
 		for(String s : strings){
 			answer.add(isCyrillicString(s));
