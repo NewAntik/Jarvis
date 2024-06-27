@@ -3,6 +3,7 @@ package ua.jarvis.model.specification;
 import jakarta.persistence.criteria.Join;
 import jakarta.persistence.criteria.JoinType;
 import org.springframework.data.jpa.domain.Specification;
+import ua.jarvis.model.Address;
 import ua.jarvis.model.BirthCertificate;
 import ua.jarvis.model.User;
 
@@ -37,6 +38,13 @@ public class UserSpecificationProvider {
 		return (root, query, builder) -> {
 			Join<User, BirthCertificate> birthCertificateJoin = root.join("birthCertificate", JoinType.INNER);
 			return builder.equal(birthCertificateJoin.get("day"), day);
+		};
+	}
+
+	public static Specification<User> hasRegion(final String region) {
+		return (root, query, builder) -> {
+			Join<User, Address> addressJoin = root.joinSet("addresses", JoinType.INNER);
+			return builder.equal(addressJoin.get("region"), region);
 		};
 	}
 }

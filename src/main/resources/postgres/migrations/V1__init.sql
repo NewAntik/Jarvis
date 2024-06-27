@@ -59,6 +59,7 @@ CREATE TABLE foreign_passports(
 
 CREATE TABLE addresses(
     id                    BIGINT PRIMARY KEY,
+    region                VARCHAR(50),
     city                  VARCHAR(50) NOT NULL,
     street                VARCHAR(50),
     home_number           VARCHAR(50),

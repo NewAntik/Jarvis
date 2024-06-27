@@ -37,4 +37,8 @@ public interface UserService {
 	List<User> findUserBySurNameNameAndDate(
 		String surName, String name, String day, String month, String year
 	);
+
+	List<User> findUserByThreeNamesDateAndRegion(
+		String surName, String name, String midlName, String region, String day, String month, String year
+	);
 }

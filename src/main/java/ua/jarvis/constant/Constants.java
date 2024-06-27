@@ -30,6 +30,7 @@ public final class Constants {
 		public static final String UNDERSCORE_NAME_MIDL_NAME_DATE = "_, name, midl name, date";
 		public static final String SUR_NAME_UNDERSCORE_MIDL_NAME_DATE = "Sur name, _, midl name, date";
 		public static final String NAME_SUR_NAME_UNDERSCORE_DATE = "name, sur name, _, date" ;
+		public static final String THREE_NAMES_DATE_REGION = "Three names, date, region.";
 
 		private ExecuterType(){}
 

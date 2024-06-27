@@ -1,8 +1,8 @@
 -- Users
-INSERT INTO users (id, name, midl_name, sur_name, rnokpp, sex, illegal_actions, created_date, updated_date)
+INSERT INTO users (id, sur_name, name, midl_name, rnokpp, sex, illegal_actions, created_date, updated_date)
 VALUES
-    (1, 'Іван', 'Іванович', 'Іванов', '1234567890', 'MALE', 'Протиправна діяльність №199', '2023-01-01 10:00:00', '2023-01-01 10:00:00'),
-    (2, 'Тарас', 'Григорович', 'Шевченко', '7890654321', 'MALE', 'Протиправна діяльність №200', '2023-01-02 10:00:00', '2023-01-02 10:00:00'),
+    (1, 'Іванов', 'Іван', 'Іванович', '1234567890', 'MALE', 'Протиправна діяльність №199', '2023-01-01 10:00:00', '2023-01-01 10:00:00'),
+    (2, 'Шевченко', 'Тарас', 'Григорович', '7890654321', 'MALE', 'Протиправна діяльність №200', '2023-01-02 10:00:00', '2023-01-02 10:00:00'),
     (3, 'Alice', 'Alice', 'Johnson', '1112225555', 'FEMALE', 'Протиправна діяльність відсутня.', '2023-01-03 10:00:00', '2023-01-03 10:00:00'),
     (4, 'Bob', 'Bob', 'Brown', '3334448888', 'MALE', 'Протиправна діяльність відсутня.', '2023-01-04 10:00:00', '2023-01-04 10:00:00'),
     (5, 'Charlie', 'Charlie', 'Davis', '5556660945', 'MALE', 'Протиправна діяльність відсутня.', '2023-01-05 10:00:00', '2023-01-05 10:00:00');
@@ -55,17 +55,17 @@ VALUES
     (5, 'FB654321', '2020-01-01', '2030-01-01', TRUE, FALSE, 'Kiev, Heroyev street, home number 4', 5);
 
 -- Addresses
-INSERT INTO addresses (id, city, street, home_number, flat_number, created_date, updated_date, juridical_person_id)
+INSERT INTO addresses (id, region, city, street, home_number, flat_number, created_date, updated_date, juridical_person_id)
 VALUES
-    (1, 'City A', 'Street 1', '10', '101', '2023-01-01 10:00:00', '2023-01-01 10:00:00', 1),
-    (2, 'City B', 'Street 2', '20', '202', '2023-01-02 10:00:00', '2023-01-02 10:00:00', 2);
+    (1, 'Київська', 'Київ', 'Проспект Перемоги', '10', '101', '2023-01-01 10:00:00', '2023-01-01 10:00:00', 1),
+    (2, 'Донецька', 'Донецьк', 'Київський проспект', '20', '202', '2023-01-02 10:00:00', '2023-01-02 10:00:00', 2);
 
 -- Address-User Relationships
 INSERT INTO addresses_users (users_id, addresses_id)
 VALUES
-    (1, 1),
-    (2, 2),
-    (3, 1);
+    (2, 1),
+    (1, 2),
+    (3, 2);
 
 -- Cars
 INSERT INTO cars (id, plate_number, color, model, car_type, vin_Code, issue_date, juridical_person_id, owner_Id)

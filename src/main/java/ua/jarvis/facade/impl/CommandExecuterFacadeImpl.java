@@ -75,6 +75,8 @@ public class CommandExecuterFacadeImpl implements CommandExecuterFacade {
 				return getFromRegistry(Constants.ExecuterType.SUR_NAME_UNDERSCORE_MIDL_NAME_DATE);
 			} else if(MessageChecker.isSurNameNameAndDate(text)){
 				return getFromRegistry(Constants.ExecuterType.NAME_SUR_NAME_UNDERSCORE_DATE);
+			} else if(MessageChecker.isThreeNamesDateAndRegion(text)){
+				return getFromRegistry(Constants.ExecuterType.THREE_NAMES_DATE_REGION);
 			}
 
 			return Optional.empty();

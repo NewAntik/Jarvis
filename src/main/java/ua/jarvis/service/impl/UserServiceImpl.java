@@ -277,6 +277,68 @@ public class UserServiceImpl implements UserService {
 		return users;
 	}
 
+	@Override
+	@Transactional(readOnly = true)
+	public List<User> findUserByThreeNamesDateAndRegion(
+		final String surName,
+		final String name,
+		final String midlName,
+		final String region,
+		final String day,
+		final String month,
+		final String year
+	) {
+		LOG.info("findUserByThreeNamesDateAndRegion method was called with names and date: {}, {}, {},{}, {}.{}.{}",
+			surName, name, midlName, region, day, month, year
+		);
+
+		List<User> users;
+		if(day.equals("00") && !month.equals("00") && !year.equals("0000")){
+			final Specification<User> spec = Specification.where(UserSpecificationProvider.hasSurName(surName))
+				.and(UserSpecificationProvider.hasName(name))
+				.and(UserSpecificationProvider.hasMidlName(midlName))
+				.and(UserSpecificationProvider.hasRegion(region))
+				.and(UserSpecificationProvider.hasBirthMonth(month))
+				.and(UserSpecificationProvider.hasBirthYear(year));
+			users = findBySpecification(spec);
+
+		} else if(month.equals("00")&& !day.equals("00") && !year.equals("0000")){
+			final Specification<User> spec = Specification.where(UserSpecificationProvider.hasSurName(surName))
+				.and(UserSpecificationProvider.hasName(name))
+				.and(UserSpecificationProvider.hasMidlName(midlName))
+				.and(UserSpecificationProvider.hasRegion(region))
+				.and(UserSpecificationProvider.hasBirthDay(day))
+				.and(UserSpecificationProvider.hasBirthYear(year));
+			users = findBySpecification(spec);
+
+		} else if(year.equals("0000") && !month.equals("00")&& !day.equals("00")){
+			final Specification<User> spec = Specification.where(UserSpecificationProvider.hasSurName(surName))
+				.and(UserSpecificationProvider.hasName(name))
+				.and(UserSpecificationProvider.hasMidlName(midlName))
+				.and(UserSpecificationProvider.hasRegion(region))
+				.and(UserSpecificationProvider.hasBirthDay(day))
+				.and(UserSpecificationProvider.hasBirthMonth(month));
+			users = findBySpecification(spec);
+		} else if(year.equals("0000") && month.equals("00")&& day.equals("00")){
+			final Specification<User> spec = Specification.where(UserSpecificationProvider.hasSurName(surName))
+				.and(UserSpecificationProvider.hasName(name))
+				.and(UserSpecificationProvider.hasMidlName(midlName))
+				.and(UserSpecificationProvider.hasRegion(region));
+			users = findBySpecification(spec);
+		}else {
+			final Specification<User> spec = Specification.where(UserSpecificationProvider.hasSurName(surName))
+				.and(UserSpecificationProvider.hasName(name))
+				.and(UserSpecificationProvider.hasMidlName(midlName))
+				.and(UserSpecificationProvider.hasRegion(region))
+				.and(UserSpecificationProvider.hasBirthDay(day))
+				.and(UserSpecificationProvider.hasBirthMonth(month))
+				.and(UserSpecificationProvider.hasBirthYear(year));
+			users = findBySpecification(spec);
+		}
+
+		return users;
+	}
+
 	private List<User> findBySpecification(final Specification<User> spec){
 		final List<User> users = userRepository.findAll(spec);
 		users.forEach(this::initialiseHibernateSessions);

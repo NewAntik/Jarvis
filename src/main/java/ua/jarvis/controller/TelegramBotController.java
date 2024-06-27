@@ -13,8 +13,8 @@ import ua.jarvis.model.Participant;
 import ua.jarvis.service.ParticipantService;
 
 @Controller
-public class TelegramBotService extends TelegramLongPollingBot {
-	private static final Logger LOG = LoggerFactory.getLogger(TelegramBotService.class);
+public class TelegramBotController extends TelegramLongPollingBot {
+	private static final Logger LOG = LoggerFactory.getLogger(TelegramBotController.class);
 
 	private final ParticipantService participantService;
 
@@ -24,7 +24,7 @@ public class TelegramBotService extends TelegramLongPollingBot {
 
 	private final CommandExecuterFacade facade;
 
-	public TelegramBotService(
+	public TelegramBotController(
 		@Value("${bot.name}") final String botName,
 		@Value("${bot.token}") final String token,
 		final ParticipantService participantService,

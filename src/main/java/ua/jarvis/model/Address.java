@@ -28,6 +28,11 @@ public class Address extends BaseEntity {
 
 	@NotNull
 	@Size(max = 50)
+	@Column(length = 50, name = "region")
+	private String region;
+
+	@NotNull
+	@Size(max = 50)
 	@Column(length = 50, name = "city")
 	private String city;
 
@@ -52,6 +57,14 @@ public class Address extends BaseEntity {
 	private Set<User> users = new HashSet<>();
 
 	public Address() {}
+
+	public String getRegion() {
+		return region;
+	}
+
+	public void setRegion(final String region) {
+		this.region = region;
+	}
 
 	public JuridicalPerson getJuridicalPerson() {
 		return juridicalPerson;
@@ -113,6 +126,7 @@ public class Address extends BaseEntity {
 	public String toString() {
 		return "Address{" +
 			"id=" + id +
+			", region='" + region + '\'' +
 			", city='" + city + '\'' +
 			", street='" + street + '\'' +
 			", homeNumber='" + homeNumber + '\'' +
@@ -130,6 +144,7 @@ public class Address extends BaseEntity {
 		}
 		final Address address = (Address) o;
 		return Objects.equals(id, address.id) &&
+			Objects.equals(region, address.region) &&
 			Objects.equals(city, address.city) &&
 			Objects.equals(street, address.street) &&
 			Objects.equals(homeNumber, address.homeNumber) &&
@@ -138,6 +153,6 @@ public class Address extends BaseEntity {
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(id, city, street, homeNumber, flatNumber);
+		return Objects.hash(id, region, city, street, homeNumber, flatNumber);
 	}
 }

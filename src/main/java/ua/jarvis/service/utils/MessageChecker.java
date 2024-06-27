@@ -18,6 +18,24 @@ public final class MessageChecker {
 		return date;
 	}
 
+	private static boolean isContainsUnderscore(final String... strings){
+		List<Boolean> answer = new ArrayList<>();
+		for(String s : strings){
+			answer.add(s.equals("_"));
+		}
+
+		return !answer.contains(false);
+	}
+
+	public static boolean isThreeNamesDateAndRegion(final String messageText) {
+		final String[] text = messageText.split(" ", -1);
+
+		if(isContainsUnderscore(text[0], text[1] ,text[2])){
+			return false;
+		}
+		return text.length == 5 && isDate(text[3]) && isCyrillicStrings(text[0], text[1], text[2], text[4]);
+	}
+
 	public static boolean isSurNameNameAndDate(final String messageText){
 		final String[] text = messageText.split(" ", -1);
 
@@ -52,10 +70,10 @@ public final class MessageChecker {
 
 	public static boolean isNameSurNameMidlNameDate(final String messageText){
 		final String[] text = messageText.split(" ", -1);
-		if(Objects.equals(text[0], "_") || Objects.equals(text[1], "_") || Objects.equals(text[2], "_")){
+		if(isContainsUnderscore(text[0], text[1] ,text[2])){
 			return false;
 		}
-		return text.length == 4 && isDate(text[3]);
+		return text.length == 4 && isDate(text[3]) && isCyrillicStrings(text[0], text[1], text[2]);
 	}
 
 	private static boolean isDate(final String text) {
