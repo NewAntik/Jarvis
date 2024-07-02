@@ -18,6 +18,16 @@ public final class MessageChecker {
 		return date;
 	}
 
+	public static boolean isSurNameNameDataRegion(final String messageText){
+		final String[] text = messageText.split(" ", -1);
+
+		if(text.length != 5 || !text[2].equals("_")){
+			return false;
+		}
+
+		return isDate(text[3]) && isCyrillicStrings(text[0], text[1], text[4]);
+	}
+
 	private static boolean isContainsUnderscore(final String... strings){
 		List<Boolean> answer = new ArrayList<>();
 		for(String s : strings){

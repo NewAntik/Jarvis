@@ -14,14 +14,14 @@ import java.io.IOException;
 import java.util.List;
 
 @Service
-public class PhoneCommandExecuterServiceImpl implements CommandExecuterService {
-	private static final Logger LOG = LoggerFactory.getLogger(PhoneCommandExecuterServiceImpl.class);
+public class PhoneExecuterServiceImpl implements CommandExecuterService {
+	private static final Logger LOG = LoggerFactory.getLogger(PhoneExecuterServiceImpl.class);
 
 	private final ResponderServiceImpl responder;
 
 	private final UserService userService;
 
-	public PhoneCommandExecuterServiceImpl(
+	public PhoneExecuterServiceImpl(
 		final ResponderServiceImpl responder,
 		final UserService userService
 	) {

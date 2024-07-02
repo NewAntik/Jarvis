@@ -318,9 +318,9 @@ public class PDFFileFormatterServiceImpl implements FileFormatterService<List<IB
 				.add(user.getName()).setFont(regularFont).setFontSize(14));
 		}
 
-		if(user.getMidlName() != null){
+		if(user.getMiddleName() != null){
 			basicInfo.add(new Paragraph().add(new Text("По батькові: ").setFont(boldFont).setFontSize(16))
-				.add(new Paragraph(user.getMidlName()).setFont(regularFont).setFontSize(14)));
+				.add(new Paragraph(user.getMiddleName()).setFont(regularFont).setFontSize(14)));
 		}
 
 		if(user.getSurName() != null){

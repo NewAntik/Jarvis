@@ -489,8 +489,8 @@ public class DOCXFileFormatterServiceImpl implements FileFormatterService<List<X
 			basicInfoRun.setText(user.getName() + WHITE_SPACE);
 		}
 
-		if(user.getMidlName() != null){
-			basicInfoRun.setText(user.getMidlName() + WHITE_SPACE);
+		if(user.getMiddleName() != null){
+			basicInfoRun.setText(user.getMiddleName() + WHITE_SPACE);
 		}
 
 		if(user.getBirthCertificate() != null){

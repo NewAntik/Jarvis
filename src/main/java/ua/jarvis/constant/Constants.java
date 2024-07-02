@@ -29,10 +29,37 @@ public final class Constants {
 		public static final String NAME_SUR_NAME_MIDL_NAME_DATE = "Name, sur name, midl name, date";
 		public static final String UNDERSCORE_NAME_MIDL_NAME_DATE = "_, name, midl name, date";
 		public static final String SUR_NAME_UNDERSCORE_MIDL_NAME_DATE = "Sur name, _, midl name, date";
-		public static final String NAME_SUR_NAME_UNDERSCORE_DATE = "name, sur name, _, date" ;
+		public static final String SUR_NAME_NAME_UNDERSCORE_DATE = "name, sur name, _, date" ;
 		public static final String THREE_NAMES_DATE_REGION = "Three names, date, region.";
+		public static final String SUR_NAME_NAME_UNDERSCORE_DATE_REGION = "Sur name, name, _, date, region.";
 
 		private ExecuterType(){}
+	}
 
+	public static final class SpecificationType {
+		public static final String NAME = "name";
+		public static final String SUR_NAME = "surName";
+		public static final String MIDDLE_NAME = "middleName";
+		public static final String MONTH = "month";
+		public static final String YEAR = "year";
+		public static final String DAY = "day";
+		public static final String REGION = "region";
+		public static final String BIRTH_CERTIFICATE = "birthCertificate";
+		public static final String ADRESSES = "addresses";
+		public static final String RNOKPP = "rnokpp";
+		public static final String PHONES = "phones";
+		public static final String PHONE_NUMBER = "number";
+		public static final String CARS = "cars";
+		public static final String PLATE_NUMBER = "plateNumber";
+		public static final String EMAILS = "emails";
+		public static final String EMAIL_ADDRESS = "emailAddress";
+		public static final String LICENSE_NUMBER = "licenseNumber";
+		public static final String DRIVER_LICENSE = "driverLicense";
+		public static final String FLAT_NUMBER = "flatNumber";
+		public static final String HOME_NUMBER = "homeNumber";
+		public static final String STREET = "street";
+		public static final String CITY = "city";
+
+		private SpecificationType(){}
 	}
 }

@@ -8,12 +8,12 @@ import ua.jarvis.service.executer.CommandExecuterService;
 import ua.jarvis.service.impl.ResponderServiceImpl;
 
 @Service
-public class InfoCommandExecuterServiceImpl implements CommandExecuterService {
-	private static final Logger LOG = LoggerFactory.getLogger(InfoCommandExecuterServiceImpl.class);
+public class InfoExecuterServiceImpl implements CommandExecuterService {
+	private static final Logger LOG = LoggerFactory.getLogger(InfoExecuterServiceImpl.class);
 
 	private final ResponderServiceImpl responder;
 
-	public InfoCommandExecuterServiceImpl(final ResponderServiceImpl responder) {
+	public InfoExecuterServiceImpl(final ResponderServiceImpl responder) {
 		this.responder = responder;
 	}
 

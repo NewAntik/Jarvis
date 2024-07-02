@@ -5,24 +5,24 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import ua.jarvis.constant.Constants;
 import ua.jarvis.model.User;
+import ua.jarvis.model.criteria.UserCriteria;
 import ua.jarvis.service.UserService;
 import ua.jarvis.service.executer.CommandExecuterService;
 import ua.jarvis.service.impl.ResponderServiceImpl;
 import ua.jarvis.service.utils.MessageChecker;
 
 import java.io.IOException;
-import java.time.LocalDate;
 import java.util.List;
 
 @Service
-public class ThreeNamesAndDateCommandExecuterServiceImpl implements CommandExecuterService {
-	private static final Logger LOG = LoggerFactory.getLogger(ThreeNamesAndDateCommandExecuterServiceImpl.class);
+public class ThreeNamesAndDateExecuterServiceImpl implements CommandExecuterService {
+	private static final Logger LOG = LoggerFactory.getLogger(ThreeNamesAndDateExecuterServiceImpl.class);
 
 	private final ResponderServiceImpl responder;
 
 	private final UserService userService;
 
-	public ThreeNamesAndDateCommandExecuterServiceImpl(
+	public ThreeNamesAndDateExecuterServiceImpl(
 		final ResponderServiceImpl responder,
 		final UserService userService
 	) {
@@ -41,14 +41,31 @@ public class ThreeNamesAndDateCommandExecuterServiceImpl implements CommandExecu
 		responder.sendMessage(chatId,"Триває пошук за ПІБ та датою: " + text);
 		final String[] names = text.split(" ", -1);
 		final String[] dates = MessageChecker.getDate();
-		final List<User> users = userService.findUserByThreeNamesAndDate(
-			names[0], names[1], names[2], dates[0], dates[1], dates[2]
-		);
+		final UserCriteria criteria = createCriteria(names[0], names[1], names[2], dates[0], dates[1], dates[2]);
+		final List<User> users = userService.findUserByThreeNamesAndDate(criteria);
 		if(users.size() > 1){
 			responder.sendMessage(chatId, "За ПІБ та датою знайдено: " + users.size() + " людей.");
 		}
 		for (User user : users) {
 			responder.createDOCXDocumentAndSend(chatId, user);
 		}
+	}
+
+	private UserCriteria createCriteria(
+		final String surName,
+		final String name,
+		final String midlName,
+		final String day,
+		final String month,
+		final String year
+	) {
+		return new UserCriteria.UserCriteriaBuilder()
+			.surName(surName)
+			.name(name)
+			.middleName(midlName)
+			.day(day)
+			.month(month)
+			.year(year)
+			.build();
 	}
 }

@@ -33,8 +33,8 @@ public class User extends BaseEntity {
 	private String name;
 
 	@Size(max = 50)
-	@Column(length = 50, name = "midl_name")
-	private String midlName;
+	@Column(length = 50, name = "middle_name")
+	private String middleName;
 
 	@Size(max = 50)
 	@Column(length = 50, name = "sur_name")
@@ -128,12 +128,12 @@ public class User extends BaseEntity {
 		this.name = name;
 	}
 
-	public String getMidlName() {
-		return midlName;
+	public String getMiddleName() {
+		return middleName;
 	}
 
-	public void setMidlName(final String midlName) {
-		this.midlName = midlName;
+	public void setMiddleName(final String midlName) {
+		this.middleName = midlName;
 	}
 
 	public String getSurName() {
@@ -236,7 +236,7 @@ public class User extends BaseEntity {
 		return "User{" +
 			"id=" + id +
 			", name='" + name + '\'' +
-			", midlName='" + midlName + '\'' +
+			", midlName='" + middleName + '\'' +
 			", surName='" + surName + '\'' +
 			", rnokpp='" + rnokpp + '\'' +
 			", sex='" + sex + '\'' +
@@ -254,7 +254,7 @@ public class User extends BaseEntity {
 		final User user = (User) o;
 		return Objects.equals(id, user.id) &&
 			Objects.equals(name, user.name) &&
-			Objects.equals(midlName, user.midlName) &&
+			Objects.equals(middleName, user.middleName) &&
 			Objects.equals(surName, user.surName) &&
 			Objects.equals(rnokpp, user.rnokpp) &&
 			Objects.equals(sex, user.sex);
@@ -262,6 +262,6 @@ public class User extends BaseEntity {
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(id, name, midlName, surName, rnokpp, sex);
+		return Objects.hash(id, name, middleName, surName, rnokpp, sex);
 	}
 }

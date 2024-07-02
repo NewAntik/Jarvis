@@ -1,9 +1,9 @@
 package ua.jarvis.service;
 
 import ua.jarvis.model.User;
+import ua.jarvis.model.criteria.UserCriteria;
 
 import java.io.IOException;
-import java.time.LocalDate;
 import java.util.List;
 
 public interface UserService {
@@ -20,25 +20,17 @@ public interface UserService {
 
 	User findUserBySurNameAndName(String surName, String name);
 
-	User findUserBySurNameAndMidlName(String surName, String midlName);
+	User findUserBySurNameAndMidlName(UserCriteria criteria);
 
-	List<User> findUserByThreeNamesAndDate(
-		String surName, String name, String midlName, String day, String month, String year
-	);
+	List<User> findUserByThreeNamesAndDate(UserCriteria criteria);
 
-	List<User> findUserByNameMidlNameAndDate(
-		String name, String midlName, String day, String month, String year
-	);
+	List<User> findUserByNameMidlNameAndDate(UserCriteria criteria);
 
-	List<User> findUserBySurNameMidlNameAndDate(
-		String surName, String midlName, String day, String month, String year
-	);
+	List<User> findUserBySurNameMidlNameAndDate(UserCriteria criteria);
 
-	List<User> findUserBySurNameNameAndDate(
-		String surName, String name, String day, String month, String year
-	);
+	List<User> findUserBySurNameNameAndDate(UserCriteria criteria);
 
-	List<User> findUserByThreeNamesDateAndRegion(
-		String surName, String name, String midlName, String region, String day, String month, String year
-	);
+	List<User> findUserByThreeNamesDateAndRegion(UserCriteria criteria);
+
+	List<User> findUserBySurNameNameDateAndRegion(UserCriteria criteria);
 }

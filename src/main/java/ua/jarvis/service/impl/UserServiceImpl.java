@@ -10,7 +10,8 @@ import java.util.List;
 
 import org.springframework.transaction.annotation.Transactional;
 import ua.jarvis.model.User;
-import ua.jarvis.model.specification.UserSpecificationProvider;
+import ua.jarvis.model.criteria.UserCriteria;
+import ua.jarvis.model.specification.SpecificationProvider;
 import ua.jarvis.repository.UserRepository;
 import ua.jarvis.service.UserService;
 
@@ -21,8 +22,14 @@ public class UserServiceImpl implements UserService {
 
 	private final UserRepository userRepository;
 
-	public UserServiceImpl(final UserRepository userRepository) {
+	private final SpecificationProvider specProvider;
+
+	public UserServiceImpl(
+		final UserRepository userRepository,
+		final SpecificationProvider specProvider
+	) {
 		this.userRepository = userRepository;
+		this.specProvider = specProvider;
 	}
 
 	@Override
@@ -72,271 +79,66 @@ public class UserServiceImpl implements UserService {
 
 	@Override
 	@Transactional(readOnly = true)
-	public User findUserBySurNameAndMidlName(final String surName, final String midlName) {
-		LOG.info("findUserBySurNameAndMidlName method was called with names: {}, {}", surName, midlName);
+	public User findUserBySurNameAndMidlName(UserCriteria criteria) {
+		LOG.info("findUserBySurNameAndMiddleName method was called with criteria: {}", criteria);
 
-		final User user = userRepository.findUserBySurNameAndMidlName(surName, midlName).orElseThrow( () ->
-			new IllegalArgumentException(
-				"Данних повʼязаних з цим прізвищем та по батькові: " + surName + " " + midlName + NOT_EXISTS)
-		);
+		final Specification<User> spec = specProvider.get(criteria);
 
-		initialiseHibernateSessions(user);
-
-		return user;
+		return findBySpecification(spec).get(0);
 	}
 
 	@Override
 	@Transactional(readOnly = true)
-	public List<User> findUserByThreeNamesAndDate(
-		final String surName,
-		final String name,
-		final String midlName,
-		final String day,
-		final String month,
-		final String year
-	) {
-		LOG.info("findUserByThreeNamesAndDate method was called with names and date: {}, {}, {}, {}.{}.{}",
-			surName, name, midlName, day, month, year
-		);
+	public List<User> findUserByThreeNamesAndDate(final UserCriteria criteria) {
+		LOG.info("findUserByThreeNamesAndDate method was called with criteria: {}", criteria);
+		final Specification<User> spec = specProvider.get(criteria);
 
-		List<User> users;
-		if(day.equals("00") && !month.equals("00") && !year.equals("0000")){
-			final Specification<User> spec = Specification.where(UserSpecificationProvider.hasSurName(surName))
-				.and(UserSpecificationProvider.hasName(name))
-				.and(UserSpecificationProvider.hasMidlName(midlName))
-				.and(UserSpecificationProvider.hasBirthMonth(month))
-				.and(UserSpecificationProvider.hasBirthYear(year));
-			users = findBySpecification(spec);
-
-		} else if(month.equals("00")&& !day.equals("00") && !year.equals("0000")){
-			final Specification<User> spec = Specification.where(UserSpecificationProvider.hasSurName(surName))
-				.and(UserSpecificationProvider.hasName(name))
-				.and(UserSpecificationProvider.hasMidlName(midlName))
-				.and(UserSpecificationProvider.hasBirthDay(day))
-				.and(UserSpecificationProvider.hasBirthYear(year));
-			users = findBySpecification(spec);
-
-		} else if(year.equals("0000") && !month.equals("00")&& !day.equals("00")){
-			final Specification<User> spec = Specification.where(UserSpecificationProvider.hasSurName(surName))
-				.and(UserSpecificationProvider.hasName(name))
-				.and(UserSpecificationProvider.hasMidlName(midlName))
-				.and(UserSpecificationProvider.hasBirthDay(day))
-				.and(UserSpecificationProvider.hasBirthMonth(month));
-			users = findBySpecification(spec);
-		} else {
-			final Specification<User> spec = Specification.where(UserSpecificationProvider.hasSurName(surName))
-				.and(UserSpecificationProvider.hasName(name))
-				.and(UserSpecificationProvider.hasMidlName(midlName))
-				.and(UserSpecificationProvider.hasBirthDay(day))
-				.and(UserSpecificationProvider.hasBirthMonth(month))
-				.and(UserSpecificationProvider.hasBirthYear(year));
-			users = findBySpecification(spec);
-		}
-
-		return users;
+		return findBySpecification(spec);
 	}
 
 	@Override
 	@Transactional(readOnly = true)
-	public List<User> findUserByNameMidlNameAndDate(
-		final String name,
-		final String midlName,
-		final String day,
-		final String month,
-		final String year
-	) {
-		LOG.info("findUserByNameMidlNameAndDate method was called with names and date: {}, {}, {}.{}.{}",
-			name, midlName, day, month, year
-		);
-		List<User> users;
-		if(day.equals("00") && !month.equals("00") && !year.equals("0000")){
-			final Specification<User> spec = Specification.where(UserSpecificationProvider.hasName(name))
-				.and(UserSpecificationProvider.hasMidlName(midlName))
-				.and(UserSpecificationProvider.hasBirthMonth(month))
-				.and(UserSpecificationProvider.hasBirthYear(year));
-			users = findBySpecification(spec);
+	public List<User> findUserByNameMidlNameAndDate(final UserCriteria criteria) {
+		LOG.info("findUserByNameMidlNameAndDate method was called with criteria: {}", criteria);
+		final Specification<User> spec = specProvider.get(criteria);
 
-		} else if(month.equals("00")&& !day.equals("00") && !year.equals("0000")){
-			final Specification<User> spec = Specification.where(UserSpecificationProvider.hasName(name))
-				.and(UserSpecificationProvider.hasMidlName(midlName))
-				.and(UserSpecificationProvider.hasBirthDay(day))
-				.and(UserSpecificationProvider.hasBirthYear(year));
-			users = findBySpecification(spec);
-
-		} else if(year.equals("0000") && !month.equals("00")&& !day.equals("00")){
-			final Specification<User> spec = Specification.where(UserSpecificationProvider.hasName(name))
-				.and(UserSpecificationProvider.hasMidlName(midlName))
-				.and(UserSpecificationProvider.hasBirthDay(day))
-				.and(UserSpecificationProvider.hasBirthMonth(month));
-
-			users = findBySpecification(spec);
-
-		} else {
-			final Specification<User> spec = Specification.where(UserSpecificationProvider.hasName(name))
-				.and(UserSpecificationProvider.hasMidlName(midlName))
-				.and(UserSpecificationProvider.hasBirthDay(day))
-				.and(UserSpecificationProvider.hasBirthMonth(month))
-				.and(UserSpecificationProvider.hasBirthYear(month));
-			users = findBySpecification(spec);
-		}
-
-		return users;
+		return findBySpecification(spec);
 	}
 
 	@Override
 	@Transactional(readOnly = true)
-	public List<User> findUserBySurNameMidlNameAndDate(
-		final String surName,
-		final String midlName,
-		final String day,
-		final String month,
-		final String year
-	) {
-		LOG.info("findUserBySurNameMidlNameAndDate method was called with names and date: {}, {}, {}.{}.{}",
-			surName, midlName, day, month, year
-		);
-		List<User> users;
-		if(day.equals("00") && !month.equals("00") && !year.equals("0000")){
-			final Specification<User> spec = Specification.where(UserSpecificationProvider.hasSurName(surName))
-				.and(UserSpecificationProvider.hasMidlName(midlName))
-				.and(UserSpecificationProvider.hasBirthMonth(month))
-				.and(UserSpecificationProvider.hasBirthYear(year));
-			users = findBySpecification(spec);
+	public List<User> findUserBySurNameMidlNameAndDate(final UserCriteria criteria) {
+		LOG.info("findUserBySurNameMidlNameAndDate method was called with criteria: {}", criteria);
+		final Specification<User> spec = specProvider.get(criteria);
 
-		} else if(month.equals("00")&& !day.equals("00") && !year.equals("0000")){
-			final Specification<User> spec = Specification.where(UserSpecificationProvider.hasSurName(surName))
-				.and(UserSpecificationProvider.hasMidlName(midlName))
-				.and(UserSpecificationProvider.hasBirthDay(day))
-				.and(UserSpecificationProvider.hasBirthYear(year));
-			users = findBySpecification(spec);
-
-		} else if(year.equals("0000") && !month.equals("00")&& !day.equals("00")){
-			final Specification<User> spec = Specification.where(UserSpecificationProvider.hasSurName(surName))
-				.and(UserSpecificationProvider.hasMidlName(midlName))
-				.and(UserSpecificationProvider.hasBirthDay(day))
-				.and(UserSpecificationProvider.hasBirthMonth(month));
-			users = findBySpecification(spec);
-
-		} else {
-			final Specification<User> spec = Specification.where(UserSpecificationProvider.hasSurName(surName))
-				.and(UserSpecificationProvider.hasMidlName(midlName))
-				.and(UserSpecificationProvider.hasBirthDay(day))
-				.and(UserSpecificationProvider.hasBirthMonth(month))
-				.and(UserSpecificationProvider.hasBirthYear(year));
-			users = findBySpecification(spec);
-
-		}
-
-		return users;
+		return findBySpecification(spec);
 	}
 
 	@Override
 	@Transactional(readOnly = true)
-	public List<User> findUserBySurNameNameAndDate(
-		final String surName,
-		final String name,
-		final String day,
-		final String month,
-		final String year
-	) {
-		LOG.info("findUserBySurNameNameAndDate method was called with names and date: {}, {}, {}.{}.{}",
-			surName, name, day, month, year
-		);
-		List<User> users;
-		if(day.equals("00") && !month.equals("00") && !year.equals("0000")){
-			final Specification<User> spec = Specification.where(UserSpecificationProvider.hasSurName(surName))
-				.and(UserSpecificationProvider.hasName(name))
-				.and(UserSpecificationProvider.hasBirthMonth(month))
-				.and(UserSpecificationProvider.hasBirthYear(year));
-			users = findBySpecification(spec);
+	public List<User> findUserBySurNameNameAndDate(final UserCriteria criteria) {
+		LOG.info("findUserBySurNameNameAndDate method was called with criteria: {}", criteria);
+		final Specification<User> spec = specProvider.get(criteria);
 
-		} else if(month.equals("00")&& !day.equals("00") && !year.equals("0000")){
-			final Specification<User> spec = Specification.where(UserSpecificationProvider.hasSurName(surName))
-				.and(UserSpecificationProvider.hasName(name))
-				.and(UserSpecificationProvider.hasBirthDay(day))
-				.and(UserSpecificationProvider.hasBirthYear(year));
-			users = findBySpecification(spec);
-
-		} else if(year.equals("0000") && !month.equals("00")&& !day.equals("00")){
-			final Specification<User> spec = Specification.where(UserSpecificationProvider.hasSurName(surName))
-				.and(UserSpecificationProvider.hasName(name))
-				.and(UserSpecificationProvider.hasBirthDay(day))
-				.and(UserSpecificationProvider.hasBirthMonth(month));
-			users = findBySpecification(spec);
-
-		} else {
-			final Specification<User> spec = Specification.where(UserSpecificationProvider.hasSurName(surName))
-				.and(UserSpecificationProvider.hasName(name))
-				.and(UserSpecificationProvider.hasBirthDay(day))
-				.and(UserSpecificationProvider.hasBirthMonth(month))
-				.and(UserSpecificationProvider.hasBirthYear(year));
-			users = findBySpecification(spec);
-
-		}
-
-		return users;
+		return findBySpecification(spec);
 	}
 
 	@Override
 	@Transactional(readOnly = true)
-	public List<User> findUserByThreeNamesDateAndRegion(
-		final String surName,
-		final String name,
-		final String midlName,
-		final String region,
-		final String day,
-		final String month,
-		final String year
-	) {
-		LOG.info("findUserByThreeNamesDateAndRegion method was called with names and date: {}, {}, {},{}, {}.{}.{}",
-			surName, name, midlName, region, day, month, year
-		);
+	public List<User> findUserByThreeNamesDateAndRegion(final UserCriteria criteria) {
+		LOG.info("findUserByThreeNamesDateAndRegion method was called with criteria: {}", criteria);
+		final Specification<User> spec = specProvider.get(criteria);
 
-		List<User> users;
-		if(day.equals("00") && !month.equals("00") && !year.equals("0000")){
-			final Specification<User> spec = Specification.where(UserSpecificationProvider.hasSurName(surName))
-				.and(UserSpecificationProvider.hasName(name))
-				.and(UserSpecificationProvider.hasMidlName(midlName))
-				.and(UserSpecificationProvider.hasRegion(region))
-				.and(UserSpecificationProvider.hasBirthMonth(month))
-				.and(UserSpecificationProvider.hasBirthYear(year));
-			users = findBySpecification(spec);
+		return findBySpecification(spec);
+	}
 
-		} else if(month.equals("00")&& !day.equals("00") && !year.equals("0000")){
-			final Specification<User> spec = Specification.where(UserSpecificationProvider.hasSurName(surName))
-				.and(UserSpecificationProvider.hasName(name))
-				.and(UserSpecificationProvider.hasMidlName(midlName))
-				.and(UserSpecificationProvider.hasRegion(region))
-				.and(UserSpecificationProvider.hasBirthDay(day))
-				.and(UserSpecificationProvider.hasBirthYear(year));
-			users = findBySpecification(spec);
+	@Override
+	@Transactional(readOnly = true)
+	public List<User> findUserBySurNameNameDateAndRegion(final UserCriteria criteria) {
+		LOG.info("findUserBySurNameNameDateAndRegion method was called with criteria: {}", criteria);
+		final Specification<User> spec = specProvider.get(criteria);
 
-		} else if(year.equals("0000") && !month.equals("00")&& !day.equals("00")){
-			final Specification<User> spec = Specification.where(UserSpecificationProvider.hasSurName(surName))
-				.and(UserSpecificationProvider.hasName(name))
-				.and(UserSpecificationProvider.hasMidlName(midlName))
-				.and(UserSpecificationProvider.hasRegion(region))
-				.and(UserSpecificationProvider.hasBirthDay(day))
-				.and(UserSpecificationProvider.hasBirthMonth(month));
-			users = findBySpecification(spec);
-		} else if(year.equals("0000") && month.equals("00")&& day.equals("00")){
-			final Specification<User> spec = Specification.where(UserSpecificationProvider.hasSurName(surName))
-				.and(UserSpecificationProvider.hasName(name))
-				.and(UserSpecificationProvider.hasMidlName(midlName))
-				.and(UserSpecificationProvider.hasRegion(region));
-			users = findBySpecification(spec);
-		}else {
-			final Specification<User> spec = Specification.where(UserSpecificationProvider.hasSurName(surName))
-				.and(UserSpecificationProvider.hasName(name))
-				.and(UserSpecificationProvider.hasMidlName(midlName))
-				.and(UserSpecificationProvider.hasRegion(region))
-				.and(UserSpecificationProvider.hasBirthDay(day))
-				.and(UserSpecificationProvider.hasBirthMonth(month))
-				.and(UserSpecificationProvider.hasBirthYear(year));
-			users = findBySpecification(spec);
-		}
-
-		return users;
+		return findBySpecification(spec);
 	}
 
 	private List<User> findBySpecification(final Specification<User> spec){
@@ -345,7 +147,7 @@ public class UserServiceImpl implements UserService {
 
 		if(users.isEmpty()){
 			throw new IllegalArgumentException(
-				"Данних повʼязаних з цим ПІБ та датою: " + NOT_EXISTS);
+				"Данних повʼязаних з цими данними: " + NOT_EXISTS);
 		}
 
 		return users;

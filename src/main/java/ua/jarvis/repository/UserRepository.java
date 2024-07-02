@@ -15,7 +15,7 @@ public interface UserRepository extends JpaRepository<User, Long>, JpaSpecificat
 
 	Optional<User> findUserBySurNameAndName(String surName, String name);
 
-	Optional<User> findUserBySurNameAndMidlName(String surName, String midlName);
+	Optional<User> findUserBySurNameAndMiddleName(String surName, String midlName);
 
 	@Query("SELECT u FROM User u JOIN u.phones p WHERE p.number = :number")
 	List<User> findUsersByPhoneNumber(@Param("number") String number);
@@ -26,10 +26,10 @@ public interface UserRepository extends JpaRepository<User, Long>, JpaSpecificat
 	@Query("SELECT u FROM User u JOIN u.foreignPassports p WHERE p.passportNumber = :foreignPassportNumber")
 	Optional<User> findUserByForeignPassportNumber(@Param("foreignPassportNumber") String foreignPassportNumber);
 
-	@Query("SELECT u FROM User u WHERE u.surName = :surName AND u.name = :name AND u.midlName = :midlName")
+	@Query("SELECT u FROM User u WHERE u.surName = :surName AND u.name = :name AND u.middleName = :middleName")
 	Optional<User> findUserByThreeNames(
 		@Param("surName") String surName,
 		@Param("name") String name,
-		@Param("midlName") String midlName
+		@Param("middleName") String midlName
 	);
 }

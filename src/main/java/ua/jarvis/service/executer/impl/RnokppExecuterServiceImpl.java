@@ -11,14 +11,14 @@ import ua.jarvis.service.impl.ResponderServiceImpl;
 import java.io.IOException;
 
 @Service
-public class ThreeNamesCommandExecuterImplService implements CommandExecuterService {
-	private static final Logger LOG = LoggerFactory.getLogger(ThreeNamesCommandExecuterImplService.class);
+public class RnokppExecuterServiceImpl implements CommandExecuterService {
+	private static final Logger LOG = LoggerFactory.getLogger(RnokppExecuterServiceImpl.class);
 
 	private final ResponderServiceImpl responder;
 
 	private final UserService userService;
 
-	public ThreeNamesCommandExecuterImplService(
+	public RnokppExecuterServiceImpl(
 		final ResponderServiceImpl responder,
 		final UserService userService
 	) {
@@ -28,14 +28,13 @@ public class ThreeNamesCommandExecuterImplService implements CommandExecuterServ
 
 	@Override
 	public String getType() {
-		return Constants.ExecuterType.NAME_SUR_NAME_MIDL_NAME;
+		return Constants.ExecuterType.RNOKPP;
 	}
 
 	@Override
 	public void execute(final String text, final Long chatId) throws IOException {
-		LOG.info("ThreeNamesCommandExecuterImpl was called.");
-		responder.sendMessage(chatId,"Триває пошук за ПІБ: " + text);
-		final String[] names = text.split(" ", -1);
-		responder.createDOCXDocumentAndSend(chatId, userService.findUserByThreeNames(names[0], names[1], names[2]));
+		LOG.info("RnokppCommandExecuterImpl was called.");
+		responder.sendMessage(chatId,"Триває пошук за РНОКПП: " + text);
+		responder.createDOCXDocumentAndSend(chatId, userService.findUserByRnokpp(text));
 	}
 }

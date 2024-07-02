@@ -107,7 +107,7 @@ public class FileServiceImpl implements FileService {
 
 	@Override
 	public File createUserPdf(final User user) throws IOException {
-		final File file = new File(user.getSurName() + "_" + user.getName() + "_" + user.getMidlName() + ".pdf");
+		final File file = new File(user.getSurName() + "_" + user.getName() + "_" + user.getMiddleName() + ".pdf");
 		final PdfWriter writer = new PdfWriter(file);
 		final PdfDocument pdf = new PdfDocument(writer);
 		final PageSize pageSize = new PageSize(1000, 1500);

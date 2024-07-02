@@ -2,7 +2,7 @@ package ua.jarvis.service.executer.impl;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 import ua.jarvis.constant.Constants;
 import ua.jarvis.service.UserService;
 import ua.jarvis.service.executer.CommandExecuterService;
@@ -10,15 +10,15 @@ import ua.jarvis.service.impl.ResponderServiceImpl;
 
 import java.io.IOException;
 
-@Component
-public class ForeignPassportCommandExecuterImplService implements CommandExecuterService {
-	private static final Logger LOG = LoggerFactory.getLogger(ForeignPassportCommandExecuterImplService.class);
+@Service
+public class NameAndSurNameExecuterImplService implements CommandExecuterService {
+	private static final Logger LOG = LoggerFactory.getLogger(NameAndSurNameExecuterImplService.class);
 
 	private final ResponderServiceImpl responder;
 
 	private final UserService userService;
 
-	public ForeignPassportCommandExecuterImplService(
+	public NameAndSurNameExecuterImplService(
 		final ResponderServiceImpl responder,
 		final UserService userService
 	) {
@@ -28,13 +28,14 @@ public class ForeignPassportCommandExecuterImplService implements CommandExecute
 
 	@Override
 	public String getType() {
-		return Constants.ExecuterType.FOREIGN_PASSPORT;
+		return Constants.ExecuterType.SUR_NAME_NAME;
 	}
 
 	@Override
 	public void execute(final String text, final Long chatId) throws IOException {
-		LOG.info("ForeignPassportCommandExecuterImpl was called.");
-		responder.sendMessage(chatId,"Триває пошук за номером закордонного паспорта: " + text);
-		responder.createDOCXDocumentAndSend(chatId, userService.findUserByForeignPassportNumber(text));
+		LOG.info("NameAndSurNameCommandExecuterImpl was called.");
+		responder.sendMessage(chatId,"Триває пошук за прізвищем та імʼям: " + text);
+		final String[] names = text.split(" ", -1);
+		responder.createDOCXDocumentAndSend(chatId, userService.findUserBySurNameAndName(names[0], names[1]));
 	}
 }

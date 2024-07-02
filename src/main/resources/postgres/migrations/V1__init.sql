@@ -1,7 +1,7 @@
 CREATE TABLE users (
     id                    BIGINT PRIMARY KEY,
     name                  VARCHAR(50) NOT NULL,
-    midl_name             VARCHAR(50) NOT NULL,
+    middle_name           VARCHAR(50) NOT NULL,
     sur_name              VARCHAR(50) NOT NULL,
     rnokpp                VARCHAR(50) UNIQUE,
     sex                   VARCHAR(10),

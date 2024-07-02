@@ -5,6 +5,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import ua.jarvis.constant.Constants;
 import ua.jarvis.model.User;
+import ua.jarvis.model.criteria.UserCriteria;
 import ua.jarvis.service.UserService;
 import ua.jarvis.service.executer.CommandExecuterService;
 import ua.jarvis.service.impl.ResponderServiceImpl;
@@ -14,14 +15,14 @@ import java.io.IOException;
 import java.util.List;
 
 @Service
-public class NameSurNameDateCommandExecuterServiceImpl implements CommandExecuterService {
-	private static final Logger LOG = LoggerFactory.getLogger(NameSurNameDateCommandExecuterServiceImpl.class);
+public class NameSurNameDateExecuterServiceImpl implements CommandExecuterService {
+	private static final Logger LOG = LoggerFactory.getLogger(NameSurNameDateExecuterServiceImpl.class);
 
 	private final ResponderServiceImpl responder;
 
 	private final UserService userService;
 
-	public NameSurNameDateCommandExecuterServiceImpl(
+	public NameSurNameDateExecuterServiceImpl(
 		final ResponderServiceImpl responder,
 		final UserService userService
 	) {
@@ -31,7 +32,7 @@ public class NameSurNameDateCommandExecuterServiceImpl implements CommandExecute
 
 	@Override
 	public String getType() {
-		return Constants.ExecuterType.NAME_SUR_NAME_UNDERSCORE_DATE;
+		return Constants.ExecuterType.SUR_NAME_NAME_UNDERSCORE_DATE;
 	}
 
 	@Override
@@ -40,9 +41,9 @@ public class NameSurNameDateCommandExecuterServiceImpl implements CommandExecute
 		responder.sendMessage(chatId,"Триває пошук за прізвищем, імʼям та датою: " + text);
 		final String[] dates = MessageChecker.getDate();
 		final String[] names = text.split(" ", -1);
-		final List<User> users = userService.findUserBySurNameNameAndDate(
-			names[0], names[1], dates[0], dates[1], dates[2]
-		);
+		final UserCriteria criteria = createCriteria(names[0], names[1], dates[0], dates[1], dates[2]);
+
+		final List<User> users = userService.findUserBySurNameNameAndDate(criteria);
 
 		if(users.size() > 1){
 			responder.sendMessage(chatId, "За прізвищем, імʼям та датою знайдено: " + users.size() + " людей.");
@@ -50,5 +51,21 @@ public class NameSurNameDateCommandExecuterServiceImpl implements CommandExecute
 		for (User user : users) {
 			responder.createDOCXDocumentAndSend(chatId, user);
 		}
+	}
+
+	private UserCriteria createCriteria(
+		final String surName,
+		final String name,
+		final String day,
+		final String month,
+		final String year
+	) {
+		return new UserCriteria.UserCriteriaBuilder()
+			.surName(surName)
+			.name(name)
+			.day(day)
+			.month(month)
+			.year(year)
+			.build();
 	}
 }

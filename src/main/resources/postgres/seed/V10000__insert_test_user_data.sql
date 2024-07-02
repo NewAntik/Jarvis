@@ -1,5 +1,5 @@
 -- Users
-INSERT INTO users (id, sur_name, name, midl_name, rnokpp, sex, illegal_actions, created_date, updated_date)
+INSERT INTO users (id, sur_name, name, middle_name, rnokpp, sex, illegal_actions, created_date, updated_date)
 VALUES
     (1, 'Іванов', 'Іван', 'Іванович', '1234567890', 'MALE', 'Протиправна діяльність №199', '2023-01-01 10:00:00', '2023-01-01 10:00:00'),
     (2, 'Шевченко', 'Тарас', 'Григорович', '7890654321', 'MALE', 'Протиправна діяльність №200', '2023-01-02 10:00:00', '2023-01-02 10:00:00'),
