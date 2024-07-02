@@ -4,7 +4,6 @@ import ua.jarvis.constant.Constants;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 public final class MessageChecker {
 
@@ -18,6 +17,16 @@ public final class MessageChecker {
 		return date;
 	}
 
+	public static boolean isCarPlateNumber(final String messageText) {
+		if(messageText.length() != 8 ||
+			!isCyrillicStrings(messageText.substring(0,2), messageText.substring(6 ,8))
+		){
+			return false;
+		}
+
+		return messageText.substring(2, 6).chars().allMatch(Character::isDigit);
+	}
+
 	public static boolean isSurNameNameDataRegion(final String messageText){
 		final String[] text = messageText.split(" ", -1);
 
@@ -28,22 +37,13 @@ public final class MessageChecker {
 		return isDate(text[3]) && isCyrillicStrings(text[0], text[1], text[4]);
 	}
 
-	private static boolean isContainsUnderscore(final String... strings){
-		List<Boolean> answer = new ArrayList<>();
-		for(String s : strings){
-			answer.add(s.equals("_"));
-		}
-
-		return !answer.contains(false);
-	}
-
 	public static boolean isThreeNamesDateAndRegion(final String messageText) {
 		final String[] text = messageText.split(" ", -1);
 
-		if(isContainsUnderscore(text[0], text[1] ,text[2])){
+		if(text.length != 5 || isContainsUnderscore(text[0], text[1] ,text[2])){
 			return false;
 		}
-		return text.length == 5 && isDate(text[3]) && isCyrillicStrings(text[0], text[1], text[2], text[4]);
+		return isDate(text[3]) && isCyrillicStrings(text[0], text[1], text[2], text[4]);
 	}
 
 	public static boolean isSurNameNameAndDate(final String messageText){
@@ -56,7 +56,6 @@ public final class MessageChecker {
 
 		return false;
 	}
-
 
 	public static boolean isSurNameMidlNameAndDate(final String messageText) {
 		final String[] text = messageText.split(" ", -1);
@@ -80,30 +79,11 @@ public final class MessageChecker {
 
 	public static boolean isNameSurNameMidlNameDate(final String messageText){
 		final String[] text = messageText.split(" ", -1);
-		if(isContainsUnderscore(text[0], text[1] ,text[2])){
+
+		if(text.length != 4 || isContainsUnderscore(text[0], text[1] ,text[2])){
 			return false;
 		}
-		return text.length == 4 && isDate(text[3]) && isCyrillicStrings(text[0], text[1], text[2]);
-	}
-
-	private static boolean isDate(final String text) {
-		date = null;
-		final String[] parts = text.split("\\.");
-		if (parts.length != 3) {
-			return false;
-		}
-		for (String part : parts) {
-			if (!part.chars().allMatch(Character::isDigit)) {
-				return false;
-			}
-		}
-
-		date = new String[3];
-		date[0] = parts[0];
-		date[1] = parts[1];
-		date[2] = parts[2];
-
-		return true;
+		return isDate(text[3]) && isCyrillicStrings(text[0], text[1], text[2]);
 	}
 
 	public static boolean isSurNameAndMidlName(final String messageText) {
@@ -135,27 +115,18 @@ public final class MessageChecker {
 		return !answer.contains(false);
 	}
 
-	private static boolean isCyrillicString(final String text){
-		List<Boolean> answer = new ArrayList<>();
-		int length = text.length();
-		for(int i = 0; i < length; i++){
-			answer.add(isCyrillicLetter(text.charAt(i)));
+	public static boolean isPassport(final String messageText) {
+		final String[] parts = messageText.split(" ", -1);
+
+		if(messageText.length() == 8 &&
+			parts.length == 1 &&
+			isFirstTwoCharsCyrillic(messageText) &&
+			messageText.substring(2, 8).chars().allMatch(Character::isDigit)
+		){
+			return true;
 		}
 
-		return !answer.contains(false);
-	}
-
-	private static boolean isCyrillicLetter(final char ch) {
-		// Unicode range for Cyrillic: 0400–04FF, 0500–052F
-		return (ch >= '\u0400' && ch <= '\u04FF') || (ch >= '\u0500' && ch <= '\u052F');
-	}
-
-	private static boolean containsCyrillicLetters(final String text) {
-		final String twoFirstLetters = text.substring(0, 2);
-		final char firstChar = twoFirstLetters.charAt(0);
-		final char secondChar = twoFirstLetters.charAt(1);
-
-		return isCyrillicLetter(firstChar) && isCyrillicLetter(secondChar);
+		return messageText.length() == 9 && messageText.chars().allMatch(Character::isDigit);
 	}
 
 	public static boolean isInfo(final String messageText){
@@ -163,28 +134,7 @@ public final class MessageChecker {
 	}
 
 	public static boolean isForeignPassport(final String messageText) {
-		return messageText.length() == 8 && containsEnglishLetters(messageText);
-	}
-
-	private static boolean containsEnglishLetters(final String text) {
-		final String twoFirstLetters = text.substring(0, 2);
-
-		final char firstChar = twoFirstLetters.charAt(0);
-		final char secondChar = twoFirstLetters.charAt(1);
-
-		return Character.isLetter(firstChar) && Character.isLetter(secondChar) &&
-			Character.isUpperCase(firstChar) && Character.isUpperCase(secondChar);
-	}
-
-	public static boolean isPassport(final String messageText) {
-		if(messageText.length() == 8 && containsCyrillicLetters(messageText)){
-			return true;
-		}
-		if(messageText.length() == 9 && messageText.chars().allMatch(Character::isDigit)){
-			return true;
-		}
-
-		return false;
+		return messageText.length() == 8 && !isFirstTwoCharsCyrillic(messageText);
 	}
 
 	public static boolean isPhoneNumber(final String messageText) {
@@ -196,6 +146,25 @@ public final class MessageChecker {
 
 	public static String getNormalizedNumber(){
 		return normalizedText;
+	}
+
+	public static boolean isRnokpp(final String messageText){
+		if (messageText == null) {
+			return false;
+		}
+		if(messageText.length() != 10){
+			return false;
+		}
+		if(messageText.startsWith("0")){
+			return false;
+		}
+
+		return messageText.chars().allMatch(Character::isDigit);
+	}
+
+	private static boolean isCyrillicLetter(final char ch) {
+		// Unicode range for Cyrillic: 0400–04FF, 0500–052F
+		return (ch >= '\u0400' && ch <= '\u04FF') || (ch >= '\u0500' && ch <= '\u052F');
 	}
 
 	private static void normalizePhoneNumber(String number) {
@@ -212,17 +181,50 @@ public final class MessageChecker {
 		}
 	}
 
-	public static boolean isRnokpp(final String messageText){
-		if (messageText == null) {
-			return false;
-		}
-		if(messageText.length() != 10){
-			return false;
-		}
-		if(messageText.startsWith("0")){
-			return false;
+	private static boolean isFirstTwoCharsCyrillic(final String text) {
+		final String twoFirstLetters = text.substring(0, 2);
+		final char firstChar = twoFirstLetters.charAt(0);
+		final char secondChar = twoFirstLetters.charAt(1);
+
+		return isCyrillicLetter(firstChar) && isCyrillicLetter(secondChar);
+	}
+
+	private static boolean isCyrillicString(final String text){
+		List<Boolean> answer = new ArrayList<>();
+		int length = text.length();
+		for(int i = 0; i < length; i++){
+			answer.add(isCyrillicLetter(text.charAt(i)));
 		}
 
-		return messageText.chars().allMatch(Character::isDigit);
+		return !answer.contains(false);
+	}
+
+	private static boolean isDate(final String text) {
+		date = null;
+		final String[] parts = text.split("\\.");
+		if (parts.length != 3) {
+			return false;
+		}
+		for (String part : parts) {
+			if (!part.chars().allMatch(Character::isDigit)) {
+				return false;
+			}
+		}
+
+		date = new String[3];
+		date[0] = parts[0];
+		date[1] = parts[1];
+		date[2] = parts[2];
+
+		return true;
+	}
+
+	private static boolean isContainsUnderscore(final String... strings){
+		List<Boolean> answer = new ArrayList<>();
+		for(String s : strings){
+			answer.add(s.equals("_"));
+		}
+
+		return !answer.contains(false);
 	}
 }

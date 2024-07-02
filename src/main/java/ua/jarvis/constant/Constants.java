@@ -32,6 +32,7 @@ public final class Constants {
 		public static final String SUR_NAME_NAME_UNDERSCORE_DATE = "name, sur name, _, date" ;
 		public static final String THREE_NAMES_DATE_REGION = "Three names, date, region.";
 		public static final String SUR_NAME_NAME_UNDERSCORE_DATE_REGION = "Sur name, name, _, date, region.";
+		public static final String CAR_PLATE_NUMBER = "Car plate number.";
 
 		private ExecuterType(){}
 	}

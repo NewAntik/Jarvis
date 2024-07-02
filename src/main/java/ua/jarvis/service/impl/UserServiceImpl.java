@@ -18,7 +18,7 @@ import ua.jarvis.service.UserService;
 @Service
 public class UserServiceImpl implements UserService {
 	private static final Logger LOG = LoggerFactory.getLogger(UserServiceImpl.class);
-	public static final String NOT_EXISTS = " - не існує!";
+	public static final String NOT_EXISTS = " Нічого не знайдено.";
 
 	private final UserRepository userRepository;
 
@@ -141,18 +141,14 @@ public class UserServiceImpl implements UserService {
 		return findBySpecification(spec);
 	}
 
-	private List<User> findBySpecification(final Specification<User> spec){
-		final List<User> users = userRepository.findAll(spec);
-		users.forEach(this::initialiseHibernateSessions);
+	@Override
+	@Transactional(readOnly = true)
+	public List<User> findUserByCarPlateNumber(final UserCriteria criteria) {
+		LOG.info("findUserByCarPlateNumber method was called with criteria: {}", criteria);
+		final Specification<User> spec = specProvider.get(criteria);
 
-		if(users.isEmpty()){
-			throw new IllegalArgumentException(
-				"Данних повʼязаних з цими данними: " + NOT_EXISTS);
-		}
-
-		return users;
+		return findBySpecification(spec);
 	}
-
 
 	@Override
 	@Transactional(readOnly = true)
@@ -198,6 +194,18 @@ public class UserServiceImpl implements UserService {
 		initialiseHibernateSessions(user);
 
 		return user;
+	}
+
+	private List<User> findBySpecification(final Specification<User> spec){
+		final List<User> users = userRepository.findAll(spec);
+
+		if(users.isEmpty()){
+			throw new IllegalArgumentException(NOT_EXISTS);
+		}
+
+		users.forEach(this::initialiseHibernateSessions);
+
+		return users;
 	}
 
 	private void initialiseHibernateSessions(final User user) {

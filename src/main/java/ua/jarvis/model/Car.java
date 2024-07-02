@@ -29,8 +29,8 @@ public class Car {
 	private Long id;
 
 	@NotNull
-	@Size(max = 20)
-	@Column(length = 20, name = "plate_number")
+	@Size(max = 8)
+	@Column(length = 8, name = "plate_number")
 	private String plateNumber;
 
 	@NotNull

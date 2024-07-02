@@ -70,8 +70,8 @@ VALUES
 -- Cars
 INSERT INTO cars (id, plate_number, color, model, car_type, vin_Code, issue_date, juridical_person_id, owner_Id)
 VALUES
-    (1, 'ABC123', 'Red', 'Model X', 'SEDAN', 'VIN12345678901234', '2020-05-01', 1, 1),
-    (2, 'ABC321', 'Yellow', 'BMW X7', 'SUV', 'VIN12347652901234', '2024-11-09', 2, 2),
+    (1, 'СЕ1234КЕ', 'Red', 'Model X', 'SEDAN', 'VIN12345678901234', '2020-05-01', 1, 1),
+    (2, 'СЕ1234КЕ', 'Yellow', 'BMW X7', 'SUV', 'VIN12347652901234', '2024-11-09', 2, 2),
     (3, 'ABC543', 'Pink', 'Mitsubishi Pajero', 'SUV', 'VIN12309456901234', '2019-06-19', 2, 3),
     (4, 'XYZ789', 'Blue', 'Model Y', 'SUV', 'VIN65432109876543', '2021-01-01', 1, 4);
 

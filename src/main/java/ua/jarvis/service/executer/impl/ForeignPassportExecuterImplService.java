@@ -2,7 +2,7 @@ package ua.jarvis.service.executer.impl;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 import ua.jarvis.constant.Constants;
 import ua.jarvis.service.UserService;
 import ua.jarvis.service.executer.CommandExecuterService;
@@ -10,7 +10,7 @@ import ua.jarvis.service.impl.ResponderServiceImpl;
 
 import java.io.IOException;
 
-@Component
+@Service
 public class ForeignPassportExecuterImplService implements CommandExecuterService {
 	private static final Logger LOG = LoggerFactory.getLogger(ForeignPassportExecuterImplService.class);
 
