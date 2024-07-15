@@ -10,11 +10,14 @@ import ua.jarvis.model.Car;
 import ua.jarvis.model.DriverLicense;
 import ua.jarvis.model.DriverLicenseCategory;
 import ua.jarvis.model.Email;
+import ua.jarvis.model.OwnFamily;
 import ua.jarvis.model.ForeignPassport;
 import ua.jarvis.model.JuridicalPerson;
+import ua.jarvis.model.ParentalFamily;
 import ua.jarvis.model.Passport;
 import ua.jarvis.model.Phone;
 import ua.jarvis.model.User;
+import ua.jarvis.model.enums.FamilyStatus;
 import ua.jarvis.service.FileFormatterService;
 
 import java.io.IOException;
@@ -22,6 +25,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
+import java.util.Set;
 
 import static ua.jarvis.constant.Constants.UAMessages.INFO_NOT_PRESENT_MESSAGE;
 
@@ -31,7 +35,7 @@ public class DOCXFileFormatterServiceImpl implements FileFormatterService<List<X
 	private static final String DOT_WHITE_SPACE = ". ";
 	private static final String WHITE_SPACE = " ";
 	private static final String DOT = ".";
-
+	private static final String COMA_WHITE_SPACE = ", ";
 	private XWPFDocument document;
 
 	private User user;
@@ -58,9 +62,115 @@ public class DOCXFileFormatterServiceImpl implements FileFormatterService<List<X
 
 		docxParagraphs.add(getIllegalActionsInfoParagraph());
 
+		docxParagraphs.add(getOwnFamilyInfoParagraph());
 		document.close();
 
 		return docxParagraphs;
+	}
+
+	private void setUserFamilyInfo(final XWPFRun familyInfoRun, final User user){
+		if(user.getSurName() != null){
+			familyInfoRun.setText(user.getSurName());
+		}
+		if(user.getName() != null){
+			familyInfoRun.setText(user.getName());
+		}
+		if(user.getMiddleName() != null){
+			familyInfoRun.setText(user.getMiddleName());
+		}
+		if(user.getRnokpp() != null){
+			familyInfoRun.setText(COMA_WHITE_SPACE + user.getRnokpp());
+		}
+		if(!user.getPhones().isEmpty()){
+			familyInfoRun.setText(COMA_WHITE_SPACE + user.getPhones().stream().findFirst().orElse(null));
+		}
+	}
+
+	private void addParentalFamilyInfoParagraph(final XWPFRun familyInfoRun) {
+		if(user.getParentalFamily() != null){
+			final ParentalFamily parentalFamily = user.getParentalFamily();
+			if(parentalFamily.getFather() != null){
+				familyInfoRun.addBreak();
+				final User father = parentalFamily.getFather();
+				familyInfoRun.setText("Батько: ");
+				setUserFamilyInfo(familyInfoRun, father);
+			}
+			if(parentalFamily.getMother() != null){
+				familyInfoRun.addBreak();
+				final User mother = parentalFamily.getMother();
+				familyInfoRun.setText("Мати: ");
+				setUserFamilyInfo(familyInfoRun, mother);
+			}
+			if(parentalFamily.getBrother() != null){
+				familyInfoRun.addBreak();
+				final User brother = parentalFamily.getBrother();
+				familyInfoRun.setText("Брат: ");
+				setUserFamilyInfo(familyInfoRun, brother);
+			}
+			if(parentalFamily.getSister() != null){
+				familyInfoRun.addBreak();
+				final User sister = parentalFamily.getSister();
+				familyInfoRun.setText("Сестра: ");
+				setUserFamilyInfo(familyInfoRun, sister);
+			}
+		}
+	}
+
+	private XWPFParagraph getOwnFamilyInfoParagraph() {
+		final XWPFParagraph familyInfo = document.createParagraph();
+		familyInfo.setSpacingBetween(1.0);
+		XWPFRun familyInfoRun = familyInfo.createRun();
+		familyInfoRun.setFontFamily("Times New Roman");
+		familyInfoRun.setText("Родинні зв’язки: ");
+		familyInfoRun.setBold(true);
+		addParentalFamilyInfoParagraph(familyInfoRun);
+
+		if(user.getOwnFamilies() != null){
+			for(OwnFamily ownFamily : user.getOwnFamilies()){
+				familyInfoRun = familyInfo.createRun();
+
+				if(ownFamily.getFamilyStatus() != null){
+					familyInfoRun.addBreak();
+					familyInfoRun.setText("Сімейний статус: ");
+					if(ownFamily.getFamilyStatus() == FamilyStatus.DIVORCED){
+						familyInfoRun.setText("розведені.");
+					} else if(ownFamily.getFamilyStatus() == FamilyStatus.MARRIED){
+						familyInfoRun.setText("одружені.");
+					} else if(ownFamily.getFamilyStatus() == FamilyStatus.WIDOWER){
+						familyInfoRun.setText("вдовець(ва).");
+					} else if(ownFamily.getFamilyStatus() == FamilyStatus.UNMARRIED){
+						familyInfoRun.setText("холостий(а).");
+					}
+				}
+				if(ownFamily.getWife() != null){
+					familyInfoRun.addBreak();
+					final User wife = ownFamily.getWife();
+					familyInfoRun.setText("Дружина: ");
+					setUserFamilyInfo(familyInfoRun , wife);
+				}
+				if(ownFamily.getHusband() != null){
+					familyInfoRun.addBreak();
+					final User husband = ownFamily.getHusband();
+					familyInfoRun.setText("Чоловік: ");
+					setUserFamilyInfo(familyInfoRun , husband);
+				}
+				if(ownFamily.getChildren() != null){
+					familyInfoRun.addBreak();
+					final Set<User> children = ownFamily.getChildren();
+					familyInfoRun.setText("Діти: ");
+					for(User child : children){
+						setUserFamilyInfo(familyInfoRun , child);
+						familyInfoRun.addBreak();
+					}
+				}
+			}
+		} else {
+			familyInfoRun  = familyInfo.createRun();
+			familyInfoRun.setText(INFO_NOT_PRESENT_MESSAGE);
+			familyInfoRun.setColor("FF0000");
+		}
+
+		return familyInfo;
 	}
 
 	private XWPFParagraph getIllegalActionsInfoParagraph() {

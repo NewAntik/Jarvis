@@ -3,9 +3,19 @@ INSERT INTO users (id, sur_name, name, middle_name, rnokpp, sex, illegal_actions
 VALUES
     (1, 'Іванов', 'Іван', 'Іванович', '1234567890', 'MALE', 'Протиправна діяльність №199', '2023-01-01 10:00:00', '2023-01-01 10:00:00'),
     (2, 'Шевченко', 'Тарас', 'Григорович', '7890654321', 'MALE', 'Протиправна діяльність №200', '2023-01-02 10:00:00', '2023-01-02 10:00:00'),
-    (3, 'Alice', 'Alice', 'Johnson', '1112225555', 'FEMALE', 'Протиправна діяльність відсутня.', '2023-01-03 10:00:00', '2023-01-03 10:00:00'),
-    (4, 'Bob', 'Bob', 'Brown', '3334448888', 'MALE', 'Протиправна діяльність відсутня.', '2023-01-04 10:00:00', '2023-01-04 10:00:00'),
+    (3, 'Шевченко', 'Григорій', 'Іванович', '1112225555', 'MALE', 'Протиправна діяльність відсутня.', '2023-01-03 10:00:00', '2023-01-03 10:00:00'),
+    (4, 'Катирина', 'Шевшенко', 'Якимівна', '3334448888', 'FEMALE', 'Протиправна діяльність відсутня.', '2023-01-04 10:00:00', '2023-01-04 10:00:00'),
     (5, 'Charlie', 'Charlie', 'Davis', '5556660945', 'MALE', 'Протиправна діяльність відсутня.', '2023-01-05 10:00:00', '2023-01-05 10:00:00');
+
+-- Parental Families
+INSERT INTO parental_families (id, father_id, mother_id, brother_id, sister_id)
+VALUES
+    (1, 3, 4, 1, 5);
+
+-- Update Users with Parental Family ID
+UPDATE users
+SET parental_family_id = 1
+WHERE id IN (1, 2, 3, 4, 5);
 
 -- Juridical Persons
 INSERT INTO juridical_persons (id, erdpo, type_activity, regisrtation_date, user_id)
@@ -102,15 +112,15 @@ VALUES
     (4, 4);
 
 -- Families
-INSERT INTO families (id, family_status, husband_id, wife_id, father_id, mother_id, brother_id, sister_id)
+INSERT INTO own_families (id, family_status, husband_id, wife_id)
 VALUES
-    (1, 'MARRIED', 1, 2, 3, 4, 5, NULL),
-    (2, 'DIVORCED', 1, 4, 2, 3, NULL, NULL);
+    (1, 'MARRIED', 1, 2),
+    (2, 'DIVORCED', 1, 4);
 
 -- Family Children
-INSERT INTO family_children (family_id, child_id)
+INSERT INTO own_families_children (family_id, child_id)
 VALUES
-    (1, 5);
+    (1, 2);
 
 -- Birth Certificates
 INSERT INTO birth_certificates (id, user_id, day, month, year, number, issue_date, valid_until, is_valid, is_Unlimited, authority, address_id)
@@ -118,7 +128,8 @@ VALUES
     (1, 2, '05', '03', '1814', 'BC123456', '2020-01-01', '2029-01-01', TRUE, TRUE, 'Kiev, Heroyev street', 2),
     (2, 1, '09', '02', '1815', 'BC654321', '2020-01-01', '2029-01-01', TRUE, TRUE, 'Kiev, Heroyev street', 1);
 
-INSERT INTO users_families (families_id, user_id)
+INSERT INTO users_own_families (user_id, own_families_id)
 VALUES
-    (1, 1),
-    (1, 2);
+    (2, 1);
+
+

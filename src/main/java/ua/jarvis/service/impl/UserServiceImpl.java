@@ -7,8 +7,11 @@ import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Set;
 
 import org.springframework.transaction.annotation.Transactional;
+import ua.jarvis.model.OwnFamily;
+import ua.jarvis.model.ParentalFamily;
 import ua.jarvis.model.User;
 import ua.jarvis.model.criteria.UserCriteria;
 import ua.jarvis.model.specification.SpecificationProvider;
@@ -217,5 +220,28 @@ public class UserServiceImpl implements UserService {
 		Hibernate.initialize(user.getCars());
 		Hibernate.initialize(user.getEmails());
 		Hibernate.initialize(user.getBirthCertificate());
+		Hibernate.initialize(user.getOwnFamilies());
+		Hibernate.initialize(user.getParentalFamily());
+		final Set<OwnFamily> ownFamily = user.getOwnFamilies();
+		ownFamily.forEach(f -> Hibernate.initialize(f.getHusband()));
+		ownFamily.forEach(f -> Hibernate.initialize(f.getHusband().getPhones()));
+		ownFamily.forEach(f -> Hibernate.initialize(f.getWife()));
+		ownFamily.forEach(f -> Hibernate.initialize(f.getWife().getPhones()));
+		ownFamily.forEach(f -> f.getChildren().forEach(this::initialise));
+		final ParentalFamily parentalFamily = user.getParentalFamily();
+		Hibernate.initialize(parentalFamily.getBrother());
+		Hibernate.initialize(parentalFamily.getBrother().getPhones());
+		Hibernate.initialize(parentalFamily.getSister());
+		Hibernate.initialize(parentalFamily.getSister().getPhones());
+		Hibernate.initialize(parentalFamily.getMother());
+		Hibernate.initialize(parentalFamily.getMother().getPhones());
+		Hibernate.initialize(parentalFamily.getFather());
+		Hibernate.initialize(parentalFamily.getFather().getPhones());
+
+
+	}
+	private void initialise(final User user) {
+		Hibernate.initialize(user.getPhones());
+
 	}
 }

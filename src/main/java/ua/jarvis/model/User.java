@@ -9,7 +9,9 @@ import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToMany;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
@@ -56,8 +58,12 @@ public class User extends BaseEntity {
 	@OneToOne(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 	private BirthCertificate birthCertificate;
 
-	@ManyToMany(fetch = FetchType.LAZY)
-	private Set<Family> families = new HashSet<>();
+	@ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+	private Set<OwnFamily> ownFamilies = new HashSet<>();
+
+	@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+	@JoinColumn(name = "parental_family_id")
+	private ParentalFamily parentalFamily;
 
 	@ManyToMany(mappedBy = "drivers", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 	private Set<Car> cars = new HashSet<>();
@@ -88,6 +94,14 @@ public class User extends BaseEntity {
 
 	public User() {}
 
+	public ParentalFamily getParentalFamily() {
+		return parentalFamily;
+	}
+
+	public void setParentalFamily(final ParentalFamily parentalFamily) {
+		this.parentalFamily = parentalFamily;
+	}
+
 	public String getIllegalActions() {
 		return illegalActions;
 	}
@@ -96,12 +110,12 @@ public class User extends BaseEntity {
 		this.illegalActions = illegalActions;
 	}
 
-	public Set<Family> getFamilies() {
-		return families;
+	public Set<OwnFamily> getOwnFamilies() {
+		return ownFamilies;
 	}
 
-	public void setFamilies(final Set<Family> families) {
-		this.families = families;
+	public void setOwnFamilies(final Set<OwnFamily> families) {
+		this.ownFamilies = families;
 	}
 
 	public BirthCertificate getBirthCertificate() {
