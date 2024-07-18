@@ -79,10 +79,22 @@ public class DOCXFileFormatterServiceImpl implements FileFormatterService<List<X
 			familyInfoRun.setText(user.getMiddleName() + WHITE_SPACE);
 		}
 		if(user.getRnokpp() != null){
-			familyInfoRun.setText(COMA_WHITE_SPACE + user.getRnokpp() + WHITE_SPACE);
+			familyInfoRun.setText(COMA_WHITE_SPACE + user.getRnokpp() + COMA_WHITE_SPACE);
 		}
 		if (!user.getPhones().isEmpty()) {
-			familyInfoRun.setText(COMA_WHITE_SPACE + user.getPhones().stream().findFirst().map(Phone::getNumber).orElse(""));
+			familyInfoRun.setText(user.getPhones().stream().findFirst().map(Phone::getNumber).orElse("") + COMA_WHITE_SPACE);
+		}
+		if(user.getBirthCertificate() != null){
+			final BirthCertificate certificate = user.getBirthCertificate();
+			if(certificate.getDay() != null){
+				familyInfoRun.setText(certificate.getDay() + DOT);
+			}
+			if(certificate.getMonth() != null){
+				familyInfoRun.setText(certificate.getMonth() + DOT);
+			}
+			if(certificate.getYear() != null){
+				familyInfoRun.setText(certificate.getYear());
+			}
 		}
 	}
 

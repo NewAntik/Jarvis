@@ -104,7 +104,13 @@ VALUES
 INSERT INTO phones (id, number, imei, user_id, juridical_person_id)
 VALUES
     (1, '0994361290', 'IMEI1233457790', 1, 1),
-    (2, '0994361290', 'IMEI0987654321', 2, 2);
+    (2, '0994361290', 'IMEI0932654321', 2, 2),
+    (3, '0994361292', 'IMEI0954654321', 3, 2),
+    (4, '0994361293', 'IMEI0987655621', 4, 2),
+    (5, '0994361294', 'IMEI0987698321', 5, 2),
+    (6, '0994361295', 'IMEI0297654321', 6, 2),
+    (7, '0994361296', 'IMEI0958654321', 7, 2);
+
 
 -- Cars-Users Relationships
 INSERT INTO cars_drivers (drivers_id, cars_id)
@@ -129,7 +135,13 @@ VALUES
 INSERT INTO birth_certificates (id, user_id, day, month, year, number, issue_date, valid_until, is_valid, is_Unlimited, authority, address_id)
 VALUES
     (1, 2, '05', '03', '1814', 'BC123456', '2020-01-01', '2029-01-01', TRUE, TRUE, 'Kiev, Heroyev street', 2),
-    (2, 1, '09', '02', '1815', 'BC654321', '2020-01-01', '2029-01-01', TRUE, TRUE, 'Kiev, Heroyev street', 1);
+    (2, 1, '09', '02', '1815', 'BC654321', '2020-01-01', '2029-01-01', TRUE, TRUE, 'Kiev, Heroyev street', 1),
+    (3, 3, '03', '02', '1815', 'BC654321', '2020-01-01', '2029-01-01', TRUE, TRUE, 'Kiev, Heroyev street', 1),
+    (4, 4, '01', '02', '1820', 'BC654321', '2020-01-01', '2029-01-01', TRUE, TRUE, 'Kiev, Heroyev street', 1),
+    (5, 5, '29', '02', '1830', 'BC654321', '2020-01-01', '2029-01-01', TRUE, TRUE, 'Kiev, Heroyev street', 1),
+    (6, 6, '19', '02', '1833', 'BC654321', '2020-01-01', '2029-01-01', TRUE, TRUE, 'Kiev, Heroyev street', 1),
+    (7, 7, '10', '02', '1828', 'BC654321', '2020-01-01', '2029-01-01', TRUE, TRUE, 'Kiev, Heroyev street', 1);
+
 
 INSERT INTO users_own_families (user_id, own_families_id)
 VALUES

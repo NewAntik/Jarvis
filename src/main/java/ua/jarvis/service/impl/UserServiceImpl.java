@@ -258,7 +258,7 @@ public class UserServiceImpl implements UserService {
 	private void initialiseWifesPhones(final Set<OwnFamily> ownFamilySet) {
 		ownFamilySet.forEach(f ->{
 			if (f.getWife() != null && !f.getWife().getPhones().isEmpty()) {
-				Hibernate.initialize(f.getHusband().getPhones());
+				Hibernate.initialize(f.getWife().getPhones());
 			}
 		});
 	}
