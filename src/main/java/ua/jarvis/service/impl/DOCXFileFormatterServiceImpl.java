@@ -70,19 +70,19 @@ public class DOCXFileFormatterServiceImpl implements FileFormatterService<List<X
 
 	private void setUserFamilyInfo(final XWPFRun familyInfoRun, final User user){
 		if(user.getSurName() != null){
-			familyInfoRun.setText(user.getSurName());
+			familyInfoRun.setText(user.getSurName() + WHITE_SPACE);
 		}
 		if(user.getName() != null){
-			familyInfoRun.setText(user.getName());
+			familyInfoRun.setText(user.getName() + WHITE_SPACE);
 		}
 		if(user.getMiddleName() != null){
-			familyInfoRun.setText(user.getMiddleName());
+			familyInfoRun.setText(user.getMiddleName() + WHITE_SPACE);
 		}
 		if(user.getRnokpp() != null){
-			familyInfoRun.setText(COMA_WHITE_SPACE + user.getRnokpp());
+			familyInfoRun.setText(COMA_WHITE_SPACE + user.getRnokpp() + WHITE_SPACE);
 		}
-		if(!user.getPhones().isEmpty()){
-			familyInfoRun.setText(COMA_WHITE_SPACE + user.getPhones().stream().findFirst().orElse(null));
+		if (!user.getPhones().isEmpty()) {
+			familyInfoRun.setText(COMA_WHITE_SPACE + user.getPhones().stream().findFirst().map(Phone::getNumber).orElse(""));
 		}
 	}
 
@@ -121,8 +121,11 @@ public class DOCXFileFormatterServiceImpl implements FileFormatterService<List<X
 		familyInfo.setSpacingBetween(1.0);
 		XWPFRun familyInfoRun = familyInfo.createRun();
 		familyInfoRun.setFontFamily("Times New Roman");
+		familyInfoRun.addBreak();
 		familyInfoRun.setText("Родинні зв’язки: ");
 		familyInfoRun.setBold(true);
+		familyInfoRun = familyInfo.createRun();
+
 		addParentalFamilyInfoParagraph(familyInfoRun);
 
 		if(user.getOwnFamilies() != null){
