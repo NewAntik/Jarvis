@@ -49,7 +49,7 @@ public class PDFFileFormatterServiceImpl implements FileFormatterService<List<IB
 
 		final List<IBlockElement> elements = new ArrayList<>();
 		elements.addAll(createUserBasicInfo());
-		elements.addAll(getJuridicalPersonInfoElements());
+//		elements.addAll(getJuridicalPersonInfoElements());
 		elements.addAll(getPassportsInfoTable());
 		elements.addAll(getForeignPassportsInfoTable());
 		elements.addAll(getDriverLicenseInfoTable());
@@ -245,33 +245,33 @@ public class PDFFileFormatterServiceImpl implements FileFormatterService<List<IB
 		return carsInfo;
 	}
 
-	private List<IBlockElement> getJuridicalPersonInfoElements() {
-		final List<IBlockElement> jurInfo = new ArrayList<>();
-		jurInfo.add(new Paragraph().add(
-			new Text("Юридична особа").setFont(boldFont).setFontSize(25)).setMarginTop(35).setTextAlignment(TextAlignment.CENTER)
-		);
-
-		if (user.getJuridicalPerson() == null) {
-			final JuridicalPerson jurPerson = user.getJuridicalPerson();
-
-			jurInfo.add(new Paragraph().add(new Text("ЕРДПО: ").setFont(boldFont).setFontSize(16))
-				.add(jurPerson.getErdpo()).setFont(regularFont).setFontSize(14));
-
-			jurInfo.add(new Paragraph().add(new Text("Вид діяльності: ").setFont(boldFont).setFontSize(16))
-				.add(jurPerson.getTypeActivity()).setFont(regularFont).setFontSize(14));
-
-			if(jurPerson.getJurAddress() != null){
-				jurInfo.add(new Paragraph().add(new Text("Адреси: ").setFont(boldFont).setFontSize(18)).setMarginTop(15));
-
-				jurInfo.add(getAddressInfoElements(jurPerson.getJurAddress()));
-			}
-		} else {
-			jurInfo.add(getInfoNotPresentElement());
-
-		}
-
-		return jurInfo;
-	}
+//	private List<IBlockElement> getJuridicalPersonInfoElements() {
+//		final List<IBlockElement> jurInfo = new ArrayList<>();
+//		jurInfo.add(new Paragraph().add(
+//			new Text("Юридична особа").setFont(boldFont).setFontSize(25)).setMarginTop(35).setTextAlignment(TextAlignment.CENTER)
+//		);
+//
+//		if (user.getJuridicalPerson() == null) {
+//			final JuridicalPerson jurPerson = user.getJuridicalPerson();
+//
+//			jurInfo.add(new Paragraph().add(new Text("ЕРДПО: ").setFont(boldFont).setFontSize(16))
+//				.add(jurPerson.getErdpo()).setFont(regularFont).setFontSize(14));
+//
+//			jurInfo.add(new Paragraph().add(new Text("Вид діяльності: ").setFont(boldFont).setFontSize(16))
+//				.add(jurPerson.getTypeActivity()).setFont(regularFont).setFontSize(14));
+//
+//			if(jurPerson.getJurAddress() != null){
+//				jurInfo.add(new Paragraph().add(new Text("Адреси: ").setFont(boldFont).setFontSize(18)).setMarginTop(15));
+//
+//				jurInfo.add(getAddressInfoElements(jurPerson.getJurAddress()));
+//			}
+//		} else {
+//			jurInfo.add(getInfoNotPresentElement());
+//
+//		}
+//
+//		return jurInfo;
+//	}
 
 	private IBlockElement getAddressInfoElements(final Address address) {
 		Paragraph addressInfo = new Paragraph();

@@ -30,7 +30,7 @@ CREATE TABLE juridical_persons(
     erdpo                    VARCHAR(8),
     type_activity            VARCHAR(200),
     regisrtation_date        TIMESTAMP NOT NULL,
-    user_id                  BIGINT NOT NULL UNIQUE REFERENCES users(id) ON DELETE CASCADE
+    user_id                  BIGINT NOT NULL REFERENCES users(id) ON DELETE CASCADE
 );
 
 CREATE TABLE passports(

@@ -68,8 +68,8 @@ public class User extends BaseEntity {
 	@ManyToMany(mappedBy = "drivers", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 	private Set<Car> cars = new HashSet<>();
 
-	@OneToOne(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-	private JuridicalPerson juridicalPerson;
+	@OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+	private Set<JuridicalPerson> juridicalPersons = new HashSet<>();
 
 	@OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 	private Set<Passport> passports = new HashSet<>();
@@ -93,6 +93,14 @@ public class User extends BaseEntity {
 	private Set<Phone> phones = new HashSet<>();
 
 	public User() {}
+
+	public Set<JuridicalPerson> getJuridicalPersons() {
+		return juridicalPersons;
+	}
+
+	public void setJuridicalPersons(final Set<JuridicalPerson> juridicalPersons) {
+		this.juridicalPersons = juridicalPersons;
+	}
 
 	public ParentalFamily getParentalFamily() {
 		return parentalFamily;
@@ -170,14 +178,6 @@ public class User extends BaseEntity {
 
 	public void setSex(final Sex sex) {
 		this.sex = sex;
-	}
-
-	public JuridicalPerson getJuridicalPerson() {
-		return juridicalPerson;
-	}
-
-	public void setJuridicalPerson(final JuridicalPerson juridicalPerson) {
-		this.juridicalPerson = juridicalPerson;
 	}
 
 	public Set<Email> getEmails() {

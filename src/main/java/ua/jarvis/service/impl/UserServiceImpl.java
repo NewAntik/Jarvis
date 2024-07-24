@@ -212,6 +212,7 @@ public class UserServiceImpl implements UserService {
 	}
 
 	private void initialiseHibernateSessions(final User user) {
+		Hibernate.initialize(user.getJuridicalPersons());
 		Hibernate.initialize(user.getPhones());
 		Hibernate.initialize(user.getAddresses());
 		Hibernate.initialize(user.getPassports());
