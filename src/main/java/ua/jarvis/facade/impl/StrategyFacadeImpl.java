@@ -1,5 +1,7 @@
 package ua.jarvis.facade.impl;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 import ua.jarvis.core.constant.Constants;
 import ua.jarvis.facade.StrategyFacade;
@@ -11,6 +13,7 @@ import java.util.List;
 
 @Component
 public class StrategyFacadeImpl implements StrategyFacade {
+	private static final Logger LOG = LoggerFactory.getLogger(StrategyFacadeImpl.class);
 
 	private final List<ExecutorStrategy<?>> strategies;
 
@@ -20,7 +23,9 @@ public class StrategyFacadeImpl implements StrategyFacade {
 
 	@Override
 	public void execute(final String text, final Long chatId) throws IOException {
+		LOG.info("execute method in StrategyFacadeImpl was called.");
 		CommandExecutorService executer = null;
+
 		for(ExecutorStrategy<?> strategy : strategies){
 			final boolean isExecutor = strategy.isExecutorInstance(text);
 			if(isExecutor){
@@ -29,8 +34,9 @@ public class StrategyFacadeImpl implements StrategyFacade {
 		}
 
 		if(executer != null){
+			LOG.info("execute method in {} was called.", executer);
 			executer.execute(text, chatId);
-		}else{
+		} else {
 			throw new IllegalArgumentException(Constants.UAMessages.COMMAND_NOT_FOUND_MESSAGE);
 		}
 	}
