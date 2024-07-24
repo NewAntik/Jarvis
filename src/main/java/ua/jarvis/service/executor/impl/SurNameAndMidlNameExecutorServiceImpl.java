@@ -1,4 +1,4 @@
-package ua.jarvis.service.executer.impl;
+package ua.jarvis.service.executor.impl;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -6,20 +6,20 @@ import org.springframework.stereotype.Service;
 import ua.jarvis.constant.Constants;
 import ua.jarvis.model.criteria.UserCriteria;
 import ua.jarvis.service.UserService;
-import ua.jarvis.service.executer.CommandExecuterService;
+import ua.jarvis.service.executor.CommandExecutorService;
 import ua.jarvis.service.impl.ResponderServiceImpl;
 
 import java.io.IOException;
 
 @Service
-public class SurNameAndMidlNameExecuterServiceImpl implements CommandExecuterService {
-	private static final Logger LOG = LoggerFactory.getLogger(SurNameAndMidlNameExecuterServiceImpl.class);
+public class SurNameAndMidlNameExecutorServiceImpl implements CommandExecutorService {
+	private static final Logger LOG = LoggerFactory.getLogger(SurNameAndMidlNameExecutorServiceImpl.class);
 
 	private final ResponderServiceImpl responder;
 
 	private final UserService userService;
 
-	public SurNameAndMidlNameExecuterServiceImpl(
+	public SurNameAndMidlNameExecutorServiceImpl(
 		final ResponderServiceImpl responder,
 		final UserService userService
 	) {
@@ -29,7 +29,7 @@ public class SurNameAndMidlNameExecuterServiceImpl implements CommandExecuterSer
 
 	@Override
 	public String getType() {
-		return Constants.ExecuterType.SUR_NAME_MIDL_NAME;
+		return Constants.ExecutorType.SUR_NAME_MIDL_NAME;
 	}
 
 	@Override

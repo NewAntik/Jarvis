@@ -9,6 +9,7 @@ import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 import ua.jarvis.facade.CommandExecuterFacade;
+import ua.jarvis.facade.StrategyFacade;
 import ua.jarvis.model.Participant;
 import ua.jarvis.service.ParticipantService;
 
@@ -24,16 +25,20 @@ public class TelegramBotController extends TelegramLongPollingBot {
 
 	private final CommandExecuterFacade facade;
 
+	private final StrategyFacade strategyFacade;
+
 	public TelegramBotController(
 		@Value("${bot.name}") final String botName,
 		@Value("${bot.token}") final String token,
 		final ParticipantService participantService,
-		final CommandExecuterFacade facade
+		final CommandExecuterFacade facade,
+		final StrategyFacade strategyFacade
 	) {
 		super(token);
 		this.botName = botName;
 		this.participantService = participantService;
 		this.facade = facade;
+		this.strategyFacade = strategyFacade;
 	}
 
 	@Override
@@ -50,7 +55,7 @@ public class TelegramBotController extends TelegramLongPollingBot {
 			final String messageText = update.getMessage().getText();
 			try {
 				LOG.info("Received user info document method was called by: {}", participant.getName());
-				facade.execute(messageText, chatId);
+				strategyFacade.execute(messageText, chatId);
 			} catch (final Throwable e){
 				LOG.error("An error occurred while processing the update", e);
 				sendMessage(e.getMessage());

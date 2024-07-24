@@ -1,24 +1,24 @@
-package ua.jarvis.service.executer.impl;
+package ua.jarvis.service.executor.impl;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import ua.jarvis.constant.Constants;
 import ua.jarvis.service.UserService;
-import ua.jarvis.service.executer.CommandExecuterService;
+import ua.jarvis.service.executor.CommandExecutorService;
 import ua.jarvis.service.impl.ResponderServiceImpl;
 
 import java.io.IOException;
 
 @Service
-public class ForeignPassportExecuterImplService implements CommandExecuterService {
-	private static final Logger LOG = LoggerFactory.getLogger(ForeignPassportExecuterImplService.class);
+public class ForeignPassportExecutorImplService implements CommandExecutorService {
+	private static final Logger LOG = LoggerFactory.getLogger(ForeignPassportExecutorImplService.class);
 
 	private final ResponderServiceImpl responder;
 
 	private final UserService userService;
 
-	public ForeignPassportExecuterImplService(
+	public ForeignPassportExecutorImplService(
 		final ResponderServiceImpl responder,
 		final UserService userService
 	) {
@@ -28,7 +28,7 @@ public class ForeignPassportExecuterImplService implements CommandExecuterServic
 
 	@Override
 	public String getType() {
-		return Constants.ExecuterType.FOREIGN_PASSPORT;
+		return Constants.ExecutorType.FOREIGN_PASSPORT;
 	}
 
 	@Override

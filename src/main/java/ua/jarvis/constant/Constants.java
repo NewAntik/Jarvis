@@ -17,7 +17,7 @@ public final class Constants {
 		private UAMessages() {}
 	}
 
-	public static final class ExecuterType{
+	public static final class ExecutorType {
 		public static final String NAME_SUR_NAME_MIDL_NAME = "Name, sur name, midl name";
 		public static final String INFO = "Info";
 		public static final String RNOKPP = "Rnokpp";
@@ -34,7 +34,7 @@ public final class Constants {
 		public static final String SUR_NAME_NAME_UNDERSCORE_DATE_REGION = "Sur name, name, _, date, region.";
 		public static final String CAR_PLATE_NUMBER = "Car plate number.";
 
-		private ExecuterType(){}
+		private ExecutorType(){}
 	}
 
 	public static final class SpecificationType {
