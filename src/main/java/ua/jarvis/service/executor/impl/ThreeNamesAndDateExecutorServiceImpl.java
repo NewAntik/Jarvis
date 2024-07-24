@@ -3,9 +3,9 @@ package ua.jarvis.service.executor.impl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
-import ua.jarvis.core.constant.Constants;
 import ua.jarvis.core.model.User;
 import ua.jarvis.core.model.criteria.UserCriteria;
+import ua.jarvis.core.model.enums.ExecutorType;
 import ua.jarvis.service.UserService;
 import ua.jarvis.service.executor.CommandExecutorService;
 import ua.jarvis.service.impl.ResponderServiceImpl;
@@ -32,7 +32,7 @@ public class ThreeNamesAndDateExecutorServiceImpl implements CommandExecutorServ
 
 	@Override
 	public String getType() {
-		return Constants.ExecutorType.NAME_SUR_NAME_MIDL_NAME_DATE;
+		return ExecutorType.NAME_SUR_NAME_MIDL_NAME_DATE.getValue();
 	}
 
 	@Override

@@ -3,10 +3,10 @@ package ua.jarvis.service.executor.impl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
-import ua.jarvis.core.constant.Constants;
 import ua.jarvis.service.UserService;
 import ua.jarvis.service.executor.CommandExecutorService;
 import ua.jarvis.service.impl.ResponderServiceImpl;
+import ua.jarvis.core.model.enums.ExecutorType;
 
 import java.io.IOException;
 
@@ -28,7 +28,7 @@ public class ThreeNamesExecutorImplService implements CommandExecutorService {
 
 	@Override
 	public String getType() {
-		return Constants.ExecutorType.NAME_SUR_NAME_MIDL_NAME;
+		return ExecutorType.NAME_SUR_NAME_MIDL_NAME.getValue();
 	}
 
 	@Override

@@ -309,6 +309,5 @@ public class UserServiceImpl implements UserService {
 
 	private void initialise(final User user) {
 		Hibernate.initialize(user.getPhones());
-
 	}
 }

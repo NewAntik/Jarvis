@@ -5,6 +5,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import ua.jarvis.core.constant.Constants;
 import ua.jarvis.core.model.User;
+import ua.jarvis.core.model.enums.ExecutorType;
 import ua.jarvis.service.UserService;
 import ua.jarvis.service.executor.CommandExecutorService;
 import ua.jarvis.service.impl.ResponderServiceImpl;
@@ -31,7 +32,7 @@ public class PhoneExecutorServiceImpl implements CommandExecutorService {
 
 	@Override
 	public String getType() {
-		return Constants.ExecutorType.PHONE_NUMBER;
+		return ExecutorType.PHONE_NUMBER.getValue();
 	}
 
 	@Override

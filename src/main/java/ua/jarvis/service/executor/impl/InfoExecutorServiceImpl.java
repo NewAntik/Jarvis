@@ -4,6 +4,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import ua.jarvis.core.constant.Constants;
+import ua.jarvis.core.model.enums.ExecutorType;
 import ua.jarvis.service.executor.CommandExecutorService;
 import ua.jarvis.service.impl.ResponderServiceImpl;
 
@@ -19,7 +20,7 @@ public class InfoExecutorServiceImpl implements CommandExecutorService {
 
 	@Override
 	public String getType() {
-		return Constants.ExecutorType.INFO;
+		return ExecutorType.INFO.getValue();
 	}
 
 	@Override

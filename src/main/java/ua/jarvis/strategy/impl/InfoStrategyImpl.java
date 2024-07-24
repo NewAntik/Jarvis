@@ -2,6 +2,7 @@ package ua.jarvis.strategy.impl;
 
 import org.springframework.stereotype.Component;
 import ua.jarvis.core.constant.Constants;
+import ua.jarvis.core.model.enums.ExecutorType;
 import ua.jarvis.service.executor.CommandExecutorService;
 import ua.jarvis.service.utils.MessageChecker;
 
@@ -21,6 +22,6 @@ public class InfoStrategyImpl extends AbstractExecutorStrategy {
 
 	@Override
 	public CommandExecutorService getExecutor() {
-		return executorRegistry.get(Constants.ExecutorType.INFO);
+		return executorRegistry.get(ExecutorType.INFO.getValue());
 	}
 }

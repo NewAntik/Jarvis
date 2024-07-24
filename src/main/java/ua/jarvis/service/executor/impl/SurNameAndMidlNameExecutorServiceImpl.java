@@ -5,6 +5,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import ua.jarvis.core.constant.Constants;
 import ua.jarvis.core.model.criteria.UserCriteria;
+import ua.jarvis.core.model.enums.ExecutorType;
 import ua.jarvis.service.UserService;
 import ua.jarvis.service.executor.CommandExecutorService;
 import ua.jarvis.service.impl.ResponderServiceImpl;
@@ -29,7 +30,7 @@ public class SurNameAndMidlNameExecutorServiceImpl implements CommandExecutorSer
 
 	@Override
 	public String getType() {
-		return Constants.ExecutorType.SUR_NAME_MIDL_NAME;
+		return ExecutorType.SUR_NAME_AND_MIDL_NAME.getValue();
 	}
 
 	@Override
