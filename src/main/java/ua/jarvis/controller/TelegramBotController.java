@@ -10,7 +10,7 @@ import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 import ua.jarvis.facade.CommandExecuterFacade;
 import ua.jarvis.facade.StrategyFacade;
-import ua.jarvis.model.Participant;
+import ua.jarvis.core.model.Participant;
 import ua.jarvis.service.ParticipantService;
 
 @Controller

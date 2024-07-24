@@ -11,13 +11,12 @@ import com.itextpdf.layout.element.Text;
 import com.itextpdf.layout.properties.TextAlignment;
 import com.itextpdf.layout.properties.UnitValue;
 import org.springframework.stereotype.Service;
-import ua.jarvis.model.Address;
-import ua.jarvis.model.Car;
-import ua.jarvis.model.DriverLicense;
-import ua.jarvis.model.ForeignPassport;
-import ua.jarvis.model.JuridicalPerson;
-import ua.jarvis.model.Passport;
-import ua.jarvis.model.User;
+import ua.jarvis.core.model.Address;
+import ua.jarvis.core.model.Car;
+import ua.jarvis.core.model.DriverLicense;
+import ua.jarvis.core.model.ForeignPassport;
+import ua.jarvis.core.model.Passport;
+import ua.jarvis.core.model.User;
 import ua.jarvis.service.FileFormatterService;
 
 import java.io.IOException;
@@ -25,8 +24,8 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
-import static ua.jarvis.constant.Constants.UAMessages.INFO_NOT_PRESENT_MESSAGE;
-import static ua.jarvis.model.enums.Sex.MALE;
+import static ua.jarvis.core.constant.Constants.UAMessages.INFO_NOT_PRESENT_MESSAGE;
+import static ua.jarvis.core.model.enums.Sex.MALE;
 
 @Service
 public class PDFFileFormatterServiceImpl implements FileFormatterService<List<IBlockElement>, User> {

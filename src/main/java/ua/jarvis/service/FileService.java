@@ -1,6 +1,6 @@
 package ua.jarvis.service;
 
-import ua.jarvis.model.User;
+import ua.jarvis.core.model.User;
 
 import java.io.File;
 import java.io.IOException;

@@ -2,7 +2,7 @@ package ua.jarvis.facade.impl;
 
 import jakarta.annotation.PostConstruct;
 import org.springframework.stereotype.Component;
-import ua.jarvis.constant.Constants;
+import ua.jarvis.core.constant.Constants;
 import ua.jarvis.facade.CommandExecuterFacade;
 import ua.jarvis.service.executor.CommandExecutorService;
 import ua.jarvis.service.utils.MessageChecker;

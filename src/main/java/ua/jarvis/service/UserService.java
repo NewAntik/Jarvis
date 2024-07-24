@@ -1,7 +1,7 @@
 package ua.jarvis.service;
 
-import ua.jarvis.model.User;
-import ua.jarvis.model.criteria.UserCriteria;
+import ua.jarvis.core.model.User;
+import ua.jarvis.core.model.criteria.UserCriteria;
 
 import java.io.IOException;
 import java.util.List;

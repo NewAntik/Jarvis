@@ -1,9 +1,7 @@
 package ua.jarvis.service;
 
 import org.springframework.transaction.annotation.Transactional;
-import ua.jarvis.model.Participant;
-
-import java.util.Optional;
+import ua.jarvis.core.model.Participant;
 
 public interface ParticipantService {
 

@@ -10,11 +10,11 @@ import java.util.List;
 import java.util.Set;
 
 import org.springframework.transaction.annotation.Transactional;
-import ua.jarvis.model.OwnFamily;
-import ua.jarvis.model.ParentalFamily;
-import ua.jarvis.model.User;
-import ua.jarvis.model.criteria.UserCriteria;
-import ua.jarvis.model.specification.SpecificationProvider;
+import ua.jarvis.core.model.OwnFamily;
+import ua.jarvis.core.model.ParentalFamily;
+import ua.jarvis.core.model.User;
+import ua.jarvis.core.model.criteria.UserCriteria;
+import ua.jarvis.core.model.specification.SpecificationProvider;
 import ua.jarvis.repository.UserRepository;
 import ua.jarvis.service.UserService;
 

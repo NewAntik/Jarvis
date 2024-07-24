@@ -1,7 +1,7 @@
 package ua.jarvis.facade.impl;
 
 import org.springframework.stereotype.Component;
-import ua.jarvis.constant.Constants;
+import ua.jarvis.core.constant.Constants;
 import ua.jarvis.facade.StrategyFacade;
 import ua.jarvis.service.executor.CommandExecutorService;
 import ua.jarvis.strategy.ExecutorStrategy;

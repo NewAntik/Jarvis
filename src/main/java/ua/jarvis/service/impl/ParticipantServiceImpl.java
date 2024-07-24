@@ -3,11 +3,11 @@ package ua.jarvis.service.impl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
-import ua.jarvis.model.Participant;
+import ua.jarvis.core.model.Participant;
 import ua.jarvis.repository.ParticipantRepository;
 import ua.jarvis.service.ParticipantService;
 
-import static ua.jarvis.constant.Constants.UAMessages.HAVE_NO_ACCESS;
+import static ua.jarvis.core.constant.Constants.UAMessages.HAVE_NO_ACCESS;
 
 @Service
 public class ParticipantServiceImpl implements ParticipantService {

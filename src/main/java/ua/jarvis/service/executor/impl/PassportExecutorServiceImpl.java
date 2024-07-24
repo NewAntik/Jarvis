@@ -3,7 +3,7 @@ package ua.jarvis.service.executor.impl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
-import ua.jarvis.constant.Constants;
+import ua.jarvis.core.constant.Constants;
 import ua.jarvis.service.UserService;
 import ua.jarvis.service.executor.CommandExecutorService;
 import ua.jarvis.service.impl.ResponderServiceImpl;

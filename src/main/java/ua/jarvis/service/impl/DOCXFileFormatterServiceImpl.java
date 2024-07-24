@@ -4,20 +4,20 @@ import org.apache.poi.xwpf.usermodel.XWPFDocument;
 import org.apache.poi.xwpf.usermodel.XWPFParagraph;
 import org.apache.poi.xwpf.usermodel.XWPFRun;
 import org.springframework.stereotype.Service;
-import ua.jarvis.model.Address;
-import ua.jarvis.model.BirthCertificate;
-import ua.jarvis.model.Car;
-import ua.jarvis.model.DriverLicense;
-import ua.jarvis.model.DriverLicenseCategory;
-import ua.jarvis.model.Email;
-import ua.jarvis.model.OwnFamily;
-import ua.jarvis.model.ForeignPassport;
-import ua.jarvis.model.JuridicalPerson;
-import ua.jarvis.model.ParentalFamily;
-import ua.jarvis.model.Passport;
-import ua.jarvis.model.Phone;
-import ua.jarvis.model.User;
-import ua.jarvis.model.enums.FamilyStatus;
+import ua.jarvis.core.model.Address;
+import ua.jarvis.core.model.BirthCertificate;
+import ua.jarvis.core.model.Car;
+import ua.jarvis.core.model.DriverLicense;
+import ua.jarvis.core.model.DriverLicenseCategory;
+import ua.jarvis.core.model.Email;
+import ua.jarvis.core.model.OwnFamily;
+import ua.jarvis.core.model.ForeignPassport;
+import ua.jarvis.core.model.JuridicalPerson;
+import ua.jarvis.core.model.ParentalFamily;
+import ua.jarvis.core.model.Passport;
+import ua.jarvis.core.model.Phone;
+import ua.jarvis.core.model.User;
+import ua.jarvis.core.model.enums.FamilyStatus;
 import ua.jarvis.service.FileFormatterService;
 
 import java.io.IOException;
@@ -27,7 +27,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Set;
 
-import static ua.jarvis.constant.Constants.UAMessages.INFO_NOT_PRESENT_MESSAGE;
+import static ua.jarvis.core.constant.Constants.UAMessages.INFO_NOT_PRESENT_MESSAGE;
 
 @Service
 public class DOCXFileFormatterServiceImpl implements FileFormatterService<List<XWPFParagraph>, User> {

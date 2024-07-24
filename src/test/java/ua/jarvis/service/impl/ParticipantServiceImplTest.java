@@ -6,8 +6,8 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import ua.jarvis.model.Participant;
-import ua.jarvis.model.enums.ParticipantRole;
+import ua.jarvis.core.model.Participant;
+import ua.jarvis.core.model.enums.ParticipantRole;
 import ua.jarvis.repository.ParticipantRepository;
 
 import java.util.Optional;

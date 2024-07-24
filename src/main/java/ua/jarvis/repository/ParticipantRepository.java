@@ -1,8 +1,7 @@
 package ua.jarvis.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
-import ua.jarvis.model.Participant;
-import ua.jarvis.model.enums.ParticipantRole;
+import ua.jarvis.core.model.Participant;
 
 import java.util.Optional;
 

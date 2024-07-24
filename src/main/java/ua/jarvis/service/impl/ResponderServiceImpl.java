@@ -10,7 +10,7 @@ import org.telegram.telegrambots.meta.api.methods.send.SendDocument;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.InputFile;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
-import ua.jarvis.model.User;
+import ua.jarvis.core.model.User;
 import ua.jarvis.service.FileService;
 
 import java.io.ByteArrayInputStream;

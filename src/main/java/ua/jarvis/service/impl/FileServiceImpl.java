@@ -18,7 +18,7 @@ import org.openxmlformats.schemas.wordprocessingml.x2006.main.CTPageSz;
 import org.openxmlformats.schemas.wordprocessingml.x2006.main.CTSectPr;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
-import ua.jarvis.model.User;
+import ua.jarvis.core.model.User;
 import ua.jarvis.service.FileFormatterService;
 import ua.jarvis.service.FileService;
 
