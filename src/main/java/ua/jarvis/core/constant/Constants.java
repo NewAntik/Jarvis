@@ -40,6 +40,10 @@ public final class Constants {
 		public static final String HOME_NUMBER = "homeNumber";
 		public static final String STREET = "street";
 		public static final String CITY = "city";
+		public static final String FOREIGN_PASSPORTS = "foreignPassports";
+		public static final String PASSPORTS = "passports";
+		public static final String PASSPORT_NUMBER = "passportNumber";
+		public static final String FOREIGN_PASSPORT_NUMBER = "passportNumber";
 
 		private SpecificationType(){}
 	}

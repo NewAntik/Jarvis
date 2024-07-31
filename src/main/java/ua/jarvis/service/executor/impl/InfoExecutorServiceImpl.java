@@ -25,7 +25,7 @@ public class InfoExecutorServiceImpl implements CommandExecutorService {
 
 	@Override
 	public void execute(final String text, final Long chatId) {
-		LOG.info("InfoCommandExecuterImpl was called.");
+		LOG.info("InfoCommandExecutorImpl was called.");
 
 		responder.sendMessage(chatId, Constants.UAMessages.BASE_INFO);
 	}

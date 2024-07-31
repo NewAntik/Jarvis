@@ -34,13 +34,13 @@ public class NameMidlNameDateExecutorServiceImpl implements CommandExecutorServi
 
 	@Override
 	public void execute(final String text, final Long chatId) throws IOException {
-		LOG.info("NameMidlNameDateCommandExecuterServiceImpl was called.");
+		LOG.info("NameMidlNameDateCommandExecutorServiceImpl was called.");
 		responder.sendMessage(chatId,"Триває пошук за імʼям, по батькові та датою: " + text);
 		final String[] dates = MessageChecker.getDate();
 		final String[] names = text.split(" ", -1);
 		final UserCriteria criteria = createCriteria(names[1], names[2], dates[0], dates[1], dates[2]);
 
-		final List<User> users = userService.findUserByNameMidlNameAndDate(criteria);
+		final List<User> users = userService.findUsersByCriteria(criteria);
 		if(users.size() > 1){
 			responder.sendMessage(chatId, "За імʼям, по батькові та датою знайдено: " + users.size() + " людей.");
 		}

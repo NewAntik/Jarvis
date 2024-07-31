@@ -37,12 +37,12 @@ public class ThreeNamesAndDateExecutorServiceImpl implements CommandExecutorServ
 
 	@Override
 	public void execute(final String text, final Long chatId) throws IOException {
-		LOG.info("ThreeNamesAndDateCommandExecuterServiceImpl was called.");
+		LOG.info("ThreeNamesAndDateCommandExecutorServiceImpl was called.");
 		responder.sendMessage(chatId,"Триває пошук за ПІБ та датою: " + text);
 		final String[] names = text.split(" ", -1);
 		final String[] dates = MessageChecker.getDate();
 		final UserCriteria criteria = createCriteria(names[0], names[1], names[2], dates[0], dates[1], dates[2]);
-		final List<User> users = userService.findUserByThreeNamesAndDate(criteria);
+		final List<User> users = userService.findUsersByCriteria(criteria);
 		if(users.size() > 1){
 			responder.sendMessage(chatId, "За ПІБ та датою знайдено: " + users.size() + " людей.");
 		}

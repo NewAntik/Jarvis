@@ -37,9 +37,9 @@ public class CarPlateNumberExecutorServiceImpl implements CommandExecutorService
 
 	@Override
 	public void execute(final String plateNumber, final Long chatId) throws IOException {
-		LOG.info("CarPlateNumberExecuterServiceImpl was called.");
+		LOG.info("CarPlateNumberExecutorServiceImpl was called.");
 		responder.sendMessage(chatId,"Триває пошук за автомобільним номером: " + plateNumber);
-		final List<User> users = userService.findUserByCarPlateNumber(createCriteria(plateNumber));
+		final List<User> users = userService.findUsersByCriteria(createCriteria(plateNumber));
 
 		if(users.size() > 1){
 			responder.sendMessage(chatId, "За номером авто: " + users.size() + " людей.");

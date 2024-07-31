@@ -43,7 +43,7 @@ public class NameSurNameDateExecutorServiceImpl implements CommandExecutorServic
 		final String[] names = text.split(" ", -1);
 		final UserCriteria criteria = createCriteria(names[0], names[1], dates[0], dates[1], dates[2]);
 
-		final List<User> users = userService.findUserBySurNameNameAndDate(criteria);
+		final List<User> users = userService.findUsersByCriteria(criteria);
 
 		if(users.size() > 1){
 			responder.sendMessage(chatId, "За прізвищем, імʼям та датою знайдено: " + users.size() + " людей.");

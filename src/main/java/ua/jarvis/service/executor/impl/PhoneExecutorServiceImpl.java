@@ -4,6 +4,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import ua.jarvis.core.model.User;
+import ua.jarvis.core.model.criteria.UserCriteria;
 import ua.jarvis.core.model.enums.ExecutorType;
 import ua.jarvis.service.UserService;
 import ua.jarvis.service.executor.CommandExecutorService;
@@ -36,16 +37,19 @@ public class PhoneExecutorServiceImpl implements CommandExecutorService {
 
 	@Override
 	public void execute(final String text, final Long chatId) throws IOException {
-		LOG.info("PhoneCommandExecuterImpl was called.");
-
+		LOG.info("PhoneCommandExecutorImpl was called.");
 		final String normalizedNumber = MessageChecker.getNormalizedNumber();
 		responder.sendMessage(chatId, "Триває пошук за номером телефону: " + normalizedNumber);
-		final List<User> users = userService.findUsersByPhoneNumber(normalizedNumber);
+		final List<User> users = userService.findUsersByCriteria(createCriteria(text));
 		if(users.size() > 1){
 			responder.sendMessage(chatId, "За номером телефону знайдено: " + users.size() + " людей.");
 		}
 		for (User user : users) {
 			responder.createDOCXDocumentAndSend(chatId, user);
 		}
+	}
+
+	private UserCriteria createCriteria(final String phoneNum) {
+		return new UserCriteria.UserCriteriaBuilder().phoneNumber(phoneNum).build();
 	}
 }

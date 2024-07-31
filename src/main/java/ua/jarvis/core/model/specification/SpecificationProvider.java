@@ -48,6 +48,10 @@ public class SpecificationProvider {
 					builder.hasCity(value);
 				} else if ("region".equals(key)) {
 					builder.hasRegion(value);
+				} else if ("foreignPassport".equals(key)) {
+					builder.hasForeignPassport(value);
+				} else if ("passport".equals(key)) {
+					builder.hasPassport(value);
 				}
 			}
 		});

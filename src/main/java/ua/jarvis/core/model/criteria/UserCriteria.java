@@ -21,8 +21,26 @@ public class UserCriteria {
 	private String street;
 	private String city;
 	private String region;
+	private String foreignPassport;
+	private String passport;
 
 	public UserCriteria() {}
+
+	public String getForeignPassport() {
+		return foreignPassport;
+	}
+
+	public void setForeignPassport(final String foreignPassport) {
+		this.foreignPassport = foreignPassport;
+	}
+
+	public String getPassport() {
+		return passport;
+	}
+
+	public void setPassport(final String passports) {
+		this.passport = passports;
+	}
 
 	public String getName() {
 		return name;
@@ -170,8 +188,34 @@ public class UserCriteria {
 		map.put("street", street);
 		map.put("city", city);
 		map.put("region", region);
+		map.put("passport", passport);
+		map.put("foreignPassport", foreignPassport);
 
 		return map;
+	}
+
+	@Override
+	public String toString() {
+		return "UserCriteria{" +
+			"name='" + name + '\'' +
+			", surName='" + surName + '\'' +
+			", middleName='" + middleName + '\'' +
+			", month='" + month + '\'' +
+			", year='" + year + '\'' +
+			", day='" + day + '\'' +
+			", rnokpp='" + rnokpp + '\'' +
+			", phoneNumber='" + phoneNumber + '\'' +
+			", autoPlateNumber='" + autoPlateNumber + '\'' +
+			", email='" + email + '\'' +
+			", driverLicenseNumber='" + driverLicenseNumber + '\'' +
+			", flatNumber='" + flatNumber + '\'' +
+			", homeNumber='" + homeNumber + '\'' +
+			", street='" + street + '\'' +
+			", city='" + city + '\'' +
+			", region='" + region + '\'' +
+			", foreignPassport='" + foreignPassport + '\'' +
+			", passport='" + passport + '\'' +
+			'}';
 	}
 
 	public static class UserCriteriaBuilder {
@@ -192,7 +236,20 @@ public class UserCriteria {
 		private String city;
 		private String region;
 
+		private String foreignPassport;
+
+		private String passport;
+
 		public UserCriteriaBuilder() {}
+
+		public UserCriteriaBuilder foreignPassport(String foreignPassport) {
+			this.foreignPassport = foreignPassport;
+			return this;
+		}
+		public UserCriteriaBuilder passport(String passport) {
+			this.passport = passport;
+			return this;
+		}
 
 		public UserCriteriaBuilder name(String name) {
 			this.name = name;
@@ -292,6 +349,9 @@ public class UserCriteria {
 			userCriteria.setHomeNumber(this.homeNumber);
 			userCriteria.setCity(this.city);
 			userCriteria.setRegion(this.region);
+			userCriteria.setPassport(this.passport);
+			userCriteria.setForeignPassport(this.foreignPassport);
+
 			return userCriteria;
 		}
 	}

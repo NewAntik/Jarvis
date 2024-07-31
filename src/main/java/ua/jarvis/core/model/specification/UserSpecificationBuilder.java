@@ -6,6 +6,8 @@ import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Component;
 import ua.jarvis.core.constant.Constants;
 import ua.jarvis.core.model.Car;
+import ua.jarvis.core.model.ForeignPassport;
+import ua.jarvis.core.model.Passport;
 import ua.jarvis.core.model.User;
 import ua.jarvis.core.model.Address;
 import ua.jarvis.core.model.BirthCertificate;
@@ -24,6 +26,22 @@ public class UserSpecificationBuilder {
 
 	public static UserSpecificationBuilder builder() {
 		return new UserSpecificationBuilder();
+	}
+
+	public UserSpecificationBuilder hasForeignPassport(final String foreignPassport) {
+		this.specification = specification.and((root, query, builder) -> {
+			Join<User, ForeignPassport> addressJoin = root.joinSet(Constants.SpecificationType.FOREIGN_PASSPORTS, JoinType.INNER);
+			return builder.equal(addressJoin.get(Constants.SpecificationType.FOREIGN_PASSPORT_NUMBER), foreignPassport);
+		});
+		return this;
+	}
+
+	public UserSpecificationBuilder hasPassport(final String passportNumber) {
+		this.specification = specification.and((root, query, builder) -> {
+			Join<User, Passport> addressJoin = root.joinSet(Constants.SpecificationType.PASSPORTS, JoinType.INNER);
+			return builder.equal(addressJoin.get(Constants.SpecificationType.PASSPORT_NUMBER), passportNumber);
+		});
+		return this;
 	}
 
 	public UserSpecificationBuilder hasCity(final String city) {

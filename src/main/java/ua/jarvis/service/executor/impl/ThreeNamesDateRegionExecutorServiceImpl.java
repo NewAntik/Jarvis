@@ -37,13 +37,13 @@ public class ThreeNamesDateRegionExecutorServiceImpl implements CommandExecutorS
 
 	@Override
 	public void execute(final String text, final Long chatId) throws IOException {
-		LOG.info("ThreeNamesDateRegionCommandExecuterServiceImpl was called.");
+		LOG.info("ThreeNamesDateRegionCommandExecutorServiceImpl was called.");
 		responder.sendMessage(chatId,"Триває пошук за ПІБ, датою та регіоном: " + text);
 		final String[] parts = text.split(" ", -1);
 		final String[] dates = MessageChecker.getDate();
 		final UserCriteria criteria = createCriteria(parts[0], parts[1], parts[2], dates[0], dates[1], dates[2], parts[4]);
 
-		final List<User> users = userService.findUserByThreeNamesDateAndRegion(criteria);
+		final List<User> users = userService.findUsersByCriteria(criteria);
 		if(users.size() > 1){
 			responder.sendMessage(chatId, "За ПІБ, датою та регіоном знайдено: " + users.size() + " людей.");
 		}
