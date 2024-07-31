@@ -15,8 +15,6 @@ public interface UserRepository extends JpaRepository<User, Long>, JpaSpecificat
 
 	Optional<User> findUserBySurNameAndName(String surName, String name);
 
-	Optional<User> findUserBySurNameAndMiddleName(String surName, String midlName);
-
 	@Query("SELECT u FROM User u JOIN u.phones p WHERE p.number = :number")
 	List<User> findUsersByPhoneNumber(@Param("number") String number);
 

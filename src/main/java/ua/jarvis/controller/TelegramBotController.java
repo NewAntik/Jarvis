@@ -8,7 +8,6 @@ import org.telegram.telegrambots.bots.TelegramLongPollingBot;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
-import ua.jarvis.facade.CommandExecuterFacade;
 import ua.jarvis.facade.StrategyFacade;
 import ua.jarvis.core.model.Participant;
 import ua.jarvis.service.ParticipantService;
@@ -23,21 +22,17 @@ public class TelegramBotController extends TelegramLongPollingBot {
 
 	private Long chatId;
 
-	private final CommandExecuterFacade facade;
-
 	private final StrategyFacade strategyFacade;
 
 	public TelegramBotController(
 		@Value("${bot.name}") final String botName,
 		@Value("${bot.token}") final String token,
 		final ParticipantService participantService,
-		final CommandExecuterFacade facade,
 		final StrategyFacade strategyFacade
 	) {
 		super(token);
 		this.botName = botName;
 		this.participantService = participantService;
-		this.facade = facade;
 		this.strategyFacade = strategyFacade;
 	}
 

@@ -17,26 +17,6 @@ public final class Constants {
 		private UAMessages() {}
 	}
 
-//	public static final class ExecutorType {
-//		public static final String NAME_SUR_NAME_MIDL_NAME = "Name, sur name, midl name";
-//		public static final String INFO = "Info";
-//		public static final String RNOKPP = "Rnokpp";
-//		public static final String PHONE_NUMBER = "Phone number";
-//		public static final String PASSPORT = "Passport";
-//		public static final String FOREIGN_PASSPORT = "Foreign passport";
-//		public static final String SUR_NAME_AND_NAME = "Sur name and name";
-//		public static final String SUR_NAME_AND_MIDL_NAME = "Sur name and midl name";
-//		public static final String NAME_SUR_NAME_MIDL_NAME_DATE = "Name, sur name, midl name, date";
-//		public static final String UNDERSCORE_NAME_MIDL_NAME_DATE = "_, name, midl name, date";
-//		public static final String SUR_NAME_UNDERSCORE_MIDL_NAME_DATE = "Sur name, _, midl name, date";
-//		public static final String SUR_NAME_NAME_UNDERSCORE_DATE = "Name, sur name, _, date" ;
-//		public static final String THREE_NAMES_DATE_REGION = "Three names, date, region.";
-//		public static final String SUR_NAME_NAME_UNDERSCORE_DATE_REGION = "Sur name, name, _, date, region.";
-//		public static final String CAR_PLATE_NUMBER = "Car plate number.";
-//
-//		private ExecutorType(){}
-//	}
-
 	public static final class SpecificationType {
 		public static final String NAME = "name";
 		public static final String SUR_NAME = "surName";
