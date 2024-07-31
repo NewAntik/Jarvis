@@ -27,8 +27,8 @@ public class ForeignPassportExecutorImplService implements CommandExecutorServic
 	}
 
 	@Override
-	public String getType() {
-		return ExecutorType.FOREIGN_PASSPORT.getValue();
+	public ExecutorType getType() {
+		return ExecutorType.FOREIGN_PASSPORT;
 	}
 
 	@Override

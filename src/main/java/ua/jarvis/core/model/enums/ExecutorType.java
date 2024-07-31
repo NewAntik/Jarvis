@@ -17,7 +17,6 @@ public enum ExecutorType {
 	CAR_PLATE_NUMBER("Car plate number"),
 	NAME_SUR_NAME_MIDL_NAME("Name, sur name, midl name");
 
-
 	private final String value;
 
 	ExecutorType(final String value) {

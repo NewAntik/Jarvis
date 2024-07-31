@@ -10,6 +10,7 @@ import ua.jarvis.strategy.ExecutorStrategy;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.Optional;
 
 @Component
 public class StrategyFacadeImpl implements StrategyFacade {
@@ -24,18 +25,18 @@ public class StrategyFacadeImpl implements StrategyFacade {
 	@Override
 	public void execute(final String text, final Long chatId) throws IOException {
 		LOG.info("execute method in StrategyFacadeImpl was called.");
-		CommandExecutorService executer = null;
+		Optional<CommandExecutorService> executer = Optional.empty();
 
 		for(ExecutorStrategy<?> strategy : strategies){
 			final boolean isExecutor = strategy.isExecutorInstance(text);
 			if(isExecutor){
-				executer = (CommandExecutorService) strategy.getExecutor();
+				executer = (Optional<CommandExecutorService>) strategy.getExecutor();
 			}
 		}
 
-		if(executer != null){
+		if(executer.isPresent()){
 			LOG.info("execute method in {} was called.", executer);
-			executer.execute(text, chatId);
+			executer.get().execute(text, chatId);
 		} else {
 			throw new IllegalArgumentException(Constants.UAMessages.COMMAND_NOT_FOUND_MESSAGE);
 		}

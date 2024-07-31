@@ -19,8 +19,8 @@ public class InfoExecutorServiceImpl implements CommandExecutorService {
 	}
 
 	@Override
-	public String getType() {
-		return ExecutorType.INFO.getValue();
+	public ExecutorType getType() {
+		return ExecutorType.INFO;
 	}
 
 	@Override

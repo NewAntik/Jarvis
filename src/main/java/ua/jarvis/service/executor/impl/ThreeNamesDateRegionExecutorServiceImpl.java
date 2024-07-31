@@ -31,8 +31,8 @@ public class ThreeNamesDateRegionExecutorServiceImpl implements CommandExecutorS
 	}
 
 	@Override
-	public String getType() {
-		return ExecutorType.THREE_NAMES_DATE_REGION.getValue();
+	public ExecutorType getType() {
+		return ExecutorType.THREE_NAMES_DATE_REGION;
 	}
 
 	@Override

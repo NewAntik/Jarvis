@@ -22,6 +22,8 @@ import java.io.InputStream;
 public class ResponderServiceImpl extends DefaultAbsSender {
 	private static final Logger LOG = LoggerFactory.getLogger(ResponderServiceImpl.class);
 
+	private static final String DOCX = ".docx";
+
 	private final FileService fileService;
 
 	public ResponderServiceImpl(
@@ -35,7 +37,7 @@ public class ResponderServiceImpl extends DefaultAbsSender {
 
 	public void createDOCXDocumentAndSend(final Long chatId, final User user) throws IOException {
 		final byte [] docxBytes = fileService.createDOCXFromUser(user);
-		sendDocument(chatId, docxBytes, user.getSurName() + "_" + user.getName() + "_" + user.getMiddleName() + ".docx");
+		sendDocument(chatId, docxBytes, user.getSurName() + "_" + user.getName() + "_" + user.getMiddleName() + DOCX);
 	}
 
 	public void sendDocument(final Long chatId, final byte[] docBytes, final String fileName) {

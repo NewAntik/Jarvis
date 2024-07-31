@@ -27,8 +27,8 @@ public class RnokppExecutorServiceImpl implements CommandExecutorService {
 	}
 
 	@Override
-	public String getType() {
-		return ExecutorType.RNOKPP.getValue();
+	public ExecutorType getType() {
+		return ExecutorType.RNOKPP;
 	}
 
 	@Override

@@ -27,8 +27,8 @@ public class PassportExecutorServiceImpl implements CommandExecutorService {
 	}
 
 	@Override
-	public String getType() {
-		return ExecutorType.PASSPORT.getValue();
+	public ExecutorType getType() {
+		return ExecutorType.PASSPORT;
 	}
 
 	@Override

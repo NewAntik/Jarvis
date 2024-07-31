@@ -31,8 +31,8 @@ public class ThreeNamesAndDateExecutorServiceImpl implements CommandExecutorServ
 	}
 
 	@Override
-	public String getType() {
-		return ExecutorType.NAME_SUR_NAME_MIDL_NAME_DATE.getValue();
+	public ExecutorType getType() {
+		return ExecutorType.NAME_SUR_NAME_MIDL_NAME_DATE;
 	}
 
 	@Override

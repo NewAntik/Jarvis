@@ -31,8 +31,8 @@ public class SurNameNameDateRegionExecutorServiceImpl implements CommandExecutor
 	}
 
 	@Override
-	public String getType() {
-		return ExecutorType.SUR_NAME_NAME_UNDERSCORE_DATE_REGION.getValue();
+	public ExecutorType getType() {
+		return ExecutorType.SUR_NAME_NAME_UNDERSCORE_DATE_REGION;
 	}
 
 	@Override

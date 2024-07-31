@@ -28,8 +28,8 @@ public class NameMidlNameDateExecutorServiceImpl implements CommandExecutorServi
 	}
 
 	@Override
-	public String getType() {
-		return ExecutorType.UNDERSCORE_NAME_MIDL_NAME_DATE.getValue();
+	public ExecutorType getType() {
+		return ExecutorType.UNDERSCORE_NAME_MIDL_NAME_DATE;
 	}
 
 	@Override

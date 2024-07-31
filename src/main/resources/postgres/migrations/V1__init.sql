@@ -92,7 +92,7 @@ CREATE TABLE addresses_users (
 
 CREATE TABLE cars(
     id                       BIGINT PRIMARY KEY,
-    plate_number             VARCHAR(20) NOT NULL,
+    plate_number             VARCHAR(8) NOT NULL,
     color                    VARCHAR(50) NOT NULL,
     model                    VARCHAR(50) NOT NULL,
     car_type                 VARCHAR(100) NOT NULL,

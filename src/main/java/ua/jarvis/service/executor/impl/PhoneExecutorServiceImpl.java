@@ -30,8 +30,8 @@ public class PhoneExecutorServiceImpl implements CommandExecutorService {
 	}
 
 	@Override
-	public String getType() {
-		return ExecutorType.PHONE_NUMBER.getValue();
+	public ExecutorType getType() {
+		return ExecutorType.PHONE_NUMBER;
 	}
 
 	@Override

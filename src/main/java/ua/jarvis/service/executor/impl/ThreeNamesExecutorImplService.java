@@ -27,8 +27,8 @@ public class ThreeNamesExecutorImplService implements CommandExecutorService {
 	}
 
 	@Override
-	public String getType() {
-		return ExecutorType.NAME_SUR_NAME_MIDL_NAME.getValue();
+	public ExecutorType getType() {
+		return ExecutorType.NAME_SUR_NAME_MIDL_NAME;
 	}
 
 	@Override

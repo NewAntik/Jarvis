@@ -31,8 +31,8 @@ public class NameSurNameDateExecutorServiceImpl implements CommandExecutorServic
 	}
 
 	@Override
-	public String getType() {
-		return ExecutorType.SUR_NAME_NAME_UNDERSCORE_DATE.getValue();
+	public ExecutorType getType() {
+		return ExecutorType.SUR_NAME_NAME_UNDERSCORE_DATE;
 	}
 
 	@Override

@@ -31,8 +31,8 @@ public class CarPlateNumberExecutorServiceImpl implements CommandExecutorService
 	}
 
 	@Override
-	public String getType() {
-		return ExecutorType.CAR_PLATE_NUMBER.getValue();
+	public ExecutorType getType() {
+		return ExecutorType.CAR_PLATE_NUMBER;
 	}
 
 	@Override
