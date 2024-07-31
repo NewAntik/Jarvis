@@ -21,6 +21,6 @@ public class CarPlateNumberStrategyImpl extends AbstractExecutorStrategy {
 
 	@Override
 	public CommandExecutorService getExecutor() {
-		return executorRegistry.get(ExecutorType.CAR_PLATE_NUMBER.getValue());
+		return executorRegistry.get(ExecutorType.CAR_PLATE_NUMBER);
 	}
 }

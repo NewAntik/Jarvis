@@ -21,6 +21,6 @@ public class InfoStrategyImpl extends AbstractExecutorStrategy {
 
 	@Override
 	public CommandExecutorService getExecutor() {
-		return executorRegistry.get(ExecutorType.INFO.getValue());
+		return executorRegistry.get(ExecutorType.INFO);
 	}
 }

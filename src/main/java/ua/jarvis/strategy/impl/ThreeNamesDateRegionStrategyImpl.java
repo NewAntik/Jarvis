@@ -20,6 +20,6 @@ public class ThreeNamesDateRegionStrategyImpl extends AbstractExecutorStrategy {
 
 	@Override
 	public CommandExecutorService getExecutor() {
-		return executorRegistry.get(ExecutorType.THREE_NAMES_DATE_REGION.getValue());
+		return executorRegistry.get(ExecutorType.THREE_NAMES_DATE_REGION);
 	}
 }

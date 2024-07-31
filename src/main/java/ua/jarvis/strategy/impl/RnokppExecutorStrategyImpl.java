@@ -20,6 +20,6 @@ public class RnokppExecutorStrategyImpl extends AbstractExecutorStrategy {
 
 	@Override
 	public CommandExecutorService getExecutor() {
-		return executorRegistry.get(ExecutorType.RNOKPP.getValue());
+		return executorRegistry.get(ExecutorType.RNOKPP);
 	}
 }

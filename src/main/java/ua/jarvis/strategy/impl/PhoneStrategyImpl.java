@@ -21,6 +21,6 @@ public class PhoneStrategyImpl extends AbstractExecutorStrategy {
 
 	@Override
 	public CommandExecutorService getExecutor() {
-		return executorRegistry.get(ExecutorType.PHONE_NUMBER.getValue());
+		return executorRegistry.get(ExecutorType.PHONE_NUMBER);
 	}
 }

@@ -20,6 +20,6 @@ public class ForeignPassportStrategyImpl extends AbstractExecutorStrategy {
 
 	@Override
 	public CommandExecutorService getExecutor() {
-		return executorRegistry.get(ExecutorType.FOREIGN_PASSPORT.getValue());
+		return executorRegistry.get(ExecutorType.FOREIGN_PASSPORT);
 	}
 }

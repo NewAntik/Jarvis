@@ -20,6 +20,6 @@ public class ThreeNamesStrategyImpl extends AbstractExecutorStrategy {
 
 	@Override
 	public CommandExecutorService getExecutor() {
-		return executorRegistry.get(ExecutorType.NAME_SUR_NAME_MIDL_NAME.getValue());
+		return executorRegistry.get(ExecutorType.NAME_SUR_NAME_MIDL_NAME);
 	}
 }

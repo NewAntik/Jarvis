@@ -20,6 +20,6 @@ public class PassportStrategyImpl extends AbstractExecutorStrategy {
 
 	@Override
 	public CommandExecutorService getExecutor() {
-		return executorRegistry.get(ExecutorType.PASSPORT.getValue());
+		return executorRegistry.get(ExecutorType.PASSPORT);
 	}
 }

@@ -20,6 +20,6 @@ public class SurNameMidlNameDateStrategyImpl extends AbstractExecutorStrategy {
 
 	@Override
 	public CommandExecutorService getExecutor() {
-		return executorRegistry.get(ExecutorType.SUR_NAME_UNDERSCORE_MIDL_NAME_DATE.getValue());
+		return executorRegistry.get(ExecutorType.SUR_NAME_UNDERSCORE_MIDL_NAME_DATE);
 	}
 }
