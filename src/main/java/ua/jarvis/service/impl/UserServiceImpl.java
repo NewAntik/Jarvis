@@ -155,6 +155,22 @@ public class UserServiceImpl implements UserService {
 
 	@Override
 	@Transactional(readOnly = true)
+	public List<User> findUsersByCriteria(final UserCriteria criteria) {
+		final Specification<User> spec = specProvider.get(criteria);
+
+		final List<User> users = userRepository.findAll(spec);
+
+		if(users.isEmpty()){
+			throw new IllegalArgumentException(NOT_EXISTS);
+		}
+
+		users.forEach(this::initialiseHibernateSessions);
+
+		return users;
+	}
+
+	@Override
+	@Transactional(readOnly = true)
 	public User findUserByPassportNumber(final String passportNumber) {
 		LOG.info("findUserByPassportNumber method was called with passport number: {}", passportNumber);
 

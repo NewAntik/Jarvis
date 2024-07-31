@@ -32,12 +32,12 @@ public class NameSurNameDateExecutorServiceImpl implements CommandExecutorServic
 
 	@Override
 	public ExecutorType getType() {
-		return ExecutorType.SUR_NAME_NAME_UNDERSCORE_DATE;
+		return ExecutorType.SURNAME_NAME_UNDERSCORE_DATE;
 	}
 
 	@Override
 	public void execute(final String text, final Long chatId) throws IOException {
-		LOG.info("NameSurNameDateCommandExecuterServiceImpl was called.");
+		LOG.info("NameSurNameDateCommandExecutorServiceImpl was called.");
 		responder.sendMessage(chatId,"Триває пошук за прізвищем, імʼям та датою: " + text);
 		final String[] dates = MessageChecker.getDate();
 		final String[] names = text.split(" ", -1);

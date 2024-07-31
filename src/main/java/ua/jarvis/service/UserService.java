@@ -35,4 +35,6 @@ public interface UserService {
 	List<User> findUserBySurNameNameDateAndRegion(UserCriteria criteria);
 
 	List<User> findUserByCarPlateNumber(UserCriteria criteria);
+
+	List<User> findUsersByCriteria(UserCriteria criteria);
 }

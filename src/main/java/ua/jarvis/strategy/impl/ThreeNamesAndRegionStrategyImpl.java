@@ -8,18 +8,18 @@ import ua.jarvis.service.utils.MessageChecker;
 import java.util.List;
 
 @Component
-public class SurNameMidlNameDateStrategyImpl extends AbstractExecutorStrategy {
-	protected SurNameMidlNameDateStrategyImpl(final List<CommandExecutorService> executors) {
+public class ThreeNamesAndRegionStrategyImpl extends AbstractExecutorStrategy {
+	protected ThreeNamesAndRegionStrategyImpl(final List<CommandExecutorService> executors) {
 		super(executors);
 	}
 
 	@Override
 	public boolean isExecutorInstance(final String text) {
-		return MessageChecker.isSurNameMidlNameAndDate(text);
+		return MessageChecker.isThreeNamesAndRegion(text);
 	}
 
 	@Override
 	public CommandExecutorService getExecutor() {
-		return executorRegistry.get(ExecutorType.SURNAME_UNDERSCORE_MIDL_NAME_DATE);
+		return executorRegistry.get(ExecutorType.THREE_NAMES_AND_REGION);
 	}
 }

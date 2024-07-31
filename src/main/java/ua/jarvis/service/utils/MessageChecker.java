@@ -4,9 +4,9 @@ import ua.jarvis.core.constant.Constants;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public final class MessageChecker {
-
 
 	private static String normalizedText;
 
@@ -16,6 +16,18 @@ public final class MessageChecker {
 
 	public static String[] getDate(){
 		return date;
+	}
+
+	public static boolean isSurNameAndNameAndRegion(final String messageText){
+		final String[] text = messageText.split(" ", -1);
+
+		return text.length == 4 && Objects.equals(text[2], "_") && isCyrillicStrings(text[0], text[1], text[3]);
+	}
+
+	public static boolean isThreeNamesAndRegion(final String messageText){
+		final String[] text = messageText.split(" ", -1);
+
+		return text.length == 4 && isCyrillicStrings(text);
 	}
 
 	public static boolean isCarPlateNumber(final String messageText) {
@@ -50,12 +62,7 @@ public final class MessageChecker {
 	public static boolean isSurNameNameAndDate(final String messageText){
 		final String[] text = messageText.split(" ", -1);
 
-		if (text.length == 4 && "_".equals(text[2]) && isCyrillicStrings(text[0], text[1])) {
-			isDate(text[3]);
-			return true;
-		}
-
-		return false;
+		return text.length == 4 && "_".equals(text[2]) && isCyrillicStrings(text[0], text[1]) && isDate(text[3]);
 	}
 
 	public static boolean isSurNameMidlNameAndDate(final String messageText) {

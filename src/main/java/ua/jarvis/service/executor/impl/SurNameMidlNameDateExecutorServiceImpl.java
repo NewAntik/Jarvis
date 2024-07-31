@@ -29,7 +29,7 @@ public class SurNameMidlNameDateExecutorServiceImpl implements CommandExecutorSe
 
 	@Override
 	public ExecutorType getType() {
-		return ExecutorType.SUR_NAME_UNDERSCORE_MIDL_NAME_DATE;
+		return ExecutorType.SURNAME_UNDERSCORE_MIDL_NAME_DATE;
 	}
 
 	@Override

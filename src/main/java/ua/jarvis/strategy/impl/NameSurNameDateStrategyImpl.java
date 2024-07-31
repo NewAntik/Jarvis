@@ -19,6 +19,6 @@ public class NameSurNameDateStrategyImpl extends AbstractExecutorStrategy {
 
 	@Override
 	public CommandExecutorService getExecutor() {
-		return executorRegistry.get(ExecutorType.SUR_NAME_NAME_UNDERSCORE_DATE);
+		return executorRegistry.get(ExecutorType.SURNAME_NAME_UNDERSCORE_DATE);
 	}
 }

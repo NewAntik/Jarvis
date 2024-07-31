@@ -29,7 +29,7 @@ public class SurNameAndMidlNameExecutorServiceImpl implements CommandExecutorSer
 
 	@Override
 	public ExecutorType getType() {
-		return ExecutorType.SUR_NAME_AND_MIDL_NAME;
+		return ExecutorType.SURNAME_AND_MIDL_NAME;
 	}
 
 	@Override

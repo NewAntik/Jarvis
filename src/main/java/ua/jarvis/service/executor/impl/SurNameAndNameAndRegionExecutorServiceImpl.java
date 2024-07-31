@@ -9,20 +9,19 @@ import ua.jarvis.core.model.enums.ExecutorType;
 import ua.jarvis.service.UserService;
 import ua.jarvis.service.executor.CommandExecutorService;
 import ua.jarvis.service.impl.ResponderServiceImpl;
-import ua.jarvis.service.utils.MessageChecker;
 
 import java.io.IOException;
 import java.util.List;
 
 @Service
-public class SurNameNameDateRegionExecutorServiceImpl implements CommandExecutorService {
-	private static final Logger LOG = LoggerFactory.getLogger(SurNameNameDateRegionExecutorServiceImpl.class);
+public class SurNameAndNameAndRegionExecutorServiceImpl implements CommandExecutorService {
+	private static final Logger LOG = LoggerFactory.getLogger(SurNameAndNameAndRegionExecutorServiceImpl.class);
 
 	private final ResponderServiceImpl responder;
 
 	private final UserService userService;
 
-	public SurNameNameDateRegionExecutorServiceImpl(
+	public SurNameAndNameAndRegionExecutorServiceImpl(
 		final ResponderServiceImpl responder,
 		final UserService userService
 	) {
@@ -32,20 +31,20 @@ public class SurNameNameDateRegionExecutorServiceImpl implements CommandExecutor
 
 	@Override
 	public ExecutorType getType() {
-		return ExecutorType.SURNAME_NAME_UNDERSCORE_DATE_REGION;
+		return ExecutorType.SURNAME_NAME_AND_REGION;
 	}
 
 	@Override
 	public void execute(final String text, final Long chatId) throws IOException {
-		LOG.info("SurNameNameDataRegionExecuterServiceImpl was called.");
-		responder.sendMessage(chatId,"Триває пошук за прізвищем, імʼям, датою та регіоном: " + text);
-		final String[] parts = text.split(" ", -1);
-		final String[] dates = MessageChecker.getDate();
-		final UserCriteria criteria = createCriteria(parts[0], parts[1], dates[0], dates[1], dates[2], parts[4]);
+		LOG.info("ThreeNamesAndRegionExecutorServiceImpl was called.");
+		responder.sendMessage(chatId,"Триває пошук за прізвищем, імʼям та регіоном: " + text);
 
-		final List<User> users = userService.findUserBySurNameNameDateAndRegion(criteria);
+		final String[] parts = text.split(" ", -1);
+		final UserCriteria criteria = createCriteria(parts[0], parts[1], parts[3]);
+		final List<User> users = userService.findUsersByCriteria(criteria);
+
 		if(users.size() > 1){
-			responder.sendMessage(chatId, "За ПІБ, датою та регіоном знайдено: " + users.size() + " людей.");
+			responder.sendMessage(chatId, "За ПІБ та регіоном знайдено: " + users.size() + " людей.");
 		}
 		for (User user : users) {
 			responder.createDOCXDocumentAndSend(chatId, user);
@@ -55,17 +54,11 @@ public class SurNameNameDateRegionExecutorServiceImpl implements CommandExecutor
 	private UserCriteria createCriteria(
 		final String surName,
 		final String name,
-		final String day,
-		final String month,
-		final String year,
 		final String region
 	) {
 		return new UserCriteria.UserCriteriaBuilder()
 			.surName(surName)
 			.name(name)
-			.day(day)
-			.month(month)
-			.year(year)
 			.region(region)
 			.build();
 	}

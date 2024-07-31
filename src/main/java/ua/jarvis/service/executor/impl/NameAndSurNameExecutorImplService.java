@@ -28,7 +28,7 @@ public class NameAndSurNameExecutorImplService implements CommandExecutorService
 
 	@Override
 	public ExecutorType getType() {
-		return ExecutorType.SUR_NAME_AND_NAME;
+		return ExecutorType.SURNAME_AND_NAME;
 	}
 
 	@Override

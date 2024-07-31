@@ -20,6 +20,6 @@ public class SurNameAndMidlNameStrategyImpl extends AbstractExecutorStrategy {
 
 	@Override
 	public CommandExecutorService getExecutor() {
-		return executorRegistry.get(ExecutorType.SUR_NAME_AND_MIDL_NAME);
+		return executorRegistry.get(ExecutorType.SURNAME_AND_MIDL_NAME);
 	}
 }

@@ -20,6 +20,6 @@ public class SurNameNameDateRegionStrategyImpl extends AbstractExecutorStrategy 
 
 	@Override
 	public CommandExecutorService getExecutor() {
-		return executorRegistry.get(ExecutorType.SUR_NAME_NAME_UNDERSCORE_DATE_REGION);
+		return executorRegistry.get(ExecutorType.SURNAME_NAME_UNDERSCORE_DATE_REGION);
 	}
 }

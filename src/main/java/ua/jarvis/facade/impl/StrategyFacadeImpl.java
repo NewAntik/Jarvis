@@ -25,18 +25,18 @@ public class StrategyFacadeImpl implements StrategyFacade {
 	@Override
 	public void execute(final String text, final Long chatId) throws IOException {
 		LOG.info("execute method in StrategyFacadeImpl was called.");
-		Optional<CommandExecutorService> executer = Optional.empty();
+		CommandExecutorService executer = null;
 
 		for(ExecutorStrategy<?> strategy : strategies){
 			final boolean isExecutor = strategy.isExecutorInstance(text);
 			if(isExecutor){
-				executer = (Optional<CommandExecutorService>) strategy.getExecutor();
+				executer = (CommandExecutorService) strategy.getExecutor();
 			}
 		}
 
-		if(executer.isPresent()){
+		if(executer != null){
 			LOG.info("execute method in {} was called.", executer);
-			executer.get().execute(text, chatId);
+			executer.execute(text, chatId);
 		} else {
 			throw new IllegalArgumentException(Constants.UAMessages.COMMAND_NOT_FOUND_MESSAGE);
 		}
