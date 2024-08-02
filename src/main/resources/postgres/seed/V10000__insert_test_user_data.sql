@@ -71,7 +71,7 @@ VALUES
 INSERT INTO addresses (id, region, city, street, home_number, flat_number, created_date, updated_date, juridical_person_id)
 VALUES
     (1, 'Київська', 'Київ', 'Проспект Перемоги', '10', '101', '2023-01-01 10:00:00', '2023-01-01 10:00:00', 1),
-    (2, 'Донецька', 'Донецьк', 'Київський проспект', '20', '202', '2023-01-02 10:00:00', '2023-01-02 10:00:00', 2);
+    (2, 'Донецька', 'Донецьк', 'Київський проспект імені Зеленского', '20', '202', '2023-01-02 10:00:00', '2023-01-02 10:00:00', 2);
 
 -- Address-User Relationships
 INSERT INTO addresses_users (users_id, addresses_id)

@@ -42,8 +42,6 @@ public class SpecificationProvider {
 					builder.hasHomeNumber(value);
 				} else if ("street".equals(key)) {
 					builder.hasStreet(value);
-				} else if ("homeNum".equals(key)) {
-					builder.hasHomeNum(value);
 				} else if ("city".equals(key)) {
 					builder.hasCity(value);
 				} else if ("region".equals(key)) {

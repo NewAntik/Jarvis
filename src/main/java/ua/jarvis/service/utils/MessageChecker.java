@@ -3,6 +3,7 @@ package ua.jarvis.service.utils;
 import ua.jarvis.core.constant.Constants;
 
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Objects;
 
@@ -12,10 +13,65 @@ public final class MessageChecker {
 
 	private static String[] date;
 
+	private static String[] address;
+
 	private MessageChecker(){}
 
 	public static String[] getDate(){
 		return date;
+	}
+
+	public static boolean isAddress(final String messageText) {
+		final String[] text = messageText.split(" ", -1);
+		if(text.length >= 6){
+			correctAddress(messageText);
+			return true;
+		}
+		return false;
+	}
+
+	public static String[] getCorrectedAddress(){
+		return address;
+	}
+
+	private static void correctAddress(final String address) {
+		final String startMarker = "вул. ";
+		final String endMarker = " б.";
+		final int startIndex = address.indexOf(startMarker) + startMarker.length();
+		final int endIndex = address.indexOf(endMarker);
+
+		final String streetName = address.substring(startIndex, endIndex).trim();
+		final String[] streetNameArray = streetName.split(" ", -1);
+		if(streetNameArray.length > 1){
+			MessageChecker.address = getAddressWithCorrectedStreet(address, streetNameArray, streetName);
+		}else{
+			MessageChecker.address = address.split(" ", -1);
+		}
+	}
+
+	private static String[] getAddressWithCorrectedStreet(
+		final String address,
+		final String[] streetNameArray,
+		final String streetName
+		){
+		final String[] addressArray = address.split(" ", -1);
+		List<String> addresList = new LinkedList<>();
+		if(addressArray.length - streetNameArray.length > 6){
+			addresList.add(addressArray[1]);
+			addresList.add(streetName);
+			addresList.add(addressArray[4 + streetNameArray.length]);
+			addresList.add(addressArray[6 + streetNameArray.length]);
+
+		} else {
+			addresList.add(addressArray[1]);
+			addresList.add(streetName);
+			addresList.add(addressArray[4 + streetNameArray.length]);
+		}
+
+		String[] clearAddress  = new String[addresList.size()];
+		addresList.forEach(s-> clearAddress[addresList.indexOf(s)] = s);
+
+		return clearAddress;
 	}
 
 	public static boolean isSurNameAndNameAndRegion(final String messageText){

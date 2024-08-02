@@ -17,7 +17,8 @@ public enum ExecutorType {
 	CAR_PLATE_NUMBER("Car plate number"),
 	NAME_SUR_NAME_MIDL_NAME("Name, sur name, midl name"),
 	THREE_NAMES_AND_REGION("Three names and region"),
-	SURNAME_NAME_AND_REGION("Surname, name and region");
+	SURNAME_NAME_AND_REGION("Surname, name and region"),
+	ADDRESS("Address");
 
 	private final String value;
 

@@ -10,7 +10,6 @@ import ua.jarvis.strategy.ExecutorStrategy;
 
 import java.io.IOException;
 import java.util.List;
-import java.util.Optional;
 
 @Component
 public class StrategyFacadeImpl implements StrategyFacade {
