@@ -5,6 +5,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import ua.jarvis.core.model.User;
 import ua.jarvis.core.model.criteria.UserCriteria;
+import ua.jarvis.core.model.dto.RequestDto;
 import ua.jarvis.core.model.enums.ExecutorType;
 import ua.jarvis.service.UserService;
 import ua.jarvis.service.executor.CommandExecutorService;
@@ -37,9 +38,9 @@ public class AddressExecutorServiceImpl implements CommandExecutorService {
 	}
 
 	@Override
-	public void execute(final String address, final Long chatId) throws IOException {
+	public void execute(final RequestDto dto) throws IOException {
 		LOG.info("AddressExecutorServiceImpl was called.");
-		responder.sendMessage(chatId,"Триває пошук за адресою: " + address);
+		responder.sendMessage(dto.getChatId(),"Триває пошук за адресою: " + dto.getMessageText());
 		final String[] parts = MessageChecker.getCorrectedAddress();
 		List<User> users;
 
@@ -50,10 +51,10 @@ public class AddressExecutorServiceImpl implements CommandExecutorService {
 		}
 
 		if(users.size() > 1){
-			responder.sendMessage(chatId, "За адресою: " + users.size() + " людей.");
+			responder.sendMessage(dto.getChatId(), "За адресою: " + users.size() + " людей.");
 		}
 		for (User user : users) {
-			responder.createDOCXDocumentAndSend(chatId, user);
+			responder.createDOCXDocumentAndSend(dto.getChatId(), user);
 		}
 	}
 

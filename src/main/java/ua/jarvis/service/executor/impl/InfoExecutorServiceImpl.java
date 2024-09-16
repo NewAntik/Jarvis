@@ -4,6 +4,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import ua.jarvis.core.constant.Constants;
+import ua.jarvis.core.model.dto.RequestDto;
 import ua.jarvis.core.model.enums.ExecutorType;
 import ua.jarvis.service.executor.CommandExecutorService;
 import ua.jarvis.service.impl.ResponderServiceImpl;
@@ -24,9 +25,9 @@ public class InfoExecutorServiceImpl implements CommandExecutorService {
 	}
 
 	@Override
-	public void execute(final String text, final Long chatId) {
+	public void execute(final RequestDto dto) {
 		LOG.info("InfoCommandExecutorImpl was called.");
 
-		responder.sendMessage(chatId, Constants.UAMessages.BASE_INFO);
+		responder.sendMessage(dto.getChatId(), Constants.UAMessages.BASE_INFO);
 	}
 }

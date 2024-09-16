@@ -8,6 +8,8 @@ import org.telegram.telegrambots.bots.TelegramLongPollingBot;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
+import ua.jarvis.core.model.dto.RequestDto;
+import ua.jarvis.core.model.enums.ParticipantRole;
 import ua.jarvis.facade.StrategyFacade;
 import ua.jarvis.core.model.Participant;
 import ua.jarvis.service.ParticipantService;
@@ -19,8 +21,6 @@ public class TelegramBotController extends TelegramLongPollingBot {
 	private final ParticipantService participantService;
 
 	private final String botName;
-
-	private Long chatId;
 
 	private final StrategyFacade strategyFacade;
 
@@ -43,22 +43,21 @@ public class TelegramBotController extends TelegramLongPollingBot {
 
 	@Override
 	public void onUpdateReceived(final Update update) {
-		chatId = update.getMessage().getChatId();
+		final Long chatId = update.getMessage().getChatId();
 		final Participant participant = participantService.findByName(update.getMessage().getChat().getUserName());
 
-		if(update.hasMessage() && update.getMessage().hasText() && participant != null ){
-			final String messageText = update.getMessage().getText();
+		if(update.hasMessage() && update.getMessage().hasText() && participant != null){
 			try {
 				LOG.info("Received user info document method was called by: {}", participant.getName());
-				strategyFacade.execute(messageText, chatId);
+				strategyFacade.execute(createDto(chatId, participant.getRole(), update.getMessage().getText()));
 			} catch (final Throwable e){
 				LOG.error("An error occurred while processing the update", e);
-				sendMessage(e.getMessage());
+				sendMessage(e.getMessage(), chatId);
 			}
 		}
 	}
 
-	public void sendMessage(final String textToSend){
+	public void sendMessage(final String textToSend, final Long chatId){
 		final SendMessage sendMessage = new SendMessage();
 		sendMessage.setChatId(String.valueOf(chatId));
 		sendMessage.setText(textToSend);
@@ -67,5 +66,9 @@ public class TelegramBotController extends TelegramLongPollingBot {
 		} catch (TelegramApiException e) {
 			e.printStackTrace();
 		}
+	}
+
+	private RequestDto createDto(final Long chatId, final ParticipantRole role, final String messageText){
+		return new RequestDto(chatId, role, messageText);
 	}
 }

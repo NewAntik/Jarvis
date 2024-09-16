@@ -5,6 +5,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import ua.jarvis.core.model.User;
 import ua.jarvis.core.model.criteria.UserCriteria;
+import ua.jarvis.core.model.dto.RequestDto;
 import ua.jarvis.core.model.enums.ExecutorType;
 import ua.jarvis.service.UserService;
 import ua.jarvis.service.executor.CommandExecutorService;
@@ -36,16 +37,16 @@ public class CarPlateNumberExecutorServiceImpl implements CommandExecutorService
 	}
 
 	@Override
-	public void execute(final String plateNumber, final Long chatId) throws IOException {
+	public void execute(final RequestDto dto) throws IOException {
 		LOG.info("CarPlateNumberExecutorServiceImpl was called.");
-		responder.sendMessage(chatId,"Триває пошук за автомобільним номером: " + plateNumber);
-		final List<User> users = userService.findUsersByCriteria(createCriteria(plateNumber));
+		responder.sendMessage(dto.getChatId(),"Триває пошук за автомобільним номером: " + dto.getMessageText());
+		final List<User> users = userService.findUsersByCriteria(createCriteria(dto.getMessageText()));
 
 		if(users.size() > 1){
-			responder.sendMessage(chatId, "За номером авто: " + users.size() + " людей.");
+			responder.sendMessage(dto.getChatId(), "За номером авто: " + users.size() + " людей.");
 		}
 		for (User user : users) {
-			responder.createDOCXDocumentAndSend(chatId, user);
+			responder.createDOCXDocumentAndSend(dto.getChatId(), user);
 		}
 	}
 

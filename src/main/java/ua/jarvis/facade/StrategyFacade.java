@@ -1,7 +1,9 @@
 package ua.jarvis.facade;
 
+import ua.jarvis.core.model.dto.RequestDto;
+
 import java.io.IOException;
 
 public interface StrategyFacade {
-	void execute(String text, Long chatId) throws IOException;
+	void execute(RequestDto dto) throws IOException;
 }

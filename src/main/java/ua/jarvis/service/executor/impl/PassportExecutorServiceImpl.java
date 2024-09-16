@@ -5,6 +5,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 import ua.jarvis.core.model.User;
 import ua.jarvis.core.model.criteria.UserCriteria;
+import ua.jarvis.core.model.dto.RequestDto;
 import ua.jarvis.core.model.enums.ExecutorType;
 import ua.jarvis.service.UserService;
 import ua.jarvis.service.executor.CommandExecutorService;
@@ -35,13 +36,13 @@ public class PassportExecutorServiceImpl implements CommandExecutorService {
 	}
 
 	@Override
-	public void execute(final String text, final Long chatId) throws IOException {
+	public void execute(final RequestDto dto) throws IOException {
 		LOG.info("PassportCommandExecutorImpl was called.");
-		responder.sendMessage(chatId,"Триває пошук за номером паспорта: " + text);
-		final UserCriteria criteria = createCriteria(text);
+		responder.sendMessage(dto.getChatId(),"Триває пошук за номером паспорта: " + dto.getMessageText());
+		final UserCriteria criteria = createCriteria(dto.getMessageText());
 		final List<User> users = userService.findUsersByCriteria(criteria);
 
-		responder.createDOCXDocumentAndSend(chatId, users.get(0));
+		responder.createDOCXDocumentAndSend(dto.getChatId(), users.get(0));
 	}
 
 	private UserCriteria createCriteria(final String foreignPassport) {

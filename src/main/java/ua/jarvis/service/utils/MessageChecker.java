@@ -21,6 +21,10 @@ public final class MessageChecker {
 		return date;
 	}
 
+	public static boolean isUpdateDatabase(final String messageText){
+		return messageText.equals("Update Database");
+	}
+
 	public static boolean isAddress(final String messageText) {
 		final String[] text = messageText.split(" ", -1);
 		if(text.length >= 6){

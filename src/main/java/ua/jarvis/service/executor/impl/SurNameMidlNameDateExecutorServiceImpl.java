@@ -5,6 +5,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import ua.jarvis.core.model.User;
 import ua.jarvis.core.model.criteria.UserCriteria;
+import ua.jarvis.core.model.dto.RequestDto;
 import ua.jarvis.core.model.enums.ExecutorType;
 import ua.jarvis.service.UserService;
 import ua.jarvis.service.executor.CommandExecutorService;
@@ -33,20 +34,20 @@ public class SurNameMidlNameDateExecutorServiceImpl implements CommandExecutorSe
 	}
 
 	@Override
-	public void execute(final String text, final Long chatId) throws IOException {
+	public void execute(final RequestDto dto) throws IOException {
 		LOG.info("SurNameMidlNameAndDateExecutorServiceImpl was called.");
-		responder.sendMessage(chatId,"Триває пошук за прізвищем, по батькові та датою: " + text);
+		responder.sendMessage(dto.getChatId(),"Триває пошук за прізвищем, по батькові та датою: " + dto.getMessageText());
 		final String[] dates = MessageChecker.getDate();
-		final String[] names = text.split(" ", -1);
+		final String[] names = dto.getMessageText().split(" ", -1);
 		final UserCriteria criteria = createCriteria(names[0], names[2], dates[0], dates[1], dates[2]);
 
 		final List<User> users = userService.findUsersByCriteria(criteria);
 
 		if(users.size() > 1){
-			responder.sendMessage(chatId, "За імʼям, по батькові та датою знайдено: " + users.size() + " людей.");
+			responder.sendMessage(dto.getChatId(), "За імʼям, по батькові та датою знайдено: " + users.size() + " людей.");
 		}
 		for (User user : users) {
-			responder.createDOCXDocumentAndSend(chatId, user);
+			responder.createDOCXDocumentAndSend(dto.getChatId(), user);
 		}
 	}
 
