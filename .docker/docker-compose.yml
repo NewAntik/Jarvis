@@ -1,0 +1,39 @@
+services:
+  postgres:
+    container_name: bot-jarvis-database
+    image: postgres:16.4
+    restart: always
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: P@SSw0RD321654!
+      POSTGRES_DB: jarvis
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  backend:
+    build:
+      context: ..
+      dockerfile: .docker/Dockerfile
+    container_name: jarvis-app
+    depends_on:
+      postgres:
+        condition: service_healthy
+    environment:
+      - SERVER_PORT=80
+      - SERVER_ADDRESS=0.0.0.0
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://bot-jarvis-database:5432/jarvis
+      - SPRING_DATASOURCE_USERNAME=postgres
+      - SPRING_DATASOURCE_PASSWORD=P@SSw0RD321654!
+    ports:
+      - "9080:80"
+    restart: on-failure
+
+volumes:
+  postgres-data:
