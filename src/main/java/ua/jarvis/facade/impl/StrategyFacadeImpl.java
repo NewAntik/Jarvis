@@ -1,5 +1,6 @@
 package ua.jarvis.facade.impl;
 
+import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
@@ -23,11 +24,11 @@ public class StrategyFacadeImpl implements StrategyFacade {
 	}
 
 	@Override
-	public void execute(final RequestDto dto) throws IOException {
+	public void execute(final RequestDto dto) throws IOException, InvalidFormatException {
 		LOG.info("execute method in StrategyFacadeImpl was called.");
 		CommandExecutorService executer = null;
 
-		for(ExecutorStrategy<?> strategy : strategies){
+		for(final ExecutorStrategy<?> strategy : strategies){
 			final boolean isExecutor = strategy.isExecutorInstance(dto.getMessageText());
 			if(isExecutor){
 				executer = (CommandExecutorService) strategy.getExecutor();

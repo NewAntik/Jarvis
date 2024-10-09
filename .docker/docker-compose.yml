@@ -39,7 +39,7 @@ services:
       - "9080:80"
     restart: on-failure
     volumes:
-      - app-images:/app/images
+      - app-images:/app/photos
 
 volumes:
   postgres-data:

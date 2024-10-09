@@ -1,5 +1,6 @@
 package ua.jarvis.service.impl;
 
+import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
@@ -35,7 +36,7 @@ public class ResponderServiceImpl extends DefaultAbsSender {
 		this.fileService = fileService;
 	}
 
-	public void createDOCXDocumentAndSend(final Long chatId, final User user) throws IOException {
+	public void createDOCXDocumentAndSend(final Long chatId, final User user) throws IOException, InvalidFormatException {
 		final byte [] docxBytes = fileService.createDOCXFromUser(user);
 		sendDocument(chatId, docxBytes, user.getSurName() + "_" + user.getName() + "_" + user.getMiddleName() + DOCX);
 	}

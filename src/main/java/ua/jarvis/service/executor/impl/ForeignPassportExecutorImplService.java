@@ -1,5 +1,6 @@
 package ua.jarvis.service.executor.impl;
 
+import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -36,7 +37,7 @@ public class ForeignPassportExecutorImplService implements CommandExecutorServic
 	}
 
 	@Override
-	public void execute(final RequestDto dto) throws IOException {
+	public void execute(final RequestDto dto) throws IOException, InvalidFormatException {
 		LOG.info("ForeignPassportCommandExecutorImpl was called.");
 		responder.sendMessage(dto.getChatId(),"Триває пошук за номером закордонного паспорта: " + dto.getMessageText());
 		final UserCriteria criteria = createCriteria(dto.getMessageText());

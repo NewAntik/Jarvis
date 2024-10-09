@@ -1,5 +1,6 @@
 package ua.jarvis.service.executor.impl;
 
+import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -38,7 +39,7 @@ public class AddressExecutorServiceImpl implements CommandExecutorService {
 	}
 
 	@Override
-	public void execute(final RequestDto dto) throws IOException {
+	public void execute(final RequestDto dto) throws IOException, InvalidFormatException {
 		LOG.info("AddressExecutorServiceImpl was called.");
 		responder.sendMessage(dto.getChatId(),"Триває пошук за адресою: " + dto.getMessageText());
 		final String[] parts = MessageChecker.getCorrectedAddress();
@@ -53,7 +54,7 @@ public class AddressExecutorServiceImpl implements CommandExecutorService {
 		if(users.size() > 1){
 			responder.sendMessage(dto.getChatId(), "За адресою: " + users.size() + " людей.");
 		}
-		for (User user : users) {
+		for (final User user : users) {
 			responder.createDOCXDocumentAndSend(dto.getChatId(), user);
 		}
 	}

@@ -1,5 +1,6 @@
 package ua.jarvis.service.executor.impl;
 
+import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -37,7 +38,7 @@ public class CarPlateNumberExecutorServiceImpl implements CommandExecutorService
 	}
 
 	@Override
-	public void execute(final RequestDto dto) throws IOException {
+	public void execute(final RequestDto dto) throws IOException, InvalidFormatException {
 		LOG.info("CarPlateNumberExecutorServiceImpl was called.");
 		responder.sendMessage(dto.getChatId(),"Триває пошук за автомобільним номером: " + dto.getMessageText());
 		final List<User> users = userService.findUsersByCriteria(createCriteria(dto.getMessageText()));

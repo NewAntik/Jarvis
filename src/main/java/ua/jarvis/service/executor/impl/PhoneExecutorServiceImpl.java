@@ -1,5 +1,6 @@
 package ua.jarvis.service.executor.impl;
 
+import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -37,7 +38,7 @@ public class PhoneExecutorServiceImpl implements CommandExecutorService {
 	}
 
 	@Override
-	public void execute(final RequestDto dto) throws IOException {
+	public void execute(final RequestDto dto) throws IOException, InvalidFormatException {
 		LOG.info("PhoneCommandExecutorImpl was called.");
 		final String normalizedNumber = MessageChecker.getNormalizedNumber();
 		responder.sendMessage(dto.getChatId(), "Триває пошук за номером телефону: " + normalizedNumber);

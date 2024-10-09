@@ -16,11 +16,11 @@ import org.openxmlformats.schemas.wordprocessingml.x2006.main.CTBody;
 import org.openxmlformats.schemas.wordprocessingml.x2006.main.CTDocument1;
 import org.openxmlformats.schemas.wordprocessingml.x2006.main.CTPageSz;
 import org.openxmlformats.schemas.wordprocessingml.x2006.main.CTSectPr;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import ua.jarvis.core.model.User;
 import ua.jarvis.service.FileFormatterService;
 import ua.jarvis.service.FileService;
+import ua.jarvis.service.PhotoService;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -28,32 +28,32 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.math.BigInteger;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 import java.util.List;
 
 @Service
 public class FileServiceImpl implements FileService {
 
-	private final String photoPath;
+	private static final String PHOTO_PATH = "/app/photos/";
 
 	private final FileFormatterService pdfFormatter;
 
 	private final FileFormatterService docxFormatter;
 
+	private final PhotoService photoService;
+
 	public FileServiceImpl(
-		@Value("${photo.path}") final String photoPath,
 		final PDFFileFormatterServiceImpl pdfFormatter,
-		final DOCXFileFormatterServiceImpl docxFormatter
+		final DOCXFileFormatterServiceImpl docxFormatter,
+		final PhotoService photoService
 
 	) {
-		this.photoPath = photoPath;
 		this.pdfFormatter = pdfFormatter;
 		this.docxFormatter = docxFormatter;
+		this.photoService = photoService;
 	}
 
 	@Override
-	public byte[] createDOCXFromUser(final User user) throws IOException {
+	public byte[] createDOCXFromUser(final User user) throws IOException, InvalidFormatException {
 		final XWPFDocument document = new XWPFDocument();
 		final XWPFParagraph paragraph = document.createParagraph();
 		final XWPFRun run = paragraph.createRun();
@@ -71,17 +71,12 @@ public class FileServiceImpl implements FileService {
 		pageSize.setH(BigInteger.valueOf(15840)); // height
 
 		if (user.getPhoto() != null) {
-			try {
-				final byte[] photoBytes = Files.readAllBytes(Paths.get(photoPath + user.getPhoto().getFileName()));
-				final InputStream photoInputStream = new ByteArrayInputStream(photoBytes);
-				run.addPicture(photoInputStream, XWPFDocument.PICTURE_TYPE_JPEG, user.getPhoto().getFileName(),
+			final byte[] photoBytes = photoService.findPhotoByName(user.getPhoto().getFileName());
+			final InputStream photoInputStream = new ByteArrayInputStream(photoBytes);
+			run.addPicture(
+				photoInputStream, XWPFDocument.PICTURE_TYPE_JPEG, user.getPhoto().getFileName(),
 					Units.toEMU(170), Units.toEMU(170)
-				);
-			} catch (final IOException e) {
-				e.printStackTrace();
-			} catch (final InvalidFormatException e) {
-				throw new RuntimeException(e);
-			}
+			);
 		}
 
 		final List<XWPFParagraph> paragraphs = (List<XWPFParagraph>) docxFormatter.format(user);
@@ -115,7 +110,7 @@ public class FileServiceImpl implements FileService {
 
 		// Add user's photo if available
 		if (user.getPhoto() != null) {
-			final Image image = new Image(ImageDataFactory.create(photoPath + user.getPhoto().getFileName()));
+			final Image image = new Image(ImageDataFactory.create(PHOTO_PATH + user.getPhoto().getFileName()));
 			image.setWidth(170);
 			image.setHeight(170);
 

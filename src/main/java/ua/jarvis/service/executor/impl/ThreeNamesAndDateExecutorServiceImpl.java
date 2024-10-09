@@ -1,5 +1,6 @@
 package ua.jarvis.service.executor.impl;
 
+import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -37,7 +38,7 @@ public class ThreeNamesAndDateExecutorServiceImpl implements CommandExecutorServ
 	}
 
 	@Override
-	public void execute(final RequestDto dto) throws IOException {
+	public void execute(final RequestDto dto) throws IOException, InvalidFormatException {
 		LOG.info("ThreeNamesAndDateCommandExecutorServiceImpl was called.");
 		responder.sendMessage(dto.getChatId(),"Триває пошук за ПІБ та датою: " + dto.getMessageText());
 		final String[] names = dto.getMessageText().split(" ", -1);
@@ -47,7 +48,7 @@ public class ThreeNamesAndDateExecutorServiceImpl implements CommandExecutorServ
 		if(users.size() > 1){
 			responder.sendMessage(dto.getChatId(), "За ПІБ та датою знайдено: " + users.size() + " людей.");
 		}
-		for (User user : users) {
+		for (final User user : users) {
 			responder.createDOCXDocumentAndSend(dto.getChatId(), user);
 		}
 	}

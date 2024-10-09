@@ -1,5 +1,6 @@
 package ua.jarvis.service.executor.impl;
 
+import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -36,7 +37,7 @@ public class NameAndSurNameExecutorImplService implements CommandExecutorService
 	}
 
 	@Override
-	public void execute(final RequestDto dto) throws IOException {
+	public void execute(final RequestDto dto) throws IOException, InvalidFormatException {
 		LOG.info("NameAndSurNameCommandExecutorImpl was called.");
 		responder.sendMessage(dto.getChatId(),"Триває пошук за прізвищем та імʼям: " + dto.getMessageText());
 		final String[] names = dto.getMessageText().split(" ", -1);
@@ -45,7 +46,7 @@ public class NameAndSurNameExecutorImplService implements CommandExecutorService
 		if(users.size() > 1){
 			responder.sendMessage(dto.getChatId(), "За прізвищем та імʼям знайдено: " + users.size() + " людей.");
 		}
-		for (User user : users) {
+		for (final User user : users) {
 			responder.createDOCXDocumentAndSend(dto.getChatId(), user);
 		}
 	}
