@@ -11,8 +11,8 @@ services:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: P@SSw0RD321654!
       POSTGRES_DB: jarvis
-#    volumes:
-#      - postgres-data:/var/lib/postgresql/data
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -U postgres"]
       interval: 10s
@@ -38,6 +38,9 @@ services:
     ports:
       - "9080:80"
     restart: on-failure
+    volumes:
+      - app-images:/app/images
 
-#volumes:
-#  postgres-data:
+volumes:
+  postgres-data:
+  app-images:

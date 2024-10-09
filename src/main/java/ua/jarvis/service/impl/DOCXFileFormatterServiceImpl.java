@@ -10,14 +10,11 @@ import ua.jarvis.core.model.Car;
 import ua.jarvis.core.model.DriverLicense;
 import ua.jarvis.core.model.DriverLicenseCategory;
 import ua.jarvis.core.model.Email;
-import ua.jarvis.core.model.OwnFamily;
 import ua.jarvis.core.model.ForeignPassport;
 import ua.jarvis.core.model.JuridicalPerson;
-import ua.jarvis.core.model.ParentalFamily;
 import ua.jarvis.core.model.Passport;
 import ua.jarvis.core.model.Phone;
 import ua.jarvis.core.model.User;
-import ua.jarvis.core.model.enums.FamilyStatus;
 import ua.jarvis.service.FileFormatterService;
 
 import java.io.IOException;
@@ -63,14 +60,14 @@ public class DOCXFileFormatterServiceImpl implements FileFormatterService<List<X
 		docxParagraphs.add(getUserEmailsInfoParagraph());
 
 		docxParagraphs.add(getIllegalActionsInfoParagraph());
+		docxParagraphs.add(getRelationshipInfoParagraph());
 
-		docxParagraphs.add(getOwnFamilyInfoParagraph());
 		document.close();
 
 		return docxParagraphs;
 	}
 
-	private void setUserFamilyInfo(final XWPFRun infoRun, final User user) {
+	private void setShortUserInfo(final XWPFRun infoRun, final User user) {
 		if (user.getSurName() != null) {
 			infoRun.setText(user.getSurName() + WHITE_SPACE);
 		}
@@ -101,42 +98,42 @@ public class DOCXFileFormatterServiceImpl implements FileFormatterService<List<X
 		}
 	}
 
-	private void addParentalFamilyInfoParagraph(final XWPFRun infoRun) {
-		if (user.getParentalFamily() != null) {
-			final ParentalFamily parentalFamily = user.getParentalFamily();
-			if (parentalFamily.getFather() != null) {
-				infoRun.addBreak();
-				final User father = parentalFamily.getFather();
-				infoRun.setText("Батько: ");
-				setUserFamilyInfo(infoRun, father);
-			}
-			if (parentalFamily.getMother() != null) {
-				infoRun.addBreak();
-				infoRun.addBreak();
-				final User mother = parentalFamily.getMother();
-				infoRun.setText("Мати: ");
-				setUserFamilyInfo(infoRun, mother);
-			}
-			if (parentalFamily.getBrother() != null) {
-				infoRun.addBreak();
-				infoRun.addBreak();
-				final User brother = parentalFamily.getBrother();
-				infoRun.setText("Брат: ");
-				setUserFamilyInfo(infoRun, brother);
-			}
-			if (parentalFamily.getSister() != null) {
-				infoRun.addBreak();
-				infoRun.addBreak();
-				final User sister = parentalFamily.getSister();
-				infoRun.setText("Сестра: ");
-				setUserFamilyInfo(infoRun, sister);
-			}
-		} else {
-			setNotPresentMessage(infoRun);
-		}
-	}
+//	private void addParentalFamilyInfoParagraph(final XWPFRun infoRun) {
+//		if (user.getParentalFamily() != null) {
+//			final ParentalFamily parentalFamily = user.getParentalFamily();
+//			if (parentalFamily.getFather() != null) {
+//				infoRun.addBreak();
+//				final User father = parentalFamily.getFather();
+//				infoRun.setText("Батько: ");
+//				setUserFamilyInfo(infoRun, father);
+//			}
+//			if (parentalFamily.getMother() != null) {
+//				infoRun.addBreak();
+//				infoRun.addBreak();
+//				final User mother = parentalFamily.getMother();
+//				infoRun.setText("Мати: ");
+//				setUserFamilyInfo(infoRun, mother);
+//			}
+//			if (parentalFamily.getBrother() != null) {
+//				infoRun.addBreak();
+//				infoRun.addBreak();
+//				final User brother = parentalFamily.getBrother();
+//				infoRun.setText("Брат: ");
+//				setUserFamilyInfo(infoRun, brother);
+//			}
+//			if (parentalFamily.getSister() != null) {
+//				infoRun.addBreak();
+//				infoRun.addBreak();
+//				final User sister = parentalFamily.getSister();
+//				infoRun.setText("Сестра: ");
+//				setUserFamilyInfo(infoRun, sister);
+//			}
+//		} else {
+//			setNotPresentMessage(infoRun);
+//		}
+//	}
 
-	private XWPFParagraph getOwnFamilyInfoParagraph() {
+	private XWPFParagraph getRelationshipInfoParagraph(){
 		final XWPFParagraph familyInfo = document.createParagraph();
 		familyInfo.setSpacingBetween(1.0);
 		XWPFRun infoRun = familyInfo.createRun();
@@ -147,55 +144,52 @@ public class DOCXFileFormatterServiceImpl implements FileFormatterService<List<X
 		infoRun.setBold(true);
 		infoRun = familyInfo.createRun();
 		infoRun.setFontFamily("Times New Roman");
+		infoRun.addBreak();
+		infoRun.addBreak();
+		infoRun.setText("Батько(и): ");
 		infoRun.setFontSize(FONT_SIZE);
-		addParentalFamilyInfoParagraph(infoRun);
 
-		if (user.getOwnFamilies() != null) {
-			for (OwnFamily ownFamily : user.getOwnFamilies()) {
-				infoRun = familyInfo.createRun();
-				infoRun.setFontFamily("Times New Roman");
-				infoRun.setFontSize(FONT_SIZE);
+		if(!user.getParents().isEmpty()){
+	    	infoRun = familyInfo.createRun();
+			infoRun.setFontFamily("Times New Roman");
+			infoRun.setFontSize(FONT_SIZE);
+			for(final User parent : user.getParents()){
+				infoRun.addBreak();
+				setShortUserInfo(infoRun, parent);
+			}
+		} else {
+			setNotPresentMessage(familyInfo.createRun());
+		}
 
-				if (ownFamily.getFamilyStatus() != null) {
-					infoRun.addBreak();
-					infoRun.addBreak();
-					infoRun.setText("Сімейний статус: ");
-					if (ownFamily.getFamilyStatus() == FamilyStatus.DIVORCED) {
-						infoRun.setText("розведені.");
-					} else if (ownFamily.getFamilyStatus() == FamilyStatus.MARRIED) {
-						infoRun.setText("одружені.");
-					} else if (ownFamily.getFamilyStatus() == FamilyStatus.WIDOWER) {
-						infoRun.setText("вдовець(ва).");
-					} else if (ownFamily.getFamilyStatus() == FamilyStatus.UNMARRIED) {
-						infoRun.setText("холостий(а).");
-					}
-				}
-				if (ownFamily.getWife() != null) {
-					infoRun.addBreak();
-					infoRun.addBreak();
-					final User wife = ownFamily.getWife();
-					infoRun.setText("Дружина: ");
-					setUserFamilyInfo(infoRun, wife);
-				}
-				if (ownFamily.getHusband() != null) {
-					infoRun.addBreak();
-					infoRun.addBreak();
-					final User husband = ownFamily.getHusband();
-					infoRun.setText("Чоловік: ");
-					setUserFamilyInfo(infoRun, husband);
-				}
-				if (ownFamily.getChildren() != null) {
-					infoRun.addBreak();
-					infoRun.addBreak();
-					final Set<User> children = ownFamily.getChildren();
-					infoRun.setText("Діти: ");
-					infoRun.addBreak();
-					for (User child : children) {
-						setUserFamilyInfo(infoRun, child);
-						infoRun.addBreak();
-						infoRun.addBreak();
-					}
-				}
+		infoRun.addBreak();
+		infoRun.addBreak();
+		infoRun.setText("Брат/Сестра: ");
+		if(!user.getSiblings().isEmpty()){
+			infoRun = familyInfo.createRun();
+			infoRun.setFontFamily("Times New Roman");
+
+			infoRun.setFontSize(FONT_SIZE);
+
+			for(final User sibling : user.getSiblings()){
+				infoRun.addBreak();
+				setShortUserInfo(infoRun, sibling);
+			}
+		} else {
+			setNotPresentMessage(familyInfo.createRun());
+		}
+
+		infoRun.addBreak();
+		infoRun.addBreak();
+		infoRun.setText("Діти: ");
+		if(!user.getChildren().isEmpty()){
+			infoRun = familyInfo.createRun();
+			infoRun.setFontFamily("Times New Roman");
+
+			infoRun.setFontSize(FONT_SIZE);
+
+			for(final User child : user.getChildren()){
+				infoRun.addBreak();
+				setShortUserInfo(infoRun, child);
 			}
 		} else {
 			setNotPresentMessage(familyInfo.createRun());
@@ -326,7 +320,7 @@ public class DOCXFileFormatterServiceImpl implements FileFormatterService<List<X
 			basicInfoRun = jurInfo.createRun();
 			basicInfoRun.setFontFamily("Times New Roman");
 			basicInfoRun.setFontSize(FONT_SIZE);
-			for (JuridicalPerson person : persons) {
+			for (final JuridicalPerson person : persons) {
 				basicInfoRun.setText("ЄРДПО: " + person.getErdpo() + DOT_WHITE_SPACE);
 				basicInfoRun.setText("Вид діяльності: " + person.getTypeActivity() + DOT_WHITE_SPACE);
 				basicInfoRun.addBreak();
@@ -372,7 +366,7 @@ public class DOCXFileFormatterServiceImpl implements FileFormatterService<List<X
 		basicInfoRun.setBold(true);
 
 		if (!user.getEmails().isEmpty()) {
-			for (Email email : user.getEmails()) {
+			for (final Email email : user.getEmails()) {
 				basicInfoRun.addBreak();
 				basicInfoRun = emails.createRun();
 				basicInfoRun.setFontFamily("Times New Roman");
@@ -400,7 +394,7 @@ public class DOCXFileFormatterServiceImpl implements FileFormatterService<List<X
 		basicInfoRun.setBold(true);
 
 		if (!user.getCars().isEmpty()) {
-			for (Car car : user.getCars()) {
+			for (final Car car : user.getCars()) {
 				basicInfoRun.addBreak();
 				basicInfoRun = cars.createRun();
 				basicInfoRun.setFontFamily("Times New Roman");
@@ -432,7 +426,7 @@ public class DOCXFileFormatterServiceImpl implements FileFormatterService<List<X
 		basicInfoRun.setBold(true);
 
 		if (!user.getPassports().isEmpty()) {
-			for (DriverLicense license : user.getDriverLicense()) {
+			for (final DriverLicense license : user.getDriverLicense()) {
 				basicInfoRun = driverLicense.createRun();
 				basicInfoRun.setFontFamily("Times New Roman");
 				basicInfoRun.setFontSize(FONT_SIZE);
@@ -440,7 +434,7 @@ public class DOCXFileFormatterServiceImpl implements FileFormatterService<List<X
 				basicInfoRun.setText("Номер: " + license.getLicenseNumber() + DOT_WHITE_SPACE);
 				basicInfoRun.setText("Категорія: ");
 
-				for (DriverLicenseCategory category : license.getCategories()) {
+				for (final DriverLicenseCategory category : license.getCategories()) {
 					basicInfoRun.setText(category.getCategoryType() + DOT_WHITE_SPACE);
 				}
 				if (license.getIssueDate() != null) {
@@ -475,7 +469,7 @@ public class DOCXFileFormatterServiceImpl implements FileFormatterService<List<X
 		basicInfoRun.setBold(true);
 
 		if (!user.getPassports().isEmpty()) {
-			for (ForeignPassport passport : user.getForeignPassports()) {
+			for (final ForeignPassport passport : user.getForeignPassports()) {
 				basicInfoRun = passports.createRun();
 				basicInfoRun.setFontFamily("Times New Roman");
 				basicInfoRun.setFontSize(FONT_SIZE);
@@ -513,7 +507,7 @@ public class DOCXFileFormatterServiceImpl implements FileFormatterService<List<X
 		basicInfoRun.setBold(true);
 
 		if (!user.getPassports().isEmpty()) {
-			for (Passport passport : user.getPassports()) {
+			for (final Passport passport : user.getPassports()) {
 				basicInfoRun = passports.createRun();
 				basicInfoRun.setFontFamily("Times New Roman");
 				basicInfoRun.setFontSize(FONT_SIZE);
@@ -553,7 +547,7 @@ public class DOCXFileFormatterServiceImpl implements FileFormatterService<List<X
 		basicInfoRun.setBold(true);
 
 		if (!user.getAddresses().isEmpty()) {
-			for (Address address : user.getAddresses()) {
+			for (final Address address : user.getAddresses()) {
 				if (address.getCity() != null) {
 					basicInfoRun = addresses.createRun();
 					basicInfoRun.setFontFamily("Times New Roman");
@@ -589,7 +583,7 @@ public class DOCXFileFormatterServiceImpl implements FileFormatterService<List<X
 		basicInfoRun.setBold(true);
 
 		if (!user.getPhones().isEmpty()) {
-			for (Phone phone : user.getPhones()) {
+			for (final Phone phone : user.getPhones()) {
 				basicInfoRun = phones.createRun();
 				basicInfoRun.setFontFamily("Times New Roman");
 				basicInfoRun.setFontSize(FONT_SIZE);

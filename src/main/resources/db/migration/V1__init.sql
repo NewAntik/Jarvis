@@ -11,19 +11,24 @@ CREATE TABLE users (
     updated_date             TIMESTAMP NOT NULL
 );
 
-CREATE TABLE parental_families (
-    id                       BIGINT PRIMARY KEY,
-    father_id                BIGINT,
-    mother_id                BIGINT,
-    brother_id               BIGINT,
-    sister_id                BIGINT,
-    FOREIGN KEY (father_id)  REFERENCES users(id),
-    FOREIGN KEY (mother_id)  REFERENCES users(id),
-    FOREIGN KEY (brother_id) REFERENCES users(id),
-    FOREIGN KEY (sister_id)  REFERENCES users(id)
+CREATE TABLE user_siblings (
+    user_id                  BIGINT REFERENCES users(id),
+    sibling_id               BIGINT REFERENCES users(id),
+    PRIMARY KEY              (user_id, sibling_id),
+    CONSTRAINT no_self_sibling CHECK (user_id != sibling_id)
 );
 
-ALTER TABLE users ADD CONSTRAINT fk_users_parental_family FOREIGN KEY (parental_family_id) REFERENCES parental_families(id);
+CREATE TABLE users_children(
+    user_id                  BIGINT NOT NULL REFERENCES users(id) ON UPDATE CASCADE,
+    children_id              BIGINT NOT NULL REFERENCES users(id) ON UPDATE CASCADE,
+    PRIMARY KEY              (user_id, children_id)
+);
+
+CREATE TABLE users_parents(
+    user_id                  BIGINT NOT NULL REFERENCES users(id) ON UPDATE CASCADE,
+    parents_id               BIGINT NOT NULL REFERENCES users(id) ON UPDATE CASCADE,
+    PRIMARY KEY              (user_id, parents_id)
+);
 
 CREATE TABLE juridical_persons(
     id                       BIGINT PRIMARY KEY,
@@ -138,29 +143,6 @@ CREATE TABLE participants(
     id                       BIGINT PRIMARY KEY,
     name                     VARCHAR(100) NOT NULL,
     role                     VARCHAR(5) NOT NULL
-);
-
-CREATE TABLE own_families (
-    id                       BIGINT PRIMARY KEY,
-    family_status            VARCHAR(10),
-    husband_id               BIGINT,
-    wife_id                  BIGINT,
-    CONSTRAINT fk_husband    FOREIGN KEY (husband_id) REFERENCES users(id),
-    CONSTRAINT fk_wife       FOREIGN KEY (wife_id) REFERENCES users(id)
-);
-
-CREATE TABLE  users_own_families(
-    user_id                  BIGINT,
-    own_families_id          BIGINT,
-    CONSTRAINT fk_user       FOREIGN KEY (user_id) REFERENCES users(id),
-    CONSTRAINT fk_own_family FOREIGN KEY (own_families_id) REFERENCES users(id)
-);
-
-CREATE TABLE own_families_children (
-    family_id              BIGINT,
-    child_id                  BIGINT,
-    CONSTRAINT fk_family     FOREIGN KEY (family_id) REFERENCES own_families(id),
-    CONSTRAINT fk_child      FOREIGN KEY (child_id) REFERENCES users(id)
 );
 
 CREATE TABLE birth_certificates (

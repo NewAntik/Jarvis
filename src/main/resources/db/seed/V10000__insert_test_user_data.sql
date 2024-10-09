@@ -9,16 +9,20 @@ VALUES
     (6, 'Шевченко', 'Зінаїда', 'Олеговна', '5223360630', 'FEMALE', NULL, '2023-01-05 10:00:00', '2023-01-05 10:00:00'),
     (7, 'Шевченко', 'Аргентіна', 'Енакентієвна', '5523360645', 'FEMALE', NULL, '2023-01-05 10:00:00', '2023-01-05 10:00:00');
 
-
--- Parental Families
-INSERT INTO parental_families (id, father_id, mother_id, brother_id, sister_id)
+INSERT INTO user_siblings(user_id, sibling_id)
 VALUES
-    (1, 3, 4, 1, 7);
+    (2, 7),
+    (2, 1);
 
--- Update Users with Parental Family ID
-UPDATE users
-SET parental_family_id = 1
-WHERE id IN (1, 2, 3, 4, 5, 6);
+INSERT INTO users_children(user_id, children_id)
+VALUES
+    (2, 6),
+    (2, 1);
+
+INSERT INTO users_parents(user_id, parents_id)
+VALUES
+    (2, 3),
+    (2, 4);
 
 -- Juridical Persons
 INSERT INTO juridical_persons (id, erdpo, type_activity, regisrtation_date, user_id)
@@ -120,17 +124,6 @@ VALUES
     (3, 3),
     (4, 4);
 
--- Families
-INSERT INTO own_families (id, family_status, husband_id, wife_id)
-VALUES
-    (1, 'MARRIED', NULL, 5),
-    (2, 'DIVORCED', 1, 4);
-
--- Family Children
-INSERT INTO own_families_children (family_id, child_id)
-VALUES
-    (1, 6);
-
 -- Birth Certificates
 INSERT INTO birth_certificates (id, user_id, day, month, year, number, issue_date, valid_until, is_valid, is_Unlimited, authority, address_id)
 VALUES
@@ -141,10 +134,3 @@ VALUES
     (5, 5, '29', '02', '1830', 'BC654321', '2020-01-01', '2029-01-01', TRUE, TRUE, 'Kiev, Heroyev street', 1),
     (6, 6, '19', '02', '1833', 'BC654321', '2020-01-01', '2029-01-01', TRUE, TRUE, 'Kiev, Heroyev street', 1),
     (7, 7, '10', '02', '1828', 'BC654321', '2020-01-01', '2029-01-01', TRUE, TRUE, 'Kiev, Heroyev street', 1);
-
-
-INSERT INTO users_own_families (user_id, own_families_id)
-VALUES
-    (2, 1);
-
-

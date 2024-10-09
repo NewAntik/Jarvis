@@ -45,7 +45,7 @@ public class PhoneExecutorServiceImpl implements CommandExecutorService {
 		if(users.size() > 1){
 			responder.sendMessage(dto.getChatId(), "За номером телефону знайдено: " + users.size() + " людей.");
 		}
-		for (User user : users) {
+		for (final User user : users) {
 			responder.createDOCXDocumentAndSend(dto.getChatId(), user);
 		}
 	}

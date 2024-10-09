@@ -41,27 +41,27 @@ public class ResponderServiceImpl extends DefaultAbsSender {
 	}
 
 	public void sendDocument(final Long chatId, final byte[] docBytes, final String fileName) {
-		SendDocument sendDocumentRequest = new SendDocument();
+		final SendDocument sendDocumentRequest = new SendDocument();
 		sendDocumentRequest.setChatId(String.valueOf(chatId));
-		InputStream inputStream = new ByteArrayInputStream(docBytes);
-		InputFile inputFile = new InputFile(inputStream, fileName);
+		final InputStream inputStream = new ByteArrayInputStream(docBytes);
+		final InputFile inputFile = new InputFile(inputStream, fileName);
 		sendDocumentRequest.setDocument(inputFile);
 
 		try {
 			execute(sendDocumentRequest);
-		} catch (TelegramApiException e) {
+		} catch (final TelegramApiException e) {
 			LOG.error("Failed to send document", e);
 		}
 	}
 
 	public void sendDocument(final Long chatId, final File pdf) {
-		SendDocument sendDocumentRequest = new SendDocument();
+		final SendDocument sendDocumentRequest = new SendDocument();
 		sendDocumentRequest.setChatId(String.valueOf(chatId));
 		sendDocumentRequest.setDocument(new InputFile(pdf));
 
 		try {
 			execute(sendDocumentRequest);
-		} catch (TelegramApiException e) {
+		} catch (final TelegramApiException e) {
 			LOG.error("Failed to send document", e);
 		}
 	}
@@ -72,7 +72,7 @@ public class ResponderServiceImpl extends DefaultAbsSender {
 		sendMessage.setText(textToSend);
 		try {
 			execute(sendMessage);
-		} catch (TelegramApiException e) {
+		} catch (final TelegramApiException e) {
 			LOG.error("Failed to send message", e);
 		}
 	}

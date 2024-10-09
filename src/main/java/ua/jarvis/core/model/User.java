@@ -1,6 +1,5 @@
 package ua.jarvis.core.model;
 
-import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -10,8 +9,8 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
+import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
-import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
@@ -55,44 +54,75 @@ public class User extends BaseEntity {
 	@Column(length = 500, name = "illegal_actions")
 	private String illegalActions;
 
-	@OneToOne(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+	@OneToOne(mappedBy = "user", fetch = FetchType.EAGER)
 	private BirthCertificate birthCertificate;
 
-	@ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-	private Set<OwnFamily> ownFamilies = new HashSet<>();
+	@OneToOne(mappedBy = "user", fetch = FetchType.EAGER)
+	private Photo photo;
 
-	@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-	@JoinColumn(name = "parental_family_id")
-	private ParentalFamily parentalFamily;
+	@ManyToMany(fetch = FetchType.LAZY)
+	@JoinTable(
+		name = "user_siblings",
+		joinColumns = @JoinColumn(name = "user_id"),
+		inverseJoinColumns = @JoinColumn(name = "sibling_id")
+	)
+	private Set<User> siblings = new HashSet<>();
 
-	@ManyToMany(mappedBy = "drivers", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+	@ManyToMany(fetch = FetchType.LAZY)
+	private Set<User> children = new HashSet<>();
+
+	@ManyToMany(fetch = FetchType.LAZY)
+	private Set<User> parents = new HashSet<>();
+
+	@ManyToMany(mappedBy = "drivers", fetch = FetchType.LAZY)
 	private Set<Car> cars = new HashSet<>();
 
-	@OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+	@OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
 	private Set<JuridicalPerson> juridicalPersons = new HashSet<>();
 
-	@OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+	@OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
 	private Set<Passport> passports = new HashSet<>();
 
-	@OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+	@OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
 	private Set<DriverLicense> driverLicense = new HashSet<>();
 
-	@OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+	@OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
 	private Set<ForeignPassport> foreignPassports = new HashSet<>();
 
 	@ManyToMany(mappedBy = "users", fetch = FetchType.LAZY)
 	private Set<Address> addresses = new HashSet<>();
 
-	@OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+	@OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
 	private Set<Email> emails = new HashSet<>();
 
-	@OneToOne(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-	private Photo photo;
-
-	@OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+	@OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
 	private Set<Phone> phones = new HashSet<>();
 
 	public User() {}
+
+	public Set<User> getSiblings() {
+		return siblings;
+	}
+
+	public void setSiblings(final Set<User> siblings) {
+		this.siblings = siblings;
+	}
+
+	public Set<User> getChildren() {
+		return children;
+	}
+
+	public void setChildren(final Set<User> children) {
+		this.children = children;
+	}
+
+	public Set<User> getParents() {
+		return parents;
+	}
+
+	public void setParents(final Set<User> parents) {
+		this.parents = parents;
+	}
 
 	public Set<JuridicalPerson> getJuridicalPersons() {
 		return juridicalPersons;
@@ -102,28 +132,12 @@ public class User extends BaseEntity {
 		this.juridicalPersons = juridicalPersons;
 	}
 
-	public ParentalFamily getParentalFamily() {
-		return parentalFamily;
-	}
-
-	public void setParentalFamily(final ParentalFamily parentalFamily) {
-		this.parentalFamily = parentalFamily;
-	}
-
 	public String getIllegalActions() {
 		return illegalActions;
 	}
 
 	public void setIllegalActions(final String illegalActions) {
 		this.illegalActions = illegalActions;
-	}
-
-	public Set<OwnFamily> getOwnFamilies() {
-		return ownFamilies;
-	}
-
-	public void setOwnFamilies(final Set<OwnFamily> families) {
-		this.ownFamilies = families;
 	}
 
 	public BirthCertificate getBirthCertificate() {
@@ -207,7 +221,6 @@ public class User extends BaseEntity {
 	public Set<Phone> getPhones() {
 		return phones;
 	}
-
 
 	public void setPhones(final Set<Phone> phones) {
 		this.phones = phones;

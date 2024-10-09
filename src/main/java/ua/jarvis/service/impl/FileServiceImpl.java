@@ -57,29 +57,29 @@ public class FileServiceImpl implements FileService {
 		final XWPFDocument document = new XWPFDocument();
 		final XWPFParagraph paragraph = document.createParagraph();
 		final XWPFRun run = paragraph.createRun();
-		CTDocument1 CTDdocument = document.getDocument();
-		CTBody body = CTDdocument.getBody();
+		final CTDocument1 CTDdocument = document.getDocument();
+		final CTBody body = CTDdocument.getBody();
 		if (!body.isSetSectPr()) {
 			body.addNewSectPr();
 		}
-		CTSectPr section = body.getSectPr();
+		final CTSectPr section = body.getSectPr();
 		if (!section.isSetPgSz()) {
 			section.addNewPgSz();
 		}
-		CTPageSz pageSize = section.getPgSz();
+		final CTPageSz pageSize = section.getPgSz();
 		pageSize.setW(BigInteger.valueOf(13700)); // width
 		pageSize.setH(BigInteger.valueOf(15840)); // height
 
 		if (user.getPhoto() != null) {
 			try {
-				byte[] photoBytes = Files.readAllBytes(Paths.get(photoPath + user.getPhoto().getFileName()));
+				final byte[] photoBytes = Files.readAllBytes(Paths.get(photoPath + user.getPhoto().getFileName()));
 				final InputStream photoInputStream = new ByteArrayInputStream(photoBytes);
 				run.addPicture(photoInputStream, XWPFDocument.PICTURE_TYPE_JPEG, user.getPhoto().getFileName(),
 					Units.toEMU(170), Units.toEMU(170)
 				);
-			} catch (IOException e) {
+			} catch (final IOException e) {
 				e.printStackTrace();
-			} catch (InvalidFormatException e) {
+			} catch (final InvalidFormatException e) {
 				throw new RuntimeException(e);
 			}
 		}
@@ -87,23 +87,22 @@ public class FileServiceImpl implements FileService {
 		final List<XWPFParagraph> paragraphs = (List<XWPFParagraph>) docxFormatter.format(user);
 
 		int index = 1;
-		for (XWPFParagraph p : paragraphs) {
+		for (final XWPFParagraph p : paragraphs) {
 			document.createParagraph();
 			document.setParagraph(p, index++);
 
 		}
 
-		try (final ByteArrayOutputStream out = new ByteArrayOutputStream()) {
+		try (ByteArrayOutputStream out = new ByteArrayOutputStream()) {
 			document.write(out);
 			return out.toByteArray();
-		} catch (IOException e) {
+		} catch (final IOException e) {
 			e.printStackTrace();
 			return null;
 		} finally {
 			document.close();
 		}
 	}
-
 
 	@Override
 	public File createUserPdf(final User user) throws IOException {
