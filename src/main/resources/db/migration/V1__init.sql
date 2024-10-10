@@ -5,7 +5,6 @@ CREATE TABLE users (
     sur_name                 VARCHAR(50) NOT NULL,
     rnokpp                   VARCHAR(50) UNIQUE,
     sex                      VARCHAR(10),
-    parental_family_id       BIGINT,
     illegal_actions          VARCHAR(500),
     created_date             TIMESTAMP NOT NULL,
     updated_date             TIMESTAMP NOT NULL
