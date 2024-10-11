@@ -79,6 +79,9 @@ public class UserServiceImpl implements UserService {
 				}
 			}
 
+			if(user.isIsIndividualEntrepreneur()){
+				user.getIndividualEntrepreneurAddresses().stream().count();
+			}
 		}
 
 		return users;

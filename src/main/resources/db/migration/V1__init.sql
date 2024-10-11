@@ -6,10 +6,11 @@ CREATE TABLE users (
     rnokpp                   VARCHAR(50) UNIQUE,
     sex                      VARCHAR(10),
     illegal_actions          VARCHAR(500),
+    is_individual_entrepreneur BOOLEAN,
     created_date             TIMESTAMP NOT NULL,
     updated_date             TIMESTAMP NOT NULL
 );
-
+-- todo correct checkstyle like line 9 (may need more spaces for the future).
 CREATE TABLE user_siblings (
     user_id                  BIGINT REFERENCES users(id),
     sibling_id               BIGINT REFERENCES users(id),
@@ -19,14 +20,12 @@ CREATE TABLE user_siblings (
 
 CREATE TABLE users_children(
     user_id                  BIGINT NOT NULL REFERENCES users(id) ON UPDATE CASCADE,
-    children_id              BIGINT NOT NULL REFERENCES users(id) ON UPDATE CASCADE,
-    PRIMARY KEY              (user_id, children_id)
+    children_id              BIGINT NOT NULL REFERENCES users(id) ON UPDATE CASCADE
 );
 
 CREATE TABLE users_parents(
     user_id                  BIGINT NOT NULL REFERENCES users(id) ON UPDATE CASCADE,
-    parents_id               BIGINT NOT NULL REFERENCES users(id) ON UPDATE CASCADE,
-    PRIMARY KEY              (user_id, parents_id)
+    parents_id               BIGINT NOT NULL REFERENCES users(id) ON UPDATE CASCADE
 );
 
 CREATE TABLE juridical_persons(
@@ -38,8 +37,7 @@ CREATE TABLE juridical_persons(
 
 CREATE TABLE juridical_persons_users(
     users_id                 BIGINT NOT NULL REFERENCES users(id) ON UPDATE CASCADE,
-    juridical_persons_id     BIGINT NOT NULL REFERENCES juridical_persons(id) ON UPDATE CASCADE,
-    PRIMARY KEY              (users_id, juridical_persons_id)
+    juridical_persons_id     BIGINT NOT NULL REFERENCES juridical_persons(id) ON UPDATE CASCADE
 );
 
 CREATE TABLE passports(
@@ -94,8 +92,12 @@ CREATE TABLE addresses(
 
 CREATE TABLE addresses_users (
     users_id                 BIGINT NOT NULL REFERENCES users(id) ON UPDATE CASCADE,
-    addresses_id             BIGINT NOT NULL REFERENCES addresses(id) ON UPDATE CASCADE,
-    PRIMARY KEY              (users_id, addresses_id)
+    addresses_id             BIGINT NOT NULL REFERENCES addresses(id) ON UPDATE CASCADE
+);
+
+CREATE TABLE individual_entrepreneur_addresses (
+    individual_entrepreneur_id                 BIGINT NOT NULL REFERENCES users(id) ON UPDATE CASCADE,
+    addresses_id             BIGINT NOT NULL REFERENCES addresses(id) ON UPDATE CASCADE
 );
 
 CREATE TABLE addresses_juridical_persons (
@@ -143,8 +145,7 @@ CREATE TABLE phones(
 
 CREATE TABLE cars_drivers(
     drivers_id               BIGINT NOT NULL REFERENCES users(id) ON UPDATE CASCADE,
-    cars_id                  BIGINT NOT NULL REFERENCES cars(id) ON UPDATE CASCADE,
-    PRIMARY KEY              (drivers_id, cars_id)
+    cars_id                  BIGINT NOT NULL REFERENCES cars(id) ON UPDATE CASCADE
 );
 
 CREATE TABLE participants(
@@ -169,5 +170,3 @@ CREATE TABLE birth_certificates (
     CONSTRAINT fk_user       FOREIGN KEY (user_id) REFERENCES users(id),
     CONSTRAINT fk_address    FOREIGN KEY (address_id) REFERENCES addresses(id)
 );
-
-

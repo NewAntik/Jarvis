@@ -50,6 +50,7 @@ public class DOCXFileFormatterServiceImpl implements FileFormatterService<List<X
 
 		docxParagraphs.add(getBirthAddressInfoParagraph());
 		docxParagraphs.add(getAddressesInfoParagraph());
+		docxParagraphs.add(getIndividualEntrepreneurAddressesInfoParagraph());
 		docxParagraphs.add(getBirthCertificateInfoParagraph());
 
 		docxParagraphs.add(getUserJuridicalPersonsInfoParagraph());
@@ -497,6 +498,42 @@ public class DOCXFileFormatterServiceImpl implements FileFormatterService<List<X
 		}
 
 		return passports;
+	}
+
+	private XWPFParagraph getIndividualEntrepreneurAddressesInfoParagraph(){
+		final XWPFParagraph addresses = document.createParagraph();
+		addresses.setSpacingBetween(1.0);
+
+		XWPFRun basicInfoRun = addresses.createRun();
+		basicInfoRun.setFontFamily("Times New Roman");
+		basicInfoRun.setFontSize(FONT_SIZE);
+
+		basicInfoRun.addBreak();
+		basicInfoRun.setText("ФОП Адреси: ");
+		basicInfoRun.setBold(true);
+
+		if (!user.getAddresses().isEmpty()) {
+			for (final Address address : user.getAddresses()) {
+				if (address.getCity() != null) {
+					basicInfoRun = addresses.createRun();
+					basicInfoRun.setFontFamily("Times New Roman");
+					basicInfoRun.setText("  м." + address.getCity() + DOT_WHITE_SPACE);
+				}
+				if (address.getStreet() != null) {
+					basicInfoRun.setText("вул." + address.getStreet() + DOT_WHITE_SPACE);
+				}
+				if (address.getHomeNumber() != null) {
+					basicInfoRun.setText("буд." + address.getHomeNumber() + DOT_WHITE_SPACE);
+				}
+				if (address.getFlatNumber() != null) {
+					basicInfoRun.setText("кв." + address.getFlatNumber() + DOT_WHITE_SPACE);
+				}
+			}
+		} else {
+			setNotPresentMessage(addresses.createRun());
+		}
+
+		return addresses;
 	}
 
 	private XWPFParagraph getAddressesInfoParagraph() {

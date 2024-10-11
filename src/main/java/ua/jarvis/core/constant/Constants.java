@@ -10,7 +10,7 @@ public final class Constants {
 	public final class UAMessages{
 		public static final String BASE_INFO = "Для отримання доступу до цього бота зверніться до @FatherBot.";
 		public static final String HAVE_NO_ACCESS = "Ви не маєте доступу для використання бота!";
-		public static final String INFO_NOT_PRESENT_MESSAGE = "Дана інформація відсутня!";
+		public static final String INFO_NOT_PRESENT_MESSAGE = "Інформація відсутня!";
 		public static final String COMMAND_NOT_FOUND_MESSAGE = "Не правильно введена комманда!" +
 			" Введіть /info для отримання інформації про можливості бота або до сервісної підтримки @FatherBot.";
 

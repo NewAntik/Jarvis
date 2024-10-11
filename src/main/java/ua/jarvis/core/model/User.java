@@ -54,6 +54,9 @@ public class User extends BaseEntity {
 	@Column(length = 500, name = "illegal_actions")
 	private String illegalActions;
 
+	@Column(name = "is_individual_entrepreneur")
+	private boolean isIndividualEntrepreneur;
+
 	@OneToOne(mappedBy = "user", fetch = FetchType.EAGER)
 	private BirthCertificate birthCertificate;
 
@@ -98,7 +101,31 @@ public class User extends BaseEntity {
 	@OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
 	private Set<Phone> phones = new HashSet<>();
 
+	@ManyToMany(fetch = FetchType.LAZY)
+	@JoinTable(
+		name = "individual_entrepreneur_addresses",
+		joinColumns = @JoinColumn(name = "individual_entrepreneur_id"),
+		inverseJoinColumns = @JoinColumn(name = "addresses_id")
+	)
+	private Set<Address> individualEntrepreneurAddresses = new HashSet<>();
+
 	public User() {}
+
+	public boolean isIsIndividualEntrepreneur() {
+		return isIndividualEntrepreneur;
+	}
+
+	public void setIsIndividualEntrepreneur(final boolean isiIndividualEntrepreneur) {
+		this.isIndividualEntrepreneur = isiIndividualEntrepreneur;
+	}
+
+	public Set<Address> getIndividualEntrepreneurAddresses() {
+		return individualEntrepreneurAddresses;
+	}
+
+	public void setIndividualEntrepreneurAddresses(final Set<Address> isiIndividualEntrepreneurAddresses) {
+		this.individualEntrepreneurAddresses = isiIndividualEntrepreneurAddresses;
+	}
 
 	public Set<User> getSiblings() {
 		return siblings;
