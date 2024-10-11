@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 import org.springframework.transaction.annotation.Transactional;
+import ua.jarvis.core.model.JuridicalPerson;
 import ua.jarvis.core.model.User;
 import ua.jarvis.core.model.criteria.UserCriteria;
 import ua.jarvis.core.model.specification.SpecificationProvider;
@@ -72,38 +73,12 @@ public class UserServiceImpl implements UserService {
 				}
 			}
 
-//			if(user.getParentalFamily() != null){
-//				final ParentalFamily parentalFamily = user.getParentalFamily();
-//				if(parentalFamily.getMother() != null){
-//					parentalFamily.getMother().getPhones().stream().count();
-//				}
-//				if(parentalFamily.getFather() != null){
-//					parentalFamily.getFather().getPhones().stream().count();
-//				}
-//				if(parentalFamily.getSister() != null){
-//					parentalFamily.getFather().getPhones().stream().count();
-//				}
-//				if(parentalFamily.getBrother() != null){
-//					parentalFamily.getFather().getPhones().stream().count();
-//				}
-//
-//			}
+			if(!user.getJuridicalPersons().isEmpty()){
+				for(final JuridicalPerson jurPerson : user.getJuridicalPersons()){
+					jurPerson.getJurAddresses().stream().count();
+				}
+			}
 
-//			if(!user.getOwnFamilies().isEmpty()){
-//				for(final OwnFamily ownFamily : user.getOwnFamilies()){
-//					if(ownFamily.getHusband() != null){
-//						ownFamily.getHusband().getPhones().stream().count();
-//					}
-//					if(ownFamily.getWife() != null){
-//						ownFamily.getWife().getPhones().stream().count();
-//					}
-//					if(!ownFamily.getChildren().isEmpty()){
-//						for(final User child : ownFamily.getChildren()){
-//							child.getPhones().stream().count();
-//						}
-//					}
-//				}
-//			}
 		}
 
 		return users;

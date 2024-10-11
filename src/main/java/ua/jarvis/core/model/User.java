@@ -77,7 +77,7 @@ public class User extends BaseEntity {
 	@ManyToMany(mappedBy = "drivers", fetch = FetchType.LAZY)
 	private Set<Car> cars = new HashSet<>();
 
-	@OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
+	@ManyToMany(mappedBy = "users", fetch = FetchType.LAZY)
 	private Set<JuridicalPerson> juridicalPersons = new HashSet<>();
 
 	@OneToMany(mappedBy = "user", fetch = FetchType.LAZY)

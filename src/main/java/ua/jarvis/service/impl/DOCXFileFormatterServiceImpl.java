@@ -98,41 +98,6 @@ public class DOCXFileFormatterServiceImpl implements FileFormatterService<List<X
 		}
 	}
 
-//	private void addParentalFamilyInfoParagraph(final XWPFRun infoRun) {
-//		if (user.getParentalFamily() != null) {
-//			final ParentalFamily parentalFamily = user.getParentalFamily();
-//			if (parentalFamily.getFather() != null) {
-//				infoRun.addBreak();
-//				final User father = parentalFamily.getFather();
-//				infoRun.setText("Батько: ");
-//				setUserFamilyInfo(infoRun, father);
-//			}
-//			if (parentalFamily.getMother() != null) {
-//				infoRun.addBreak();
-//				infoRun.addBreak();
-//				final User mother = parentalFamily.getMother();
-//				infoRun.setText("Мати: ");
-//				setUserFamilyInfo(infoRun, mother);
-//			}
-//			if (parentalFamily.getBrother() != null) {
-//				infoRun.addBreak();
-//				infoRun.addBreak();
-//				final User brother = parentalFamily.getBrother();
-//				infoRun.setText("Брат: ");
-//				setUserFamilyInfo(infoRun, brother);
-//			}
-//			if (parentalFamily.getSister() != null) {
-//				infoRun.addBreak();
-//				infoRun.addBreak();
-//				final User sister = parentalFamily.getSister();
-//				infoRun.setText("Сестра: ");
-//				setUserFamilyInfo(infoRun, sister);
-//			}
-//		} else {
-//			setNotPresentMessage(infoRun);
-//		}
-//	}
-
 	private XWPFParagraph getRelationshipInfoParagraph(){
 		final XWPFParagraph familyInfo = document.createParagraph();
 		familyInfo.setSpacingBetween(1.0);
@@ -324,23 +289,23 @@ public class DOCXFileFormatterServiceImpl implements FileFormatterService<List<X
 				basicInfoRun.setText("ЄРДПО: " + person.getErdpo() + DOT_WHITE_SPACE);
 				basicInfoRun.setText("Вид діяльності: " + person.getTypeActivity() + DOT_WHITE_SPACE);
 				basicInfoRun.addBreak();
-
-				if (person.getJurAddress() != null) {
-					final Address address = person.getJurAddress();
+				if(!person.getJurAddresses().isEmpty()){
 					basicInfoRun = jurInfo.createRun();
 					basicInfoRun.setFontFamily("Times New Roman");
 					basicInfoRun.setFontSize(FONT_SIZE);
-					basicInfoRun.setText("Адреса: ");
-
-					basicInfoRun.setText("  м." + address.getCity() + DOT_WHITE_SPACE);
-					if (address.getStreet() != null) {
-						basicInfoRun.setText("вул." + address.getStreet() + DOT_WHITE_SPACE);
-					}
-					if (address.getHomeNumber() != null) {
-						basicInfoRun.setText("буд." + address.getHomeNumber() + DOT_WHITE_SPACE);
-					}
-					if (address.getFlatNumber() != null) {
-						basicInfoRun.setText("кв." + address.getFlatNumber() + DOT_WHITE_SPACE);
+					basicInfoRun.setText("Адреси: ");
+					for(final Address address : person.getJurAddresses()){
+						basicInfoRun.addBreak();
+						basicInfoRun.setText("  м." + address.getCity() + DOT_WHITE_SPACE);
+						if (address.getStreet() != null) {
+							basicInfoRun.setText("вул." + address.getStreet() + DOT_WHITE_SPACE);
+						}
+						if (address.getHomeNumber() != null) {
+							basicInfoRun.setText("буд." + address.getHomeNumber() + DOT_WHITE_SPACE);
+						}
+						if (address.getFlatNumber() != null) {
+							basicInfoRun.setText("кв." + address.getFlatNumber() + DOT_WHITE_SPACE);
+						}
 					}
 				}
 				basicInfoRun.addBreak();

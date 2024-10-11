@@ -1,16 +1,13 @@
 package ua.jarvis.core.model;
 
-import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
+import jakarta.persistence.ManyToMany;
 import jakarta.persistence.OneToMany;
-import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
@@ -36,25 +33,24 @@ public class JuridicalPerson {
 	@Column(length = 200, name = "type_activity")
 	private String typeActivity;
 
-	@OneToOne(mappedBy = "juridicalPerson")
-	private Address jurAddress;
-
 	@NotNull
 	@Column(name = "regisrtation_date")
 	private LocalDateTime registrationDate;
 
-	@ManyToOne(fetch = FetchType.EAGER)
-	@JoinColumn(name = "user_id")
-	private User user;
+	@ManyToMany(fetch = FetchType.LAZY)
+	private Set<User> users = new HashSet<>();
 
-	@OneToMany(mappedBy = "juridicalPerson", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+	@OneToMany(mappedBy = "juridicalPerson", fetch = FetchType.LAZY)
 	private Set<Email> emails = new HashSet<>();
 
-	@OneToMany(mappedBy = "juridicalPerson", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+	@OneToMany(mappedBy = "juridicalPerson", fetch = FetchType.LAZY)
 	private Set<Phone> phones = new HashSet<>();
 
-	@OneToMany(mappedBy = "juridicalPerson", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+	@OneToMany(mappedBy = "juridicalPerson", fetch = FetchType.LAZY)
 	private Set<Car> car = new HashSet<>();
+
+	@ManyToMany(mappedBy = "juridicalPersons", fetch = FetchType.LAZY)
+	private Set<Address> jurAddresses = new HashSet<>();
 
 	public JuridicalPerson() {}
 
@@ -82,12 +78,12 @@ public class JuridicalPerson {
 		this.erdpo = erdpo;
 	}
 
-	public Address getJurAddress() {
-		return jurAddress;
+	public Set<Address> getJurAddresses() {
+		return jurAddresses;
 	}
 
-	public void setJurAddress(final Address jurAdress) {
-		this.jurAddress = jurAdress;
+	public void setJurAddresses(final Set<Address> jurAddresses) {
+		this.jurAddresses = jurAddresses;
 	}
 
 	public String getTypeActivity() {
@@ -98,12 +94,12 @@ public class JuridicalPerson {
 		this.typeActivity = typeActivity;
 	}
 
-	public User getUser() {
-		return user;
+	public Set<User> getUsers() {
+		return users;
 	}
 
-	public void setUser(final User user) {
-		this.user = user;
+	public void setUsers(final Set<User> users) {
+		this.users = users;
 	}
 
 	public Set<Email> getEmails() {
@@ -136,7 +132,6 @@ public class JuridicalPerson {
 			"id=" + id +
 			", erdpo='" + erdpo + '\'' +
 			", typeActivity='" + typeActivity + '\'' +
-			", jurAddress=" + jurAddress +
 			", registrationDate=" + registrationDate +
 			'}';
 	}
@@ -150,15 +145,11 @@ public class JuridicalPerson {
 			return false;
 		}
 		final JuridicalPerson that = (JuridicalPerson) o;
-		return Objects.equals(id, that.id) &&
-			Objects.equals(erdpo, that.erdpo) &&
-			Objects.equals(typeActivity, that.typeActivity) &&
-			Objects.equals(jurAddress, that.jurAddress) &&
-			Objects.equals(registrationDate, that.registrationDate);
+		return Objects.equals(erdpo, that.erdpo);
 	}
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(id, erdpo, typeActivity, jurAddress, registrationDate);
+		return Objects.hash(erdpo);
 	}
 }

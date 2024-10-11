@@ -33,8 +33,13 @@ CREATE TABLE juridical_persons(
     id                       BIGINT PRIMARY KEY,
     erdpo                    VARCHAR(8),
     type_activity            VARCHAR(200),
-    regisrtation_date        TIMESTAMP NOT NULL,
-    user_id                  BIGINT NOT NULL REFERENCES users(id) ON DELETE CASCADE
+    regisrtation_date        TIMESTAMP NOT NULL
+);
+
+CREATE TABLE juridical_persons_users(
+    users_id                 BIGINT NOT NULL REFERENCES users(id) ON UPDATE CASCADE,
+    juridical_persons_id     BIGINT NOT NULL REFERENCES juridical_persons(id) ON UPDATE CASCADE,
+    PRIMARY KEY              (users_id, juridical_persons_id)
 );
 
 CREATE TABLE passports(
@@ -45,7 +50,7 @@ CREATE TABLE passports(
     is_Valid                 BOOLEAN,
     is_Unlimited             BOOLEAN,
     authority                VARCHAR(200) NOT NULL,
-    user_id                  BIGINT NOT NULL REFERENCES users(id) ON DELETE CASCADE
+    user_id                  BIGINT NOT NULL REFERENCES users(id)
 );
 
 CREATE TABLE driver_licenses(
@@ -56,13 +61,13 @@ CREATE TABLE driver_licenses(
     is_Unlimited             BOOLEAN,
     authority                VARCHAR(200) NOT NULL,
     license_number           VARCHAR(9) NOT NULL,
-    user_id                  BIGINT NOT NULL UNIQUE REFERENCES users(id) ON DELETE CASCADE
+    user_id                  BIGINT NOT NULL UNIQUE REFERENCES users(id)
 );
 
 CREATE TABLE driver_license_categories(
     id                       BIGINT PRIMARY KEY,
     category_type            VARCHAR(255) NOT NULL,
-    driver_license_id        BIGINT NOT NULL REFERENCES driver_licenses(id) ON DELETE CASCADE
+    driver_license_id        BIGINT NOT NULL REFERENCES driver_licenses(id)
 );
 
 CREATE TABLE foreign_passports(
@@ -73,7 +78,7 @@ CREATE TABLE foreign_passports(
     is_Valid                 BOOLEAN,
     is_Unlimited             BOOLEAN,
     authority                VARCHAR(200) NOT NULL,
-    user_id                  BIGINT NOT NULL REFERENCES users(id) ON DELETE CASCADE
+    user_id                  BIGINT NOT NULL REFERENCES users(id)
 );
 
 CREATE TABLE addresses(
@@ -84,14 +89,18 @@ CREATE TABLE addresses(
     home_number              VARCHAR(50),
     flat_number              VARCHAR(50),
     created_date             TIMESTAMP NOT NULL,
-    updated_date             TIMESTAMP NOT NULL,
-    juridical_person_id      BIGINT UNIQUE REFERENCES juridical_persons(id)
+    updated_date             TIMESTAMP NOT NULL
 );
 
 CREATE TABLE addresses_users (
     users_id                 BIGINT NOT NULL REFERENCES users(id) ON UPDATE CASCADE,
     addresses_id             BIGINT NOT NULL REFERENCES addresses(id) ON UPDATE CASCADE,
     PRIMARY KEY              (users_id, addresses_id)
+);
+
+CREATE TABLE addresses_juridical_persons (
+    juridical_persons_id     BIGINT NOT NULL REFERENCES juridical_persons(id) ON UPDATE CASCADE,
+    jur_addresses_id         BIGINT NOT NULL REFERENCES addresses(id) ON UPDATE CASCADE
 );
 
 CREATE TABLE cars(

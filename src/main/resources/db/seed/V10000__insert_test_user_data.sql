@@ -25,10 +25,16 @@ VALUES
     (2, 4);
 
 -- Juridical Persons
-INSERT INTO juridical_persons (id, erdpo, type_activity, regisrtation_date, user_id)
+INSERT INTO juridical_persons (id, erdpo, type_activity, regisrtation_date)
 VALUES
-    (1, '12345678', 'Consulting', '2023-01-01 10:00:00', 2),
-    (2, '87654321', 'IT Services', '2023-01-02 10:00:00', 2);
+    (1, '12345678', 'Consulting', '2023-01-01 10:00:00'),
+    (2, '87654321', 'IT Services', '2023-01-02 10:00:00');
+
+-- Users Juridical Persons
+INSERT INTO juridical_persons_users (users_id, juridical_persons_id)
+VALUES
+    (2, 1),
+    (2, 2);
 
 -- Passports
 INSERT INTO passports (id, passport_number, issue_date, valid_until, is_valid, is_Unlimited, authority, user_id)
@@ -72,10 +78,10 @@ VALUES
     (5, 'FB654321', '2020-01-01', '2030-01-01', TRUE, FALSE, 'Kiev, Heroyev street, home number 4', 5);
 
 -- Addresses
-INSERT INTO addresses (id, region, city, street, home_number, flat_number, created_date, updated_date, juridical_person_id)
+INSERT INTO addresses (id, region, city, street, home_number, flat_number, created_date, updated_date)
 VALUES
-    (1, 'Київська', 'Київ', 'Проспект Перемоги', '10', '101', '2023-01-01 10:00:00', '2023-01-01 10:00:00', 1),
-    (2, 'Донецька', 'Донецьк', 'Київський проспект імені Зеленского', '20', '202', '2023-01-02 10:00:00', '2023-01-02 10:00:00', 2);
+    (1, 'Київська', 'Київ', 'Проспект Перемоги', '10', '101', '2023-01-01 10:00:00', '2023-01-01 10:00:00'),
+    (2, 'Донецька', 'Донецьк', 'Київський проспект імені Зеленского', '20', '202', '2023-01-02 10:00:00', '2023-01-02 10:00:00');
 
 -- Address-User Relationships
 INSERT INTO addresses_users (users_id, addresses_id)
@@ -83,6 +89,12 @@ VALUES
     (2, 1),
     (1, 2),
     (3, 2);
+
+-- Addresses-JuridicalPersons Relationships
+INSERT INTO addresses_juridical_persons (jur_addresses_id, juridical_persons_id)
+VALUES
+    (1, 1),
+    (2, 2);
 
 -- Cars
 INSERT INTO cars (id, plate_number, color, model, car_type, vin_Code, issue_date, juridical_person_id, owner_Id)
