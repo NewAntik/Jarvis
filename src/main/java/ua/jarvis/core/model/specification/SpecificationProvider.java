@@ -9,6 +9,8 @@ import ua.jarvis.core.model.criteria.UserCriteria;
 public class SpecificationProvider {
 
 	public SpecificationProvider(){}
+
+	//todo rewrite to use Map collection in order to get rid of the if else part of code.
 	public Specification<User> get(final UserCriteria criteria) {
 		UserSpecificationBuilder builder = UserSpecificationBuilder.builder();
 

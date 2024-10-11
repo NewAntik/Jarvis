@@ -51,11 +51,10 @@ public class AddressExecutorServiceImpl implements CommandExecutorService {
 			users = userService.findUsersByCriteria(createCriteriaWithFlatNumber(parts[0], parts[1], parts[2], parts[3]));
 		}
 
-		if(users.size() > 1){
-			responder.sendMessage(dto.getChatId(), "За адресою: " + users.size() + " людей.");
-		}
-		for (final User user : users) {
-			responder.createDOCXDocumentAndSend(dto.getChatId(), user);
+		if(users.size() == 1 ){
+			responder.createDOCXDocumentAndSend(dto.getChatId(), users.get(0));
+		} else {
+			responder.createShortDOCXDocumentAndSend(dto.getChatId(), users);
 		}
 	}
 

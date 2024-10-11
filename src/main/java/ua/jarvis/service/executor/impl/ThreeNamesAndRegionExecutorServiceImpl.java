@@ -48,8 +48,10 @@ public class ThreeNamesAndRegionExecutorServiceImpl implements CommandExecutorSe
 		if(users.size() > 1){
 			responder.sendMessage(dto.getChatId(), "За ПІБ та регіоном знайдено: " + users.size() + " людей.");
 		}
-		for (final User user : users) {
-			responder.createDOCXDocumentAndSend(dto.getChatId(), user);
+		if(users.size() == 1 ){
+			responder.createDOCXDocumentAndSend(dto.getChatId(), users.get(0));
+		} else {
+			responder.createShortDOCXDocumentAndSend(dto.getChatId(), users);
 		}
 	}
 

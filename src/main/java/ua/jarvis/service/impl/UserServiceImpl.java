@@ -35,7 +35,7 @@ public class UserServiceImpl implements UserService {
 	@Override
 	@Transactional(readOnly = true)
 	public List<User> findUsersByCriteria(final UserCriteria criteria) {
-		LOG.info("findUsersByCriteria was called with criteria: {}", criteria.toString());
+		LOG.info("findUsersByCriteria was called with criteria: {}", criteria);
 
 		final Specification<User> spec = specProvider.get(criteria);
 
@@ -45,6 +45,14 @@ public class UserServiceImpl implements UserService {
 			throw new IllegalArgumentException(NOT_EXISTS);
 		}
 
+		if(users.size() == 1){
+			initializeLazyLoad(users);
+		}
+
+		return users;
+	}
+
+	private void initializeLazyLoad(final List<User> users){
 		for(final User user : users ){
 			user.getCars().stream().count();
 			user.getPassports().stream().count();
@@ -83,7 +91,5 @@ public class UserServiceImpl implements UserService {
 				user.getIndividualEntrepreneurAddresses().stream().count();
 			}
 		}
-
-		return users;
 	}
 }

@@ -18,7 +18,9 @@ import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.List;
 
+//todo rewrite to use interfase Responder extends DefaultAbsSender.
 @Service
 public class ResponderServiceImpl extends DefaultAbsSender {
 	private static final Logger LOG = LoggerFactory.getLogger(ResponderServiceImpl.class);
@@ -34,6 +36,11 @@ public class ResponderServiceImpl extends DefaultAbsSender {
 	) {
 		super(options, token);
 		this.fileService = fileService;
+	}
+
+	public void createShortDOCXDocumentAndSend(final Long chatId, final List<User> users) throws IOException, InvalidFormatException {
+		final byte [] docxBytes = fileService.createShortDOCXDocument(users);
+		sendDocument(chatId, docxBytes, "РНОКПП та ФОП" + DOCX);
 	}
 
 	public void createDOCXDocumentAndSend(final Long chatId, final User user) throws IOException, InvalidFormatException {

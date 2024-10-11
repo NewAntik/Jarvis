@@ -21,6 +21,7 @@ import ua.jarvis.core.model.User;
 import ua.jarvis.service.FileFormatterService;
 import ua.jarvis.service.FileService;
 import ua.jarvis.service.PhotoService;
+import ua.jarvis.service.ShortDataDOCXFileFormatterServiceImpl;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -39,17 +40,21 @@ public class FileServiceImpl implements FileService {
 
 	private final FileFormatterService docxFormatter;
 
+	private final FileFormatterService shortDOCXFormatter;
+
 	private final PhotoService photoService;
 
 	public FileServiceImpl(
 		final PDFFileFormatterServiceImpl pdfFormatter,
 		final DOCXFileFormatterServiceImpl docxFormatter,
+		final ShortDataDOCXFileFormatterServiceImpl shortDOCXFormatter,
 		final PhotoService photoService
 
 	) {
 		this.pdfFormatter = pdfFormatter;
 		this.docxFormatter = docxFormatter;
 		this.photoService = photoService;
+		this.shortDOCXFormatter = shortDOCXFormatter;
 	}
 
 	@Override
@@ -87,6 +92,33 @@ public class FileServiceImpl implements FileService {
 			document.setParagraph(p, index++);
 
 		}
+
+		try (ByteArrayOutputStream out = new ByteArrayOutputStream()) {
+			document.write(out);
+			return out.toByteArray();
+		} catch (final IOException e) {
+			e.printStackTrace();
+			return null;
+		} finally {
+			document.close();
+		}
+	}
+
+	@Override
+	public byte[] createShortDOCXDocument(final List<User> users) throws IOException, InvalidFormatException {
+		final XWPFDocument document = new XWPFDocument();
+		final CTDocument1 CTDdocument = document.getDocument();
+		final CTBody body = CTDdocument.getBody();
+		if (!body.isSetSectPr()) {
+			body.addNewSectPr();
+		}
+		final CTSectPr section = body.getSectPr();
+		if (!section.isSetPgSz()) {
+			section.addNewPgSz();
+		}
+		final XWPFParagraph paragraph = (XWPFParagraph) shortDOCXFormatter.format(users);
+		document.createParagraph();
+		document.setParagraph(paragraph, 0);
 
 		try (ByteArrayOutputStream out = new ByteArrayOutputStream()) {
 			document.write(out);

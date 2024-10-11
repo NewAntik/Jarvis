@@ -5,9 +5,12 @@ import ua.jarvis.core.model.User;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.List;
 
 public interface FileService {
 	File createUserPdf(User user) throws IOException;
 
 	byte[] createDOCXFromUser(User user) throws IOException, InvalidFormatException;
+
+	byte[] createShortDOCXDocument(List<User> users) throws IOException, InvalidFormatException;
 }

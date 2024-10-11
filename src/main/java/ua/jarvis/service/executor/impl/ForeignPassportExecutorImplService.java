@@ -45,6 +45,7 @@ public class ForeignPassportExecutorImplService implements CommandExecutorServic
 		responder.createDOCXDocumentAndSend(dto.getChatId(), users.get(0));
 
 	}
+
 	private UserCriteria createCriteria(final String foreignPassport) {
 		return new UserCriteria.UserCriteriaBuilder().foreignPassport(foreignPassport).build();
 	}
