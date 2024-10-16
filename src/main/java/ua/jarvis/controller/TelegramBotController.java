@@ -63,7 +63,7 @@ public class TelegramBotController extends TelegramLongPollingBot {
 		sendMessage.setText(textToSend);
 		try {
 			execute(sendMessage);
-		} catch (TelegramApiException e) {
+		} catch (final TelegramApiException e) {
 			e.printStackTrace();
 		}
 	}

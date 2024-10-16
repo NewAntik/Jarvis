@@ -15,7 +15,7 @@ public class ParticipantServiceImpl implements ParticipantService {
 
 	private final ParticipantRepository participantRepository;
 
-	public ParticipantServiceImpl(ParticipantRepository participantRepository) {
+	public ParticipantServiceImpl(final ParticipantRepository participantRepository) {
 		this.participantRepository = participantRepository;
 	}
 

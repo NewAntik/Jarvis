@@ -86,6 +86,10 @@ CREATE TABLE addresses(
     street                   VARCHAR(50),
     home_number              VARCHAR(50),
     flat_number              VARCHAR(50),
+    district                 VARCHAR(50),
+    corpus                   VARCHAR(50),
+    other                    VARCHAR(50),
+    other_num                VARCHAR(10),
     created_date             TIMESTAMP NOT NULL,
     updated_date             TIMESTAMP NOT NULL
 );

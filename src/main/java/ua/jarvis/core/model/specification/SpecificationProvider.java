@@ -4,54 +4,54 @@ import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Component;
 import ua.jarvis.core.model.User;
 import ua.jarvis.core.model.criteria.UserCriteria;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.function.BiConsumer;
 
 @Component
 public class SpecificationProvider {
 
-	public SpecificationProvider(){}
+	private static final Map<String, BiConsumer<UserSpecificationBuilder, String>> criteriaMap = new HashMap<>();
 
-	//todo rewrite to use Map collection in order to get rid of the if else part of code.
+	static {
+		criteriaMap.put("name", UserSpecificationBuilder::hasName);
+		criteriaMap.put("surName", UserSpecificationBuilder::hasSurName);
+		criteriaMap.put("middleName", UserSpecificationBuilder::hasMidlName);
+		criteriaMap.put("month", (builder, value) -> {
+			if (!"00".equals(value)) builder.hasBirthMonth(value);
+		});
+		criteriaMap.put("year", (builder, value) -> {
+			if (!"0000".equals(value)) builder.hasBirthYear(value);
+		});
+		criteriaMap.put("day", (builder, value) -> {
+			if (!"00".equals(value)) builder.hasBirthDay(value);
+		});
+		criteriaMap.put("rnokpp", UserSpecificationBuilder::hasRnokpp);
+		criteriaMap.put("phoneNumber", UserSpecificationBuilder::hasPhoneNumber);
+		criteriaMap.put("autoPlateNumber", UserSpecificationBuilder::hasAutoPlateNumber);
+		criteriaMap.put("email", UserSpecificationBuilder::hasEmail);
+		criteriaMap.put("driverLicenseNumber", UserSpecificationBuilder::hasDriverLicenseNumber);
+		criteriaMap.put("flatNumber", UserSpecificationBuilder::hasFlatNumber);
+		criteriaMap.put("homeNumber", UserSpecificationBuilder::hasHomeNumber);
+		criteriaMap.put("street", UserSpecificationBuilder::hasStreet);
+		criteriaMap.put("city", UserSpecificationBuilder::hasCity);
+		criteriaMap.put("region", UserSpecificationBuilder::hasRegion);
+		criteriaMap.put("foreignPassport", UserSpecificationBuilder::hasForeignPassport);
+		criteriaMap.put("passport", UserSpecificationBuilder::hasPassport);
+		criteriaMap.put("district", UserSpecificationBuilder::hasDistrict);
+		criteriaMap.put("corpus", UserSpecificationBuilder::hasCorpus);
+		criteriaMap.put("other", UserSpecificationBuilder::hasOther);
+		criteriaMap.put("otherNum", UserSpecificationBuilder::hasOtherNum);
+	}
+
 	public Specification<User> get(final UserCriteria criteria) {
-		UserSpecificationBuilder builder = UserSpecificationBuilder.builder();
+		final UserSpecificationBuilder builder = UserSpecificationBuilder.builder();
 
 		criteria.toMap().forEach((key, value) -> {
 			if (value != null) {
-				if ("name".equals(key)) {
-					builder.hasName(value);
-				} else if ("surName".equals(key)) {
-					builder.hasSurName(value);
-				} else if ("middleName".equals(key)) {
-					builder.hasMidlName(value);
-				} else if ("month".equals(key) && !value.equals("00")) {
-					builder.hasBirthMonth(value);
-				} else if ("year".equals(key) && !value.equals("0000")) {
-					builder.hasBirthYear(value);
-				} else if ("day".equals(key) && !value.equals("00")) {
-					builder.hasBirthDay(value);
-				} else if ("rnokpp".equals(key)) {
-					builder.hasRnokpp(value);
-				} else if ("phoneNumber".equals(key)) {
-					builder.hasPhoneNumber(value);
-				} else if ("autoPlateNumber".equals(key)) {
-					builder.hasAutoPlateNumber(value);
-				} else if ("email".equals(key)) {
-					builder.hasEmail(value);
-				} else if ("driverLicenseNumber".equals(key)) {
-					builder.hasDriverLicenseNumber(value);
-				} else if ("flatNumber".equals(key)) {
-					builder.hasFlatNumber(value);
-				} else if ("homeNumber".equals(key)) {
-					builder.hasHomeNumber(value);
-				} else if ("street".equals(key)) {
-					builder.hasStreet(value);
-				} else if ("city".equals(key)) {
-					builder.hasCity(value);
-				} else if ("region".equals(key)) {
-					builder.hasRegion(value);
-				} else if ("foreignPassport".equals(key)) {
-					builder.hasForeignPassport(value);
-				} else if ("passport".equals(key)) {
-					builder.hasPassport(value);
+				final BiConsumer<UserSpecificationBuilder, String> consumer = criteriaMap.get(key);
+				if (consumer != null) {
+					consumer.accept(builder, value);
 				}
 			}
 		});

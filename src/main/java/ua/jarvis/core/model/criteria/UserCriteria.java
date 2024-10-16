@@ -23,6 +23,10 @@ public class UserCriteria {
 	private String region;
 	private String foreignPassport;
 	private String passport;
+	private String district;
+	private String corpus;
+	private String other;
+	private String otherNum;
 
 	public UserCriteria() {}
 
@@ -170,8 +174,40 @@ public class UserCriteria {
 		this.region = region;
 	}
 
+	public String getDistrict() {
+		return district;
+	}
+
+	public void setDistrict(final String district) {
+		this.district = district;
+	}
+
+	public String getCorpus() {
+		return corpus;
+	}
+
+	public void setCorpus(final String corpus) {
+		this.corpus = corpus;
+	}
+
+	public String getOther() {
+		return other;
+	}
+
+	public void setOther(final String other) {
+		this.other = other;
+	}
+
+	public String getOtherNum() {
+		return otherNum;
+	}
+
+	public void setOtherNum(final String otherNum) {
+		this.otherNum = otherNum;
+	}
+
 	public Map<String, String> toMap() {
-		Map<String, String> map = new HashMap<>();
+		final Map<String, String> map = new HashMap<>();
 		map.put("name", name);
 		map.put("surName", surName);
 		map.put("middleName", middleName);
@@ -190,32 +226,12 @@ public class UserCriteria {
 		map.put("region", region);
 		map.put("passport", passport);
 		map.put("foreignPassport", foreignPassport);
+		map.put("district", district);
+		map.put("corpus", corpus);
+		map.put("other", other);
+		map.put("otherNum", otherNum);
 
 		return map;
-	}
-
-	@Override
-	public String toString() {
-		return "UserCriteria{" +
-			"name='" + name + '\'' +
-			", surName='" + surName + '\'' +
-			", middleName='" + middleName + '\'' +
-			", month='" + month + '\'' +
-			", year='" + year + '\'' +
-			", day='" + day + '\'' +
-			", rnokpp='" + rnokpp + '\'' +
-			", phoneNumber='" + phoneNumber + '\'' +
-			", autoPlateNumber='" + autoPlateNumber + '\'' +
-			", email='" + email + '\'' +
-			", driverLicenseNumber='" + driverLicenseNumber + '\'' +
-			", flatNumber='" + flatNumber + '\'' +
-			", homeNumber='" + homeNumber + '\'' +
-			", street='" + street + '\'' +
-			", city='" + city + '\'' +
-			", region='" + region + '\'' +
-			", foreignPassport='" + foreignPassport + '\'' +
-			", passport='" + passport + '\'' +
-			'}';
 	}
 
 	public static class UserCriteriaBuilder {
@@ -235,104 +251,127 @@ public class UserCriteria {
 		private String street;
 		private String city;
 		private String region;
-
 		private String foreignPassport;
-
 		private String passport;
+		private String district;
+		private String corpus;
+		private String other;
+		private String otherNum;
 
 		public UserCriteriaBuilder() {}
 
-		public UserCriteriaBuilder foreignPassport(String foreignPassport) {
+		public UserCriteriaBuilder foreignDistrict(final String district) {
+			this.district = district;
+			return this;
+		}
+
+		public UserCriteriaBuilder foreignCorpus(final String corpus) {
+			this.corpus = corpus;
+			return this;
+		}
+
+		public UserCriteriaBuilder foreignOther(final String other) {
+			this.other = other;
+			return this;
+		}
+
+		public UserCriteriaBuilder foreignOtherNum(final String otherNum) {
+			this.otherNum = otherNum;
+			return this;
+		}
+
+		public UserCriteriaBuilder foreignPassport(final String foreignPassport) {
 			this.foreignPassport = foreignPassport;
 			return this;
 		}
-		public UserCriteriaBuilder passport(String passport) {
+
+		public UserCriteriaBuilder passport(final String passport) {
 			this.passport = passport;
 			return this;
 		}
 
-		public UserCriteriaBuilder name(String name) {
+		public UserCriteriaBuilder name(final String name) {
 			this.name = name;
 			return this;
 		}
 
-		public UserCriteriaBuilder surName(String surName) {
+		public UserCriteriaBuilder surName(final String surName) {
 			this.surName = surName;
 			return this;
 		}
 
-		public UserCriteriaBuilder middleName(String middleName) {
+		public UserCriteriaBuilder middleName(final String middleName) {
 			this.middleName = middleName;
 			return this;
 		}
 
-		public UserCriteriaBuilder month(String month) {
+		public UserCriteriaBuilder month(final String month) {
 			this.month = month;
 			return this;
 		}
 
-		public UserCriteriaBuilder year(String year) {
+		public UserCriteriaBuilder year(final String year) {
 			this.year = year;
 			return this;
 		}
 
-		public UserCriteriaBuilder day(String day) {
+		public UserCriteriaBuilder day(final String day) {
 			this.day = day;
 			return this;
 		}
 
-		public UserCriteriaBuilder rnokpp(String rnokpp) {
+		public UserCriteriaBuilder rnokpp(final String rnokpp) {
 			this.rnokpp = rnokpp;
 			return this;
 		}
 
-		public UserCriteriaBuilder phoneNumber(String phoneNumber) {
+		public UserCriteriaBuilder phoneNumber(final String phoneNumber) {
 			this.phoneNumber = phoneNumber;
 			return this;
 		}
 
-		public UserCriteriaBuilder autoPlateNumber(String autoPlateNumber) {
+		public UserCriteriaBuilder autoPlateNumber(final String autoPlateNumber) {
 			this.autoPlateNumber = autoPlateNumber;
 			return this;
 		}
 
-		public UserCriteriaBuilder email(String email) {
+		public UserCriteriaBuilder email(final String email) {
 			this.email = email;
 			return this;
 		}
 
-		public UserCriteriaBuilder driverLicenseNumber(String driverLicenseNumber) {
+		public UserCriteriaBuilder driverLicenseNumber(final String driverLicenseNumber) {
 			this.driverLicenseNumber = driverLicenseNumber;
 			return this;
 		}
 
-		public UserCriteriaBuilder flatNumber(String flatNumber) {
+		public UserCriteriaBuilder flatNumber(final String flatNumber) {
 			this.flatNumber = flatNumber;
 			return this;
 		}
 
-		public UserCriteriaBuilder homeNumber(String homeNumber) {
+		public UserCriteriaBuilder homeNumber(final String homeNumber) {
 			this.homeNumber = homeNumber;
 			return this;
 		}
 
-		public UserCriteriaBuilder street(String street) {
+		public UserCriteriaBuilder street(final String street) {
 			this.street = street;
 			return this;
 		}
 
-		public UserCriteriaBuilder city(String city) {
+		public UserCriteriaBuilder city(final String city) {
 			this.city = city;
 			return this;
 		}
 
-		public UserCriteriaBuilder region(String region) {
+		public UserCriteriaBuilder region(final String region) {
 			this.region = region;
 			return this;
 		}
 
 		public UserCriteria build() {
-			UserCriteria userCriteria = new UserCriteria();
+			final UserCriteria userCriteria = new UserCriteria();
 			userCriteria.setName(this.name);
 			userCriteria.setSurName(this.surName);
 			userCriteria.setMiddleName(this.middleName);
@@ -351,6 +390,10 @@ public class UserCriteria {
 			userCriteria.setRegion(this.region);
 			userCriteria.setPassport(this.passport);
 			userCriteria.setForeignPassport(this.foreignPassport);
+			userCriteria.setDistrict(this.district);
+			userCriteria.setCorpus(this.corpus);
+			userCriteria.setOther(this.other);
+			userCriteria.setOtherNum(this.otherNum);
 
 			return userCriteria;
 		}

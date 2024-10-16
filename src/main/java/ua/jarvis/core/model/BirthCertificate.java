@@ -60,7 +60,7 @@ public class BirthCertificate extends DocumentEntity {
 		return month;
 	}
 
-	private void setMonth(final String month) {
+	public void setMonth(final String month) {
 		this.month = month;
 	}
 
@@ -68,7 +68,7 @@ public class BirthCertificate extends DocumentEntity {
 		return year;
 	}
 
-	private void setYear(final String year) {
+	public void setYear(final String year) {
 		this.year = year;
 	}
 

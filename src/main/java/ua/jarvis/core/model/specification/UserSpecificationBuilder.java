@@ -30,39 +30,31 @@ public class UserSpecificationBuilder {
 
 	public UserSpecificationBuilder hasForeignPassport(final String foreignPassport) {
 		this.specification = specification.and((root, query, builder) -> {
-			Join<User, ForeignPassport> addressJoin = root.joinSet(Constants.SpecificationType.FOREIGN_PASSPORTS, JoinType.INNER);
-			return builder.equal(addressJoin.get(Constants.SpecificationType.FOREIGN_PASSPORT_NUMBER), foreignPassport);
+			final Join<User, ForeignPassport> foreignPassportJoin = root.joinSet(Constants.SpecificationType.FOREIGN_PASSPORTS, JoinType.INNER);
+			return builder.equal(foreignPassportJoin.get(Constants.SpecificationType.FOREIGN_PASSPORT_NUMBER), foreignPassport);
 		});
 		return this;
 	}
 
 	public UserSpecificationBuilder hasPassport(final String passportNumber) {
 		this.specification = specification.and((root, query, builder) -> {
-			Join<User, Passport> addressJoin = root.joinSet(Constants.SpecificationType.PASSPORTS, JoinType.INNER);
-			return builder.equal(addressJoin.get(Constants.SpecificationType.PASSPORT_NUMBER), passportNumber);
+			final Join<User, Passport> passportJoin = root.joinSet(Constants.SpecificationType.PASSPORTS, JoinType.INNER);
+			return builder.equal(passportJoin.get(Constants.SpecificationType.PASSPORT_NUMBER), passportNumber);
 		});
 		return this;
 	}
 
 	public UserSpecificationBuilder hasCity(final String city) {
 		this.specification = specification.and((root, query, builder) -> {
-			Join<User, Address> addressJoin = root.joinSet(Constants.SpecificationType.ADRESSES, JoinType.INNER);
+			final Join<User, Address> addressJoin = root.joinSet(Constants.SpecificationType.ADRESSES, JoinType.INNER);
 			return builder.equal(addressJoin.get(Constants.SpecificationType.CITY), city);
-		});
-		return this;
-	}
-
-	public UserSpecificationBuilder hasHomeNum(final String homeNum) {
-		this.specification = specification.and((root, query, builder) -> {
-			Join<User, Address> addressJoin = root.joinSet(Constants.SpecificationType.ADRESSES, JoinType.INNER);
-			return builder.equal(addressJoin.get(Constants.SpecificationType.HOME_NUMBER), homeNum);
 		});
 		return this;
 	}
 
 	public UserSpecificationBuilder hasStreet(final String street) {
 		this.specification = specification.and((root, query, builder) -> {
-			Join<User, Address> addressJoin = root.joinSet(Constants.SpecificationType.ADRESSES, JoinType.INNER);
+			final Join<User, Address> addressJoin = root.joinSet(Constants.SpecificationType.ADRESSES, JoinType.INNER);
 			return builder.equal(addressJoin.get(Constants.SpecificationType.STREET), street);
 		});
 		return this;
@@ -70,7 +62,7 @@ public class UserSpecificationBuilder {
 
 	public UserSpecificationBuilder hasHomeNumber(final String homeNumber) {
 		this.specification = specification.and((root, query, builder) -> {
-			Join<User, Address> addressJoin = root.joinSet(Constants.SpecificationType.ADRESSES, JoinType.INNER);
+			final Join<User, Address> addressJoin = root.joinSet(Constants.SpecificationType.ADRESSES, JoinType.INNER);
 			return builder.equal(addressJoin.get(Constants.SpecificationType.HOME_NUMBER), homeNumber);
 		});
 		return this;
@@ -78,7 +70,7 @@ public class UserSpecificationBuilder {
 
 	public UserSpecificationBuilder hasFlatNumber(final String flatNum) {
 		this.specification = specification.and((root, query, builder) -> {
-			Join<User, Address> addressJoin = root.joinSet(Constants.SpecificationType.ADRESSES, JoinType.INNER);
+			final Join<User, Address> addressJoin = root.joinSet(Constants.SpecificationType.ADRESSES, JoinType.INNER);
 			return builder.equal(addressJoin.get(Constants.SpecificationType.FLAT_NUMBER), flatNum);
 		});
 		return this;
@@ -86,7 +78,7 @@ public class UserSpecificationBuilder {
 
 	public UserSpecificationBuilder hasDriverLicenseNumber(final String number) {
 		this.specification = specification.and((root, query, builder) -> {
-			Join<User, DriverLicense> driverLicense = root.joinSet(Constants.SpecificationType.DRIVER_LICENSE, JoinType.INNER);
+			final Join<User, DriverLicense> driverLicense = root.joinSet(Constants.SpecificationType.DRIVER_LICENSE, JoinType.INNER);
 			return builder.equal(driverLicense.get(Constants.SpecificationType.LICENSE_NUMBER), number);
 		});
 		return this;
@@ -94,7 +86,7 @@ public class UserSpecificationBuilder {
 
 	public UserSpecificationBuilder hasEmail(final String email) {
 		this.specification = specification.and((root, query, builder) -> {
-			Join<User, Email> emailJoin = root.joinSet(Constants.SpecificationType.EMAILS, JoinType.INNER);
+			final Join<User, Email> emailJoin = root.joinSet(Constants.SpecificationType.EMAILS, JoinType.INNER);
 			return builder.equal(emailJoin.get(Constants.SpecificationType.EMAIL_ADDRESS), email);
 		});
 		return this;
@@ -102,7 +94,7 @@ public class UserSpecificationBuilder {
 
 	public UserSpecificationBuilder hasAutoPlateNumber(final String plateNumber) {
 		this.specification = specification.and((root, query, builder) -> {
-			Join<User, Car> carJoin = root.joinSet(Constants.SpecificationType.CARS, JoinType.INNER);
+			final Join<User, Car> carJoin = root.joinSet(Constants.SpecificationType.CARS, JoinType.INNER);
 			return builder.equal(carJoin.get(Constants.SpecificationType.PLATE_NUMBER), plateNumber);
 		});
 		return this;
@@ -110,7 +102,7 @@ public class UserSpecificationBuilder {
 
 	public UserSpecificationBuilder hasPhoneNumber(final String phoneNumber) {
 		this.specification = specification.and((root, query, builder) -> {
-			Join<User, Phone> phoneJoin = root.joinSet(Constants.SpecificationType.PHONES, JoinType.INNER);
+			final Join<User, Phone> phoneJoin = root.joinSet(Constants.SpecificationType.PHONES, JoinType.INNER);
 			return builder.equal(phoneJoin.get(Constants.SpecificationType.PHONE_NUMBER), phoneNumber);
 		});
 		return this;
@@ -146,7 +138,7 @@ public class UserSpecificationBuilder {
 
 	public UserSpecificationBuilder hasBirthMonth(final String month) {
 		this.specification = specification.and((root, query, builder) -> {
-			Join<User, BirthCertificate> birthCertificateJoin =
+			final Join<User, BirthCertificate> birthCertificateJoin =
 				root.join(Constants.SpecificationType.BIRTH_CERTIFICATE, JoinType.INNER);
 			return builder.equal(birthCertificateJoin.get(Constants.SpecificationType.MONTH), month);
 		});
@@ -155,7 +147,7 @@ public class UserSpecificationBuilder {
 
 	public UserSpecificationBuilder hasBirthYear(final String year) {
 		this.specification = specification.and((root, query, builder) -> {
-			Join<User, BirthCertificate> birthCertificateJoin =
+			final Join<User, BirthCertificate> birthCertificateJoin =
 				root.join(Constants.SpecificationType.BIRTH_CERTIFICATE, JoinType.INNER
 				);
 			return builder.equal(birthCertificateJoin.get(Constants.SpecificationType.YEAR), year);
@@ -165,7 +157,7 @@ public class UserSpecificationBuilder {
 
 	public UserSpecificationBuilder hasBirthDay(final String day) {
 		this.specification = specification.and((root, query, builder) -> {
-			Join<User, BirthCertificate> birthCertificateJoin =
+			final Join<User, BirthCertificate> birthCertificateJoin =
 				root.join(Constants.SpecificationType.BIRTH_CERTIFICATE, JoinType.INNER);
 			return builder.equal(birthCertificateJoin.get(Constants.SpecificationType.DAY), day);
 		});
@@ -174,8 +166,40 @@ public class UserSpecificationBuilder {
 
 	public UserSpecificationBuilder hasRegion(final String region) {
 		this.specification = specification.and((root, query, builder) -> {
-			Join<User, Address> addressJoin = root.joinSet(Constants.SpecificationType.ADRESSES, JoinType.INNER);
+			final Join<User, Address> addressJoin = root.joinSet(Constants.SpecificationType.ADRESSES, JoinType.INNER);
 			return builder.equal(addressJoin.get(Constants.SpecificationType.REGION), region);
+		});
+		return this;
+	}
+
+	public UserSpecificationBuilder hasDistrict(final String distric) {
+		this.specification = specification.and((root, query, builder) -> {
+			final Join<User, Address> addressJoin = root.joinSet(Constants.SpecificationType.ADRESSES, JoinType.INNER);
+			return builder.equal(addressJoin.get(Constants.SpecificationType.DISTRICT), distric);
+		});
+		return this;
+	}
+
+	public UserSpecificationBuilder hasCorpus(final String courpus) {
+		this.specification = specification.and((root, query, builder) -> {
+			final Join<User, Address> addressJoin = root.joinSet(Constants.SpecificationType.ADRESSES, JoinType.INNER);
+			return builder.equal(addressJoin.get(Constants.SpecificationType.CORPUS), courpus);
+		});
+		return this;
+	}
+
+	public UserSpecificationBuilder hasOther(final String other) {
+		this.specification = specification.and((root, query, builder) -> {
+			final Join<User, Address> addressJoin = root.joinSet(Constants.SpecificationType.ADRESSES, JoinType.INNER);
+			return builder.equal(addressJoin.get(Constants.SpecificationType.OTHER), other);
+		});
+		return this;
+	}
+
+	public UserSpecificationBuilder hasOtherNum(final String otherNum) {
+		this.specification = specification.and((root, query, builder) -> {
+			final Join<User, Address> addressJoin = root.joinSet(Constants.SpecificationType.ADRESSES, JoinType.INNER);
+			return builder.equal(addressJoin.get(Constants.SpecificationType.OTHER_NUM), otherNum);
 		});
 		return this;
 	}

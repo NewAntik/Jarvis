@@ -44,6 +44,10 @@ public final class Constants {
 		public static final String PASSPORTS = "passports";
 		public static final String PASSPORT_NUMBER = "passportNumber";
 		public static final String FOREIGN_PASSPORT_NUMBER = "passportNumber";
+		public static final String DISTRICT = "district";
+		public static final String CORPUS = "corpus";
+		public static final String OTHER = "other";
+		public static final String OTHER_NUM = "otherNum";
 
 		private SpecificationType(){}
 	}

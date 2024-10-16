@@ -45,6 +45,21 @@ public class Address extends BaseEntity {
 	@Column(length = 50, name = "flat_number")
 	private String flatNumber;
 
+	@Size(max = 50)
+	@Column(length = 50, name = "district")
+	private String district;
+
+	@Size(max = 50)
+	@Column(length = 50, name = "corpus")
+	private String corpus;
+
+	@Size(max = 50)
+	@Column(length = 50, name = "other")
+	private String other;
+
+	@Column(name = "other_num")
+	private String otherNum;
+
 	@ManyToMany(fetch = FetchType.LAZY)
 	private Set<JuridicalPerson> juridicalPersons = new HashSet<>();
 
@@ -117,6 +132,38 @@ public class Address extends BaseEntity {
 		this.users = users;
 	}
 
+	public String getDistrict() {
+		return district;
+	}
+
+	public void setDistrict(final String district) {
+		this.district = district;
+	}
+
+	public String getCorpus() {
+		return corpus;
+	}
+
+	public void setCorpus(final String corpus) {
+		this.corpus = corpus;
+	}
+
+	public String getOther() {
+		return other;
+	}
+
+	public void setOther(final String other) {
+		this.other = other;
+	}
+
+	public String getOtherNum() {
+		return otherNum;
+	}
+
+	public void setOtherNum(final String otherNum) {
+		this.otherNum = otherNum;
+	}
+
 	@Override
 	public String toString() {
 		return "Address{" +
@@ -126,6 +173,12 @@ public class Address extends BaseEntity {
 			", street='" + street + '\'' +
 			", homeNumber='" + homeNumber + '\'' +
 			", flatNumber='" + flatNumber + '\'' +
+			", district='" + district + '\'' +
+			", corpus='" + corpus + '\'' +
+			", other='" + other + '\'' +
+			", otherNum=" + otherNum +
+			", juridicalPersons=" + juridicalPersons +
+			", users=" + users +
 			'}';
 	}
 
