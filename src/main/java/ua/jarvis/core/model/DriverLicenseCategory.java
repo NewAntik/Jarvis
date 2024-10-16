@@ -17,13 +17,12 @@ import java.util.Objects;
 
 @Entity
 @Table(name = "driver_license_categories")
-public class DriverLicenseCategory {
+public class DriverLicenseCategory extends BaseEntity {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
-	@NotNull
 	@NotBlank
 	@Enumerated(EnumType.STRING)
 	@Column(name = "category_type")

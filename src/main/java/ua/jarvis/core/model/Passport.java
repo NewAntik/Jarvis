@@ -21,12 +21,10 @@ public class Passport extends DocumentEntity{
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
-	@NotNull
 	@Size(max = 9)
 	@Column(length = 9, name = "passport_number")
 	private String passportNumber;
 
-	@NotNull
 	@ManyToOne
 	@JoinColumn(name = "user_id")
 	private User user;

@@ -19,7 +19,7 @@ import java.util.Set;
 
 @Entity
 @Table(name = "juridical_persons")
-public class JuridicalPerson {
+public class JuridicalPerson extends BaseEntity{
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -33,7 +33,6 @@ public class JuridicalPerson {
 	@Column(length = 200, name = "type_activity")
 	private String typeActivity;
 
-	@NotNull
 	@Column(name = "regisrtation_date")
 	private LocalDateTime registrationDate;
 

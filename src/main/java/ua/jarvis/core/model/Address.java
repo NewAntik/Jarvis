@@ -8,7 +8,6 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.Table;
-import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 
 import java.util.HashSet;
@@ -23,12 +22,10 @@ public class Address extends BaseEntity {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
-	@NotNull
 	@Size(max = 50)
 	@Column(length = 50, name = "region")
 	private String region;
 
-	@NotNull
 	@Size(max = 50)
 	@Column(length = 50, name = "city")
 	private String city;
@@ -130,6 +127,10 @@ public class Address extends BaseEntity {
 
 	public void setUsers(final Set<User> users) {
 		this.users = users;
+	}
+
+	public void addUser(final User user) {
+		this.users.add(user);
 	}
 
 	public String getDistrict() {

@@ -24,7 +24,7 @@ import java.util.Set;
 @Entity
 @Table(name = "users")
 public class User extends BaseEntity {
-
+	// todo change all booleans to Enum.
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
@@ -45,7 +45,6 @@ public class User extends BaseEntity {
 	@Column(length = 10, name = "rnokpp")
 	private String rnokpp;
 
-	@Size(max = 10)
 	@Enumerated(EnumType.STRING)
 	@Column(length = 10, name = "sex")
 	private Sex sex;
@@ -283,6 +282,18 @@ public class User extends BaseEntity {
 
 	public void setCars(final Set<Car> cars) {
 		this.cars = cars;
+	}
+
+	public void addEmail(final Email email) {
+		this.emails.add(email);
+	}
+
+	public void addPhone(final Phone phone) {
+		this.phones.add(phone);
+	}
+
+	public void addAddress(final Address address) {
+		this.addresses.add(address);
 	}
 
 	@Override

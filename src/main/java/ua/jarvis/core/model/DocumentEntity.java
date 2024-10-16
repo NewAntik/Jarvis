@@ -10,7 +10,7 @@ import java.time.LocalDateTime;
 
 @MappedSuperclass
 @EntityListeners(AuditingEntityListener.class)
-public class DocumentEntity {
+public class DocumentEntity extends BaseEntity {
 
 	@Column(name = "issue_date", nullable = false, updatable = false)
 	protected LocalDateTime issueDate;

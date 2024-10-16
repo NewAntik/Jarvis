@@ -22,39 +22,33 @@ import java.util.Set;
 
 @Entity
 @Table(name = "cars")
-public class Car {
+public class Car extends BaseEntity {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
-	@NotNull
 	@Size(max = 8)
 	@Column(length = 8, name = "plate_number")
 	private String plateNumber;
 
-	@NotNull
 	@Size(max = 50)
 	@Column(length = 50, name = "color")
 	private String color;
 
-	@NotNull
 	@Size(max = 50)
 	@Column(length = 50, name = "model")
 	private String model;
 
-	@NotNull
 	@Size(max = 100)
 	@Enumerated(EnumType.STRING)
 	@Column(length = 100, name = "car_type")
 	private CarType type;
 
-	@NotNull
 	@Size(max = 17)
 	@Column(length = 17, name = "vin_Code")
 	private String vinCode;
 
-	@NotNull
 	@Column(name = "issue_date")
 	private LocalDateTime issueDate;
 

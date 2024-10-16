@@ -13,7 +13,7 @@ import java.util.Objects;
 
 @Entity
 @Table(name = "phones")
-public class Phone {
+public class Phone extends BaseEntity{
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)

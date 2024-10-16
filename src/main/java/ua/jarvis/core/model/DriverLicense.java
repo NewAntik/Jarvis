@@ -26,16 +26,13 @@ public class DriverLicense extends DocumentEntity{
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
-	@NotNull
 	@Size(max = 9)
 	@Column(length = 9, name = "license_number")
 	private String licenseNumber;
 
-	@NotNull
 	@OneToMany(mappedBy = "driverLicense", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
 	private Set<DriverLicenseCategory> categories = new HashSet<>();
 
-	@NotNull
 	@ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
 	@JoinColumn(name = "user_id")
 	private User user;
