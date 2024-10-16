@@ -550,19 +550,37 @@ public class DOCXFileFormatterServiceImpl implements FileFormatterService<List<X
 
 		if (!user.getAddresses().isEmpty()) {
 			for (final Address address : user.getAddresses()) {
+				basicInfoRun.addBreak();
+				basicInfoRun = addresses.createRun();
+				basicInfoRun.setFontFamily("Times New Roman");
+
+				if (address.getRegion() != null) {
+					basicInfoRun.setText("  обл." + address.getRegion() + DOT);
+				}
 				if (address.getCity() != null) {
-					basicInfoRun = addresses.createRun();
-					basicInfoRun.setFontFamily("Times New Roman");
-					basicInfoRun.setText("  м." + address.getCity() + DOT_WHITE_SPACE);
+					basicInfoRun.setText("  нп." + address.getCity() + DOT);
+				}
+				if (address.getDistrict() != null) {
+					basicInfoRun.setText("  р-н." + address.getDistrict() + DOT);
 				}
 				if (address.getStreet() != null) {
-					basicInfoRun.setText("вул." + address.getStreet() + DOT_WHITE_SPACE);
+					basicInfoRun.setText(" вул." + address.getStreet() + DOT);
+				}
+				if (address.getCorpus() != null) {
+					basicInfoRun.setText("  кор." + address.getCorpus() + DOT);
+				}
+				if (address.getOther() != null) {
+					basicInfoRun.setText("  кор." + address.getOther());
+					if (address.getOtherNum() != null){
+						basicInfoRun.setText(" ." + address.getOtherNum());
+					}
+					basicInfoRun.setText(DOT);
 				}
 				if (address.getHomeNumber() != null) {
-					basicInfoRun.setText("буд." + address.getHomeNumber() + DOT_WHITE_SPACE);
+					basicInfoRun.setText(" буд." + address.getHomeNumber() + DOT);
 				}
 				if (address.getFlatNumber() != null) {
-					basicInfoRun.setText("кв." + address.getFlatNumber() + DOT_WHITE_SPACE);
+					basicInfoRun.setText(" кв." + address.getFlatNumber() + DOT);
 				}
 			}
 		} else {

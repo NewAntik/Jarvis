@@ -40,7 +40,7 @@ public class ResponderServiceImpl extends DefaultAbsSender {
 
 	public void createShortDOCXDocumentAndSend(final Long chatId, final List<User> users) throws IOException, InvalidFormatException {
 		final byte [] docxBytes = fileService.createShortDOCXDocument(users);
-		sendDocument(chatId, docxBytes, "РНОКПП та ФОП" + DOCX);
+		sendDocument(chatId, docxBytes, "ПІБ та РНОКПП" + DOCX);
 	}
 
 	public void createDOCXDocumentAndSend(final Long chatId, final User user) throws IOException, InvalidFormatException {
