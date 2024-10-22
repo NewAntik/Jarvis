@@ -1,10 +1,11 @@
-package ua.jarvis.service;
+package ua.jarvis.service.impl;
 
 import org.apache.poi.xwpf.usermodel.XWPFDocument;
 import org.apache.poi.xwpf.usermodel.XWPFParagraph;
 import org.apache.poi.xwpf.usermodel.XWPFRun;
 import org.springframework.stereotype.Component;
 import ua.jarvis.core.model.User;
+import ua.jarvis.service.FileFormatterService;
 
 import java.io.IOException;
 import java.util.List;

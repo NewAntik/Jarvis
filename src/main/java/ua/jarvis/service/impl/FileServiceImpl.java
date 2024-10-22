@@ -21,7 +21,6 @@ import ua.jarvis.core.model.User;
 import ua.jarvis.service.FileFormatterService;
 import ua.jarvis.service.FileService;
 import ua.jarvis.service.PhotoService;
-import ua.jarvis.service.ShortDataDOCXFileFormatterServiceImpl;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
