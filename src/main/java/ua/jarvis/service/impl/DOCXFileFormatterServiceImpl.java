@@ -15,6 +15,7 @@ import ua.jarvis.core.model.JuridicalPerson;
 import ua.jarvis.core.model.Passport;
 import ua.jarvis.core.model.Phone;
 import ua.jarvis.core.model.User;
+import ua.jarvis.core.model.enums.BooleanType;
 import ua.jarvis.service.FileFormatterService;
 
 import java.io.IOException;
@@ -214,8 +215,12 @@ public class DOCXFileFormatterServiceImpl implements FileFormatterService<List<X
 					certificate.getIssueDate().format(DATE_FORMATTER) + DOT_WHITE_SPACE
 				);
 			}
-			if (certificate.isUnlimited()) {
+			if (certificate.getUnlimited().equals(BooleanType.YES)) {
 				basicInfoRun.setText("Дійсний до: необмежений" + DOT_WHITE_SPACE);
+			} else if (certificate.getUnlimited().equals(BooleanType.NO)) {
+				basicInfoRun.setText("Дійсний до: " +
+					certificate.getIssueDate().format(DATE_FORMATTER) + DOT_WHITE_SPACE
+				);
 			} else if (certificate.getValidUntil() != null) {
 				basicInfoRun.setText("Дійсний до: " +
 					certificate.getIssueDate().format(DATE_FORMATTER) + DOT_WHITE_SPACE

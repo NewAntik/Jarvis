@@ -8,7 +8,6 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
-import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 
 import java.util.Objects;
@@ -63,9 +62,9 @@ public class ForeignPassport extends DocumentEntity{
 			", user=" + user +
 			", issueDate=" + issueDate +
 			", validUntil=" + validUntil +
-			", isValid=" + isValid +
+			", isValid=" + valid +
 			", authority='" + authority + '\'' +
-			", isUnlimited=" + isUnlimited +
+			", isUnlimited=" + unlimited +
 			'}';
 	}
 

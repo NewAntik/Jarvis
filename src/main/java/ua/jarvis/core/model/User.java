@@ -15,6 +15,7 @@ import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.Size;
+import ua.jarvis.core.model.enums.BooleanType;
 import ua.jarvis.core.model.enums.Sex;
 
 import java.util.HashSet;
@@ -24,7 +25,7 @@ import java.util.Set;
 @Entity
 @Table(name = "users")
 public class User extends BaseEntity {
-	// todo change all booleans to Enum.
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
@@ -53,8 +54,9 @@ public class User extends BaseEntity {
 	@Column(length = 500, name = "illegal_actions")
 	private String illegalActions;
 
-	@Column(name = "is_individual_entrepreneur")
-	private boolean isIndividualEntrepreneur;
+	@Enumerated(EnumType.STRING)
+	@Column(length = 7, name = "individual_entrepreneur",nullable = false)
+	private BooleanType individualEntrepreneur;
 
 	@OneToOne(mappedBy = "user", fetch = FetchType.EAGER)
 	private BirthCertificate birthCertificate;
@@ -110,12 +112,12 @@ public class User extends BaseEntity {
 
 	public User() {}
 
-	public boolean isIsIndividualEntrepreneur() {
-		return isIndividualEntrepreneur;
+	public BooleanType getIndividualEntrepreneur() {
+		return individualEntrepreneur;
 	}
 
-	public void setIsIndividualEntrepreneur(final boolean isiIndividualEntrepreneur) {
-		this.isIndividualEntrepreneur = isiIndividualEntrepreneur;
+	public void setIndividualEntrepreneur(final BooleanType isIndividualEntrepreneur) {
+		this.individualEntrepreneur = isIndividualEntrepreneur;
 	}
 
 	public Set<Address> getIndividualEntrepreneurAddresses() {

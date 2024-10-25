@@ -11,7 +11,6 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
-import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 
 import java.util.HashSet;
@@ -80,9 +79,9 @@ public class DriverLicense extends DocumentEntity{
 			", user=" + user +
 			", issueDate=" + issueDate +
 			", validUntil=" + validUntil +
-			", isValid=" + isValid +
+			", isValid=" + valid +
 			", authority='" + authority + '\'' +
-			", isUnlimited=" + isUnlimited +
+			", isUnlimited=" + unlimited +
 			'}';
 	}
 

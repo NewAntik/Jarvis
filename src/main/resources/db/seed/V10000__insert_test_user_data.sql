@@ -1,13 +1,13 @@
 -- Users
-INSERT INTO users (sur_name, name, middle_name, rnokpp, sex, illegal_actions, created_date, updated_date, is_individual_entrepreneur)
+INSERT INTO users (sur_name, name, middle_name, rnokpp, sex, illegal_actions, created_date, updated_date, individual_entrepreneur)
 VALUES
-    ('Іванов', 'Іван', 'Іванович', '1234567890', 'MALE', 'Протиправна діяльність №199', '2023-01-01 10:00:00', '2023-01-01 10:00:00', false),
+    ('Іванов', 'Іван', 'Іванович', '1234567890', 'MALE', 'Протиправна діяльність №199', '2023-01-01 10:00:00', '2023-01-01 10:00:00', 'UNKNOWN'),
     ('Шевченко', 'Тарас', 'Григорович', '7890654321', 'MALE', 'Протиправна діяльність №200', '2023-01-02 10:00:00', '2023-01-02 10:00:00', true),
-    ('Шевченко', 'Григорій', 'Іванович', '1112225555', 'MALE', NULL, '2023-01-03 10:00:00', '2023-01-03 10:00:00', false),
-    ('Шевченко', 'Катирина', 'Якимівна', '3334448888', 'FEMALE', NULL, '2023-01-04 10:00:00', '2023-01-04 10:00:00', false),
-    ('Шевченко', 'Марта', 'Іванівна', '5556660945', 'FEMALE', NULL, '2023-01-05 10:00:00', '2023-01-05 10:00:00', false),
-    ('Шевченко', 'Зінаїда', 'Олеговна', '5223360630', 'FEMALE', NULL, '2023-01-05 10:00:00', '2023-01-05 10:00:00', false),
-    ('Шевченко', 'Аргентіна', 'Енакентієвна', '5523360645', 'FEMALE', NULL, '2023-01-05 10:00:00', '2023-01-05 10:00:00', false);
+    ('Шевченко', 'Григорій', 'Іванович', '1112225555', 'MALE', NULL, '2023-01-03 10:00:00', '2023-01-03 10:00:00', 'UNKNOWN'),
+    ('Шевченко', 'Катирина', 'Якимівна', '3334448888', 'FEMALE', NULL, '2023-01-04 10:00:00', '2023-01-04 10:00:00', 'UNKNOWN'),
+    ('Шевченко', 'Марта', 'Іванівна', '5556660945', 'FEMALE', NULL, '2023-01-05 10:00:00', '2023-01-05 10:00:00', 'UNKNOWN'),
+    ('Шевченко', 'Зінаїда', 'Олеговна', '5223360630', 'FEMALE', NULL, '2023-01-05 10:00:00', '2023-01-05 10:00:00', 'UNKNOWN'),
+    ('Шевченко', 'Аргентіна', 'Енакентієвна', '5523360645', 'FEMALE', NULL, '2023-01-05 10:00:00', '2023-01-05 10:00:00', 'UNKNOWN');
 
 INSERT INTO user_siblings(user_id, sibling_id)
 VALUES
@@ -37,19 +37,19 @@ VALUES
     (2, 2);
 
 -- Passports
-INSERT INTO passports (passport_number, issue_date, valid_until, is_valid, is_Unlimited, authority, user_id, created_date, updated_date)
+INSERT INTO passports (passport_number, issue_date, valid_until, valid, unlimited, authority, user_id, created_date, updated_date)
 VALUES
-    ('123456789', '2020-11-15', '2030-01-01', TRUE, TRUE, 'Mariupol, Prospekt Heroyev 11', 1, '2023-01-01 10:00:00', '2023-01-01 10:00:00'),
-    ('СЕ123456', '2000-12-11', '2030-01-01', TRUE, TRUE, 'Mariupol, Prospekt Heroyev 11', 2, '2023-01-01 10:00:00', '2023-01-01 10:00:00'),
-    ('A74562345', '1999-06-04', '2030-01-01', TRUE, TRUE, 'Mariupol, Prospekt Heroyev 11', 3, '2023-01-01 10:00:00', '2023-01-01 10:00:00'),
-    ('752345435', '2024-03-30', '2031-01-01', TRUE, TRUE, 'Mariupol, Prospekt Heroyev 11', 4, '2023-01-01 10:00:00', '2023-01-01 10:00:00'),
-    ('C11122233', '2022-01-01', '2032-01-01', TRUE, TRUE, 'Gov Authority 3', 5, '2023-01-01 10:00:00', '2023-01-01 10:00:00');
+    ('123456789', '2020-11-15', '2030-01-01', 'YES', 'YES', 'Mariupol, Prospekt Heroyev 11', 1, '2023-01-01 10:00:00', '2023-01-01 10:00:00'),
+    ('СЕ123456', '2000-12-11', '2030-01-01', 'YES', 'YES', 'Mariupol, Prospekt Heroyev 11', 2, '2023-01-01 10:00:00', '2023-01-01 10:00:00'),
+    ('A74562345', '1999-06-04', '2030-01-01', 'YES', 'YES', 'Mariupol, Prospekt Heroyev 11', 3, '2023-01-01 10:00:00', '2023-01-01 10:00:00'),
+    ('752345435', '2024-03-30', '2031-01-01', 'YES', 'YES', 'Mariupol, Prospekt Heroyev 11', 4, '2023-01-01 10:00:00', '2023-01-01 10:00:00'),
+    ('C11122233', '2022-01-01', '2032-01-01', 'YES', 'YES', 'Gov Authority 3', 5, '2023-01-01 10:00:00', '2023-01-01 10:00:00');
 
 -- Driver Licenses
-INSERT INTO driver_licenses (issue_date, valid_until, is_valid, is_Unlimited, authority, license_number, user_id, created_date, updated_date)
+INSERT INTO driver_licenses (issue_date, valid_until, valid, unlimited, authority, license_number, user_id, created_date, updated_date)
 VALUES
-    ('2019-01-01', '2029-01-01', TRUE, FALSE, 'DMV Authority 1', 'DL123456', 1, '2023-01-01 10:00:00', '2023-01-01 10:00:00'),
-    ('2018-01-01', '2028-01-01', TRUE, FALSE, 'DMV Authority 2', 'DL654321', 2, '2023-01-01 10:00:00', '2023-01-01 10:00:00');
+    ('2019-01-01', '2029-01-01', 'YES', 'NO', 'DMV Authority 1', 'DL123456', 1, '2023-01-01 10:00:00', '2023-01-01 10:00:00'),
+    ('2018-01-01', '2028-01-01', 'YES', 'NO', 'DMV Authority 2', 'DL654321', 2, '2023-01-01 10:00:00', '2023-01-01 10:00:00');
 
 -- Driver License Categories
 INSERT INTO driver_license_categories (id, category_type, driver_license_id, created_date, updated_date)
@@ -69,7 +69,7 @@ VALUES
     (13, 'B', 2, '2023-01-01 10:00:00', '2023-01-01 10:00:00');
 
 -- Foreign Passports
-INSERT INTO foreign_passports (passport_number, issue_date, valid_until, is_valid, is_Unlimited, authority, user_id, created_date, updated_date)
+INSERT INTO foreign_passports (passport_number, issue_date, valid_until, valid, unlimited, authority, user_id, created_date, updated_date)
 VALUES
     ('FG123456', '2020-01-01', '2029-01-01', TRUE, FALSE, 'Kiev, Heroyev street, home number 4', 1, '2023-01-01 10:00:00', '2023-01-01 10:00:00'),
     ('FA242333', '1999-01-01', '2029-01-01', TRUE, FALSE, 'Kiev, Heroyev street, home number 4', 2, '2023-01-01 10:00:00', '2023-01-01 10:00:00'),
@@ -142,12 +142,12 @@ VALUES
     (4, 4);
 
 -- Birth Certificates
-INSERT INTO birth_certificates (user_id, day, month, year, number, issue_date, valid_until, is_valid, is_Unlimited, authority, address_id, created_date, updated_date)
+INSERT INTO birth_certificates (user_id, day, month, year, number, issue_date, valid_until, valid, unlimited, authority, address_id, created_date, updated_date)
 VALUES
-    (2, '05', '03', '1814', 'BC123456', '2020-01-01', '2029-01-01', TRUE, TRUE, 'Kiev, Heroyev street', 2, '2023-01-01 10:00:00', '2023-01-01 10:00:00'),
-    (1, '09', '02', '1815', 'BC654321', '2020-01-01', '2029-01-01', TRUE, TRUE, 'Kiev, Heroyev street', 1, '2023-01-01 10:00:00', '2023-01-01 10:00:00'),
-    (3, '03', '02', '1815', 'BC654321', '2020-01-01', '2029-01-01', TRUE, TRUE, 'Kiev, Heroyev street', 1, '2023-01-01 10:00:00', '2023-01-01 10:00:00'),
-    (4, '01', '02', '1820', 'BC654321', '2020-01-01', '2029-01-01', TRUE, TRUE, 'Kiev, Heroyev street', 1, '2023-01-01 10:00:00', '2023-01-01 10:00:00'),
-    (5, '29', '02', '1830', 'BC654321', '2020-01-01', '2029-01-01', TRUE, TRUE, 'Kiev, Heroyev street', 1, '2023-01-01 10:00:00', '2023-01-01 10:00:00'),
-    (6, '19', '02', '1833', 'BC654321', '2020-01-01', '2029-01-01', TRUE, TRUE, 'Kiev, Heroyev street', 1, '2023-01-01 10:00:00', '2023-01-01 10:00:00'),
-    (7, '10', '02', '1828', 'BC654321', '2020-01-01', '2029-01-01', TRUE, TRUE, 'Kiev, Heroyev street', 1, '2023-01-01 10:00:00', '2023-01-01 10:00:00');
+    (2, '05', '03', '1814', 'BC123456', '2020-01-01', '2029-01-01', 'YES', 'YES', 'Kiev, Heroyev street', 2, '2023-01-01 10:00:00', '2023-01-01 10:00:00'),
+    (1, '09', '02', '1815', 'BC654321', '2020-01-01', '2029-01-01', 'YES', 'YES', 'Kiev, Heroyev street', 1, '2023-01-01 10:00:00', '2023-01-01 10:00:00'),
+    (3, '03', '02', '1815', 'BC654321', '2020-01-01', '2029-01-01', 'YES', 'YES', 'Kiev, Heroyev street', 1, '2023-01-01 10:00:00', '2023-01-01 10:00:00'),
+    (4, '01', '02', '1820', 'BC654321', '2020-01-01', '2029-01-01', 'YES', 'YES', 'Kiev, Heroyev street', 1, '2023-01-01 10:00:00', '2023-01-01 10:00:00'),
+    (5, '29', '02', '1830', 'BC654321', '2020-01-01', '2029-01-01', 'YES', 'YES', 'Kiev, Heroyev street', 1, '2023-01-01 10:00:00', '2023-01-01 10:00:00'),
+    (6, '19', '02', '1833', 'BC654321', '2020-01-01', '2029-01-01', 'YES', 'YES', 'Kiev, Heroyev street', 1, '2023-01-01 10:00:00', '2023-01-01 10:00:00'),
+    (7, '10', '02', '1828', 'BC654321', '2020-01-01', '2029-01-01', 'YES', 'YES', 'Kiev, Heroyev street', 1, '2023-01-01 10:00:00', '2023-01-01 10:00:00');

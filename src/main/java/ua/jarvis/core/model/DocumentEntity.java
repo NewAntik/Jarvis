@@ -2,9 +2,12 @@ package ua.jarvis.core.model;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.EntityListeners;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.MappedSuperclass;
 import jakarta.validation.constraints.Size;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
+import ua.jarvis.core.model.enums.BooleanType;
 
 import java.time.LocalDateTime;
 
@@ -18,23 +21,17 @@ public class DocumentEntity extends BaseEntity {
 	@Column(name = "valid_until", nullable = false)
 	protected LocalDateTime validUntil;
 
-	@Column(name = "is_valid", nullable = false)
-	protected boolean isValid;
+	@Enumerated(EnumType.STRING)
+	@Column(length = 7, name = "valid", nullable = false)
+	protected BooleanType valid;
 
 	@Size(max = 200)
 	@Column(length = 200, name = "authority", nullable = false, updatable = false)
 	protected String authority;
 
-	@Column(name = "is_unlimited")
-	protected boolean isUnlimited;
-
-	public boolean isUnlimited() {
-		return isUnlimited;
-	}
-
-	public void setUnlimited(final boolean unlimited) {
-		isUnlimited = unlimited;
-	}
+	@Enumerated(EnumType.STRING)
+	@Column(length = 7, name = "unlimited", nullable = false)
+	protected BooleanType unlimited;
 
 	public LocalDateTime getIssueDate() {
 		return issueDate;
@@ -52,19 +49,27 @@ public class DocumentEntity extends BaseEntity {
 		this.validUntil = validUntil;
 	}
 
-	public boolean isValidity() {
-		return isValid;
-	}
-
-	public void setValidity(final boolean isValid) {
-		this.isValid = isValid;
-	}
-
 	public String getAuthority() {
 		return authority;
 	}
 
 	public void setAuthority(final String authority) {
 		this.authority = authority;
+	}
+
+	public BooleanType getValid() {
+		return valid;
+	}
+
+	public void setValid(final BooleanType valid) {
+		this.valid = valid;
+	}
+
+	public BooleanType getUnlimited() {
+		return unlimited;
+	}
+
+	public void setUnlimited(final BooleanType isUnlimited) {
+		this.unlimited = isUnlimited;
 	}
 }

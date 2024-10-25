@@ -11,6 +11,7 @@ import org.springframework.transaction.annotation.Transactional;
 import ua.jarvis.core.model.JuridicalPerson;
 import ua.jarvis.core.model.User;
 import ua.jarvis.core.model.criteria.UserCriteria;
+import ua.jarvis.core.model.enums.BooleanType;
 import ua.jarvis.core.model.specification.SpecificationProvider;
 import ua.jarvis.repository.UserRepository;
 import ua.jarvis.service.UserService;
@@ -87,7 +88,7 @@ public class UserServiceImpl implements UserService {
 				}
 			}
 
-			if(user.isIsIndividualEntrepreneur()){
+			if(!user.getIndividualEntrepreneur().equals(BooleanType.UNKNOWN)){
 				user.getIndividualEntrepreneurAddresses().stream().count();
 			}
 		}
