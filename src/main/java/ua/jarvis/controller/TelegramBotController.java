@@ -46,8 +46,6 @@ public class TelegramBotController extends TelegramLongPollingBot {
 		final Long chatId = update.getMessage().getChatId();
 		final Long telegramId = update.getMessage().getFrom().getId();
 
-		// todo - write security filter(it should load all participants in map<telegramId, role>
-		// todo - add here method isAllowed(telegramId). The filter should return role
 		final Participant participant = participantService.findByTelegramId(telegramId);
 
 		if(update.hasMessage() && update.getMessage().hasText() && participant != null){
