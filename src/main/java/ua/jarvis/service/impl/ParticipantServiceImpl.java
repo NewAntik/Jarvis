@@ -7,8 +7,6 @@ import ua.jarvis.core.model.Participant;
 import ua.jarvis.repository.ParticipantRepository;
 import ua.jarvis.service.ParticipantService;
 
-import static ua.jarvis.core.constant.Constants.UAMessages.HAVE_NO_ACCESS;
-
 @Service
 public class ParticipantServiceImpl implements ParticipantService {
 	private static final Logger LOG = LoggerFactory.getLogger(ParticipantServiceImpl.class);
@@ -22,15 +20,36 @@ public class ParticipantServiceImpl implements ParticipantService {
 	@Override
 	public Participant findById(final Long id) {
 		final Participant participant = participantRepository.findById(id)
-			.orElseThrow(() -> new IllegalArgumentException("Cannot find participant with id: " + id));
+			.orElseThrow(() -> new IllegalArgumentException("Can not find participant with id: " + id));
 		LOG.debug("In findById: Participant: {} was successfully found.", participant);
 
 		return participant;
 	}
 
 	@Override
-	public Participant findByName(final String name) {
-		return participantRepository.findByName(name)
-			.orElseThrow(() -> new IllegalArgumentException(HAVE_NO_ACCESS));
+	public Participant findByTelegramId(final Long id) {
+		final Participant participant = participantRepository.findByTelegramId(id)
+			.orElseThrow(() -> new IllegalArgumentException("Can not find participant with id: " + id));
+		LOG.debug("In findById: Participant: {} was successfully found.", participant);
+
+		return participant;
+	}
+
+	@Override
+	public Participant saveNew(final Participant participant) {
+		participantRepository.findByTelegramId(participant.getTelegramId()).ifPresent(p -> {
+			throw new IllegalArgumentException(
+				"Cannot save participant with telegram ID: " + participant.getTelegramId() + " as it has already been persisted!"
+			);
+		});
+
+		return participantRepository.save(participant);
+	}
+
+	@Override
+	public void deleteByTelegramId(final Long telegramId) {
+		final Participant participant = findByTelegramId(telegramId);
+
+		participantRepository.delete(participant);
 	}
 }

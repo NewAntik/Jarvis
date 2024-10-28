@@ -22,9 +22,10 @@ public class UpdateDatabaseExecutorServiceImpl implements CommandExecutorService
 		this.responder = responder;
 	}
 
+	//todo rewrite update service
 	@Override
 	public ExecutorType getType() {
-		return ExecutorType.UPDATE_DATABASE;
+		return ExecutorType.UPDATE;
 	}
 
 	@Override

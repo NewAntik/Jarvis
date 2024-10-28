@@ -19,7 +19,8 @@ public enum ExecutorType {
 	THREE_NAMES_AND_REGION("Three names and region"),
 	SURNAME_NAME_AND_REGION("Surname, name and region"),
 	ADDRESS("Address"),
-	UPDATE_DATABASE( "Update Database");
+	ADMIN ("Admin"),
+	UPDATE("Update");
 
 	private final String value;
 

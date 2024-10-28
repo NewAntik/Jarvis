@@ -8,7 +8,6 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
-import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import ua.jarvis.core.model.enums.ParticipantRole;
@@ -24,24 +23,27 @@ public class Participant extends BaseEntity{
 	private Long id;
 
 	@NotNull
-	@NotBlank
-	@Size(max = 100)
-	@Column(length = 100, name = "name")
-	private String name;
+	@Column(name = "telegram_id", unique = true, nullable = false)
+	private Long telegramId;
 
 	@NotNull
-	@NotBlank
-	@Size(max = 5)
 	@Enumerated(EnumType.STRING)
-	@Column(length = 5, name = "role")
+	@Column(name = "role")
 	private ParticipantRole role;
 
 	public Participant() {}
 
-	public Participant(final Long id, final String name, final ParticipantRole role) {
-		this.id = id;
-		this.name = name;
+	public Participant(final Long telegramId, final ParticipantRole role) {
+		this.telegramId = telegramId;
 		this.role = role;
+	}
+
+	public Long getTelegramId() {
+		return telegramId;
+	}
+
+	public void setTelegramId(final Long telegramId) {
+		this.telegramId = telegramId;
 	}
 
 	public Long getId() {
@@ -50,14 +52,6 @@ public class Participant extends BaseEntity{
 
 	public void setId(final Long id) {
 		this.id = id;
-	}
-
-	public String getName() {
-		return name;
-	}
-
-	public void setName(final String username) {
-		this.name = username;
 	}
 
 	public ParticipantRole getRole() {
@@ -72,7 +66,7 @@ public class Participant extends BaseEntity{
 	public String toString() {
 		return "Participant{" +
 			"id=" + id +
-			", username='" + name + '\'' +
+			", telegramId=" + telegramId +
 			", role=" + role +
 			'}';
 	}
@@ -86,13 +80,11 @@ public class Participant extends BaseEntity{
 			return false;
 		}
 		final Participant that = (Participant) o;
-		return Objects.equals(id, that.id) &&
-			Objects.equals(name, that.name) &&
-			role == that.role;
+		return Objects.equals(telegramId, that.telegramId);
 	}
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(id, name, role);
+		return Objects.hash(telegramId);
 	}
 }

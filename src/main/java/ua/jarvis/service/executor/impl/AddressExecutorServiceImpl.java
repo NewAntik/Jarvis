@@ -3,7 +3,7 @@ package ua.jarvis.service.executor.impl;
 import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.stereotype.Service;
+import org.springframework.stereotype.Component;
 import ua.jarvis.core.model.User;
 import ua.jarvis.core.model.criteria.UserCriteria;
 import ua.jarvis.core.model.dto.RequestDto;
@@ -16,7 +16,7 @@ import ua.jarvis.service.utils.MessageChecker;
 import java.io.IOException;
 import java.util.List;
 
-@Service
+@Component
 public class AddressExecutorServiceImpl implements CommandExecutorService {
 
 	private static final Logger LOG = LoggerFactory.getLogger(AddressExecutorServiceImpl.class);
@@ -43,7 +43,7 @@ public class AddressExecutorServiceImpl implements CommandExecutorService {
 		LOG.info("AddressExecutorServiceImpl was called.");
 		responder.sendMessage(dto.getChatId(),"Триває пошук за адресою: " + dto.getMessageText());
 		final String[] parts = MessageChecker.getCorrectedAddress();
-		List<User> users;
+		final List<User> users;
 
 		if(parts.length == 6){
 			users = userService.findUsersByCriteria(createCriteria(parts[0], parts[1], parts[2]));

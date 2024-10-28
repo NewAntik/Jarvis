@@ -4,7 +4,7 @@ import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.stereotype.Service;
+import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.bots.DefaultAbsSender;
 import org.telegram.telegrambots.bots.DefaultBotOptions;
 import org.telegram.telegrambots.meta.api.methods.send.SendDocument;
@@ -20,8 +20,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.List;
 
-//todo rewrite to use interfase Responder extends DefaultAbsSender.
-@Service
+@Component
 public class ResponderServiceImpl extends DefaultAbsSender {
 	private static final Logger LOG = LoggerFactory.getLogger(ResponderServiceImpl.class);
 

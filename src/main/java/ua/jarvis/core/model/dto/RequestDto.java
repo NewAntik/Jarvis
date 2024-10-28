@@ -9,16 +9,28 @@ public class RequestDto {
 	private Long chatId;
 
 	@NotNull
+	private Long telegramId;
+
+	@NotNull
 	private ParticipantRole role;
 
 	private String messageText;
 
 	public RequestDto() {}
 
-	public RequestDto(final Long chatId, final ParticipantRole role, final String messageText) {
+	public RequestDto(final Long chatId, final Long telegramId, final ParticipantRole role, final String messageText) {
 		this.chatId = chatId;
 		this.role = role;
 		this.messageText = messageText;
+		this.telegramId = telegramId;
+	}
+
+	public Long getTelegramId() {
+		return telegramId;
+	}
+
+	public void setTelegramId(final Long telegramId) {
+		this.telegramId = telegramId;
 	}
 
 	public Long getChatId() {

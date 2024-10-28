@@ -6,5 +6,5 @@ import ua.jarvis.core.model.Participant;
 import java.util.Optional;
 
 public interface ParticipantRepository extends JpaRepository<Participant, Long> {
-	Optional<Participant> findByName(final String name);
+	Optional<Participant> findByTelegramId(Long telegramId);
 }

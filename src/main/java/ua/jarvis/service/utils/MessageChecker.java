@@ -8,6 +8,8 @@ import java.util.List;
 import java.util.Objects;
 
 public final class MessageChecker {
+	private static final String ADD = "add";
+	private static final String DELETE = "delete";
 
 	private static String normalizedText;
 
@@ -17,12 +19,12 @@ public final class MessageChecker {
 
 	private MessageChecker(){}
 
-	public static String[] getDate(){
-		return date;
+	public static boolean isAdmin(final String messageText){
+		return messageText.startsWith(ADD) || messageText.startsWith(DELETE);
 	}
 
-	public static boolean isUpdateDatabase(final String messageText){
-		return messageText.equals("Update Database");
+	public static String[] getDate(){
+		return date;
 	}
 
 	public static boolean isAddress(final String messageText) {
@@ -175,7 +177,7 @@ public final class MessageChecker {
 	}
 
 	private static boolean isCyrillicStrings(final String... strings) {
-		List<Boolean> answer = new ArrayList<>();
+		final List<Boolean> answer = new ArrayList<>();
 		for(String s : strings){
 			answer.add(isCyrillicString(s));
 		}
@@ -194,7 +196,7 @@ public final class MessageChecker {
 			return true;
 		}
 
-		return messageText.length() == 9 && messageText.chars().allMatch(Character::isDigit);
+		return isNotAdminCommand(messageText) && messageText.length() == 9 && messageText.chars().allMatch(Character::isDigit);
 	}
 
 	public static boolean isInfo(final String messageText){
@@ -202,14 +204,14 @@ public final class MessageChecker {
 	}
 
 	public static boolean isForeignPassport(final String messageText) {
-		return messageText.length() == 8 && !isFirstTwoCharsCyrillic(messageText);
+		return isNotAdminCommand(messageText) && messageText.length() == 8 && !isFirstTwoCharsCyrillic(messageText);
 	}
 
 	public static boolean isPhoneNumber(final String messageText) {
 		normalizedText = null;
 		normalizePhoneNumber(messageText);
 
-		return normalizedText != null;
+		return isNotAdminCommand(messageText) && normalizedText != null;
 	}
 
 	public static String getNormalizedNumber(){
@@ -227,7 +229,7 @@ public final class MessageChecker {
 			return false;
 		}
 
-		return messageText.chars().allMatch(Character::isDigit);
+		return isNotAdminCommand(messageText) && messageText.chars().allMatch(Character::isDigit);
 	}
 
 	private static boolean isCyrillicLetter(final char ch) {
@@ -273,7 +275,7 @@ public final class MessageChecker {
 		if (parts.length != 3) {
 			return false;
 		}
-		for (String part : parts) {
+		for (final String part : parts) {
 			if (!part.chars().allMatch(Character::isDigit)) {
 				return false;
 			}
@@ -288,11 +290,15 @@ public final class MessageChecker {
 	}
 
 	private static boolean isContainsUnderscore(final String... strings){
-		List<Boolean> answer = new ArrayList<>();
+		final List<Boolean> answer = new ArrayList<>();
 		for(String s : strings){
 			answer.add(s.equals("_"));
 		}
 
 		return !answer.contains(false);
+	}
+
+	private static boolean isNotAdminCommand(final String text){
+		return !text.contains(Constants.AdminCommands.ADD) && !text.contains(Constants.AdminCommands.DELETE);
 	}
 }

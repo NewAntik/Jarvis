@@ -9,19 +9,19 @@ import ua.jarvis.strategy.impl.AbstractExecutorStrategy;
 import java.util.List;
 
 @Component
-public class UpdateDatabaseStrategyImpl extends AbstractExecutorStrategy {
+public class AdminStrategyImpl extends AbstractExecutorStrategy {
 
-	protected UpdateDatabaseStrategyImpl(final List<CommandExecutorService> executors) {
+	protected AdminStrategyImpl(final List<CommandExecutorService> executors) {
 		super(executors);
 	}
 
 	@Override
 	public boolean isExecutorInstance(final String text) {
-		return MessageChecker.isUpdateDatabase(text);
+		return MessageChecker.isAdmin(text);
 	}
 
 	@Override
 	public CommandExecutorService getExecutor() {
-		return executorRegistry.get(ExecutorType.UPDATE_DATABASE);
+		return executorRegistry.get(ExecutorType.ADMIN);
 	}
 }

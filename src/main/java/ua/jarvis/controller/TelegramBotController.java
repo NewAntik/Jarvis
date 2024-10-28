@@ -44,16 +44,22 @@ public class TelegramBotController extends TelegramLongPollingBot {
 	@Override
 	public void onUpdateReceived(final Update update) {
 		final Long chatId = update.getMessage().getChatId();
-		final Participant participant = participantService.findByName(update.getMessage().getChat().getUserName());
+		final Long telegramId = update.getMessage().getFrom().getId();
+
+		// todo - write security filter(it should load all participants in map<telegramId, role>
+		// todo - add here method isAllowed(telegramId). The filter should return role
+		final Participant participant = participantService.findByTelegramId(telegramId);
 
 		if(update.hasMessage() && update.getMessage().hasText() && participant != null){
 			try {
-				LOG.info("Received user info document method was called by: {}", participant.getName());
-				strategyFacade.execute(createDto(chatId, participant.getRole(), update.getMessage().getText()));
+				LOG.info("Received user info document method was called by: {}", participant.getTelegramId());
+				strategyFacade.execute(createDto(chatId, telegramId, participant.getRole(), update.getMessage().getText()));
 			} catch (final Throwable e){
 				LOG.error("An error occurred while processing the update", e);
 				sendMessage(e.getMessage(), chatId);
 			}
+		} else {
+			sendMessage("Something went wrong.", chatId);
 		}
 	}
 
@@ -68,7 +74,7 @@ public class TelegramBotController extends TelegramLongPollingBot {
 		}
 	}
 
-	private RequestDto createDto(final Long chatId, final ParticipantRole role, final String messageText){
-		return new RequestDto(chatId, role, messageText);
+	private RequestDto createDto(final Long chatId, final Long telegramId, final ParticipantRole role, final String messageText){
+		return new RequestDto(chatId, telegramId, role, messageText);
 	}
 }

@@ -51,4 +51,9 @@ public final class Constants {
 
 		private SpecificationType(){}
 	}
+
+	public static final class AdminCommands {
+		public static final String ADD = "add";
+		public static final String DELETE = "delete";
+	}
 }
