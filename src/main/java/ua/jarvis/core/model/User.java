@@ -55,7 +55,7 @@ public class User extends BaseEntity {
 	private String illegalActions;
 
 	@Enumerated(EnumType.STRING)
-	@Column(length = 7, name = "individual_entrepreneur",nullable = false)
+	@Column(length = 7, name = "individual_entrepreneur", nullable = false)
 	private BooleanType individualEntrepreneur;
 
 	@OneToOne(mappedBy = "user", fetch = FetchType.EAGER)

@@ -35,6 +35,8 @@ public class DOCXFileFormatterServiceImpl implements FileFormatterService<List<X
 	private static final String DOT = ".";
 	private static final String COMA_WHITE_SPACE = ", ";
 	private static final int FONT_SIZE = 14;
+	private static final String TIMES_NEW_ROMAN = "Times New Roman";
+	private static final String RED_COLOR = "FF0000";
 
 	private XWPFDocument document;
 
@@ -102,24 +104,12 @@ public class DOCXFileFormatterServiceImpl implements FileFormatterService<List<X
 
 	private XWPFParagraph getRelationshipInfoParagraph(){
 		final XWPFParagraph familyInfo = document.createParagraph();
-		familyInfo.setSpacingBetween(1.0);
-		XWPFRun infoRun = familyInfo.createRun();
-		infoRun.setFontFamily("Times New Roman");
-		infoRun.setFontSize(FONT_SIZE);
+		XWPFRun infoRun = createTitleRun("Родинні зв’язки: ", familyInfo, true);
+		infoRun = createTitleRun("Батько(и): ", familyInfo, false);
 		infoRun.addBreak();
-		infoRun.setText("Родинні зв’язки: ");
-		infoRun.setBold(true);
-		infoRun = familyInfo.createRun();
-		infoRun.setFontFamily("Times New Roman");
-		infoRun.addBreak();
-		infoRun.addBreak();
-		infoRun.setText("Батько(и): ");
-		infoRun.setFontSize(FONT_SIZE);
 
 		if(!user.getParents().isEmpty()){
-	    	infoRun = familyInfo.createRun();
-			infoRun.setFontFamily("Times New Roman");
-			infoRun.setFontSize(FONT_SIZE);
+	    	infoRun = createRun(familyInfo);
 			for(final User parent : user.getParents()){
 				infoRun.addBreak();
 				setShortUserInfo(infoRun, parent);
@@ -132,10 +122,7 @@ public class DOCXFileFormatterServiceImpl implements FileFormatterService<List<X
 		infoRun.addBreak();
 		infoRun.setText("Брат/Сестра: ");
 		if(!user.getSiblings().isEmpty()){
-			infoRun = familyInfo.createRun();
-			infoRun.setFontFamily("Times New Roman");
-
-			infoRun.setFontSize(FONT_SIZE);
+			infoRun = createRun(familyInfo);
 
 			for(final User sibling : user.getSiblings()){
 				infoRun.addBreak();
@@ -149,10 +136,7 @@ public class DOCXFileFormatterServiceImpl implements FileFormatterService<List<X
 		infoRun.addBreak();
 		infoRun.setText("Діти: ");
 		if(!user.getChildren().isEmpty()){
-			infoRun = familyInfo.createRun();
-			infoRun.setFontFamily("Times New Roman");
-
-			infoRun.setFontSize(FONT_SIZE);
+			infoRun = createRun(familyInfo);
 
 			for(final User child : user.getChildren()){
 				infoRun.addBreak();
@@ -167,20 +151,11 @@ public class DOCXFileFormatterServiceImpl implements FileFormatterService<List<X
 
 	private XWPFParagraph getIllegalActionsInfoParagraph() {
 		final XWPFParagraph actionsInfo = document.createParagraph();
-		actionsInfo.setSpacingBetween(1.0);
-		XWPFRun basicInfoRun = actionsInfo.createRun();
-		basicInfoRun.setFontFamily("Times New Roman");
-		basicInfoRun.setFontSize(FONT_SIZE);
-
-		basicInfoRun.addBreak();
-		basicInfoRun.setText("Причетність до протиправної діяльності: ");
-		basicInfoRun.setBold(true);
+		XWPFRun basicInfoRun = createTitleRun("Причетність до протиправної діяльності: ", actionsInfo, true);
 
 		if (user.getIllegalActions() != null) {
 			basicInfoRun.addBreak();
-			basicInfoRun = actionsInfo.createRun();
-			basicInfoRun.setFontFamily("Times New Roman");
-			basicInfoRun.setFontSize(FONT_SIZE);
+			basicInfoRun = createRun(actionsInfo);
 
 			basicInfoRun.setText(user.getIllegalActions());
 		} else {
@@ -192,20 +167,11 @@ public class DOCXFileFormatterServiceImpl implements FileFormatterService<List<X
 
 	private XWPFParagraph getBirthCertificateInfoParagraph() {
 		final XWPFParagraph bithInfo = document.createParagraph();
-		bithInfo.setSpacingBetween(1.0);
-
-		XWPFRun basicInfoRun = bithInfo.createRun();
-		basicInfoRun.setFontFamily("Times New Roman");
-		basicInfoRun.setFontSize(FONT_SIZE);
-		basicInfoRun.addBreak();
-		basicInfoRun.setText("Свідотство про народження: ");
-		basicInfoRun.setBold(true);
+		XWPFRun basicInfoRun = createTitleRun("Свідотство про народження: ", bithInfo, true);
 
 		if (user.getBirthCertificate() != null) {
 			final BirthCertificate certificate = user.getBirthCertificate();
-			basicInfoRun = bithInfo.createRun();
-			basicInfoRun.setFontFamily("Times New Roman");
-			basicInfoRun.setFontSize(FONT_SIZE);
+			basicInfoRun = createRun(bithInfo);
 
 			if (certificate.getNumber() != null) {
 				basicInfoRun.setText(certificate.getNumber() + DOT_WHITE_SPACE);
@@ -239,22 +205,14 @@ public class DOCXFileFormatterServiceImpl implements FileFormatterService<List<X
 
 	private XWPFParagraph getBirthAddressInfoParagraph() {
 		final XWPFParagraph addressInfo = document.createParagraph();
-		addressInfo.setSpacingBetween(1.0);
-		XWPFRun basicInfoRun = addressInfo.createRun();
-		basicInfoRun.setFontFamily("Times New Roman");
-		basicInfoRun.setFontSize(FONT_SIZE);
-		basicInfoRun.addBreak();
-		basicInfoRun.setText("Місце народження: ");
-		basicInfoRun.setBold(true);
+		XWPFRun basicInfoRun = createTitleRun("Місце народження: ", addressInfo, true);
 
 		if (user.getBirthCertificate() != null) {
 			final BirthCertificate certificate = user.getBirthCertificate();
 
 			if (certificate.getBirthAddress() != null) {
 				final Address address = certificate.getBirthAddress();
-				basicInfoRun = addressInfo.createRun();
-				basicInfoRun.setFontFamily("Times New Roman");
-				basicInfoRun.setFontSize(FONT_SIZE);
+				basicInfoRun = createRun(addressInfo);
 
 				basicInfoRun.setText("  м." + address.getCity() + DOT_WHITE_SPACE);
 				if (address.getStreet() != null) {
@@ -276,30 +234,22 @@ public class DOCXFileFormatterServiceImpl implements FileFormatterService<List<X
 
 	private XWPFParagraph getUserJuridicalPersonsInfoParagraph() {
 		final XWPFParagraph jurInfo = document.createParagraph();
-		jurInfo.setSpacingBetween(1.0);
-
-		XWPFRun basicInfoRun = jurInfo.createRun();
-		basicInfoRun.setFontFamily("Times New Roman");
-		basicInfoRun.setFontSize(FONT_SIZE);
-		basicInfoRun.addBreak();
-		basicInfoRun.setText("Пов’язані юридичні особи: ");
-		basicInfoRun.setBold(true);
+		XWPFRun basicInfoRun = createTitleRun("Пов’язані юридичні особи: ", jurInfo, true);
 		basicInfoRun.addBreak();
 
 		if (user.getJuridicalPersons() != null) {
 			final Set<JuridicalPerson> persons = user.getJuridicalPersons();
-			basicInfoRun = jurInfo.createRun();
-			basicInfoRun.setFontFamily("Times New Roman");
-			basicInfoRun.setFontSize(FONT_SIZE);
+			basicInfoRun = createRun(jurInfo);
+
 			for (final JuridicalPerson person : persons) {
 				basicInfoRun.setText("ЄРДПО: " + person.getErdpo() + DOT_WHITE_SPACE);
 				basicInfoRun.setText("Вид діяльності: " + person.getTypeActivity() + DOT_WHITE_SPACE);
 				basicInfoRun.addBreak();
+
 				if(!person.getJurAddresses().isEmpty()){
-					basicInfoRun = jurInfo.createRun();
-					basicInfoRun.setFontFamily("Times New Roman");
-					basicInfoRun.setFontSize(FONT_SIZE);
+					basicInfoRun = createRun(jurInfo);
 					basicInfoRun.setText("Адреси: ");
+
 					for(final Address address : person.getJurAddresses()){
 						basicInfoRun.addBreak();
 						basicInfoRun.setText("  м." + address.getCity() + DOT_WHITE_SPACE);
@@ -315,7 +265,6 @@ public class DOCXFileFormatterServiceImpl implements FileFormatterService<List<X
 					}
 				}
 				basicInfoRun.addBreak();
-				basicInfoRun.addBreak();
 			}
 		} else {
 			setNotPresentMessage(jurInfo.createRun());
@@ -326,23 +275,12 @@ public class DOCXFileFormatterServiceImpl implements FileFormatterService<List<X
 
 	private XWPFParagraph getUserEmailsInfoParagraph() {
 		final XWPFParagraph emails = document.createParagraph();
-		emails.setSpacingBetween(1.0);
-
-		XWPFRun basicInfoRun = emails.createRun();
-		basicInfoRun.setFontFamily("Times New Roman");
-		basicInfoRun.setFontSize(FONT_SIZE);
-
-		basicInfoRun.addBreak();
-		basicInfoRun.setText("Електронна адреса: ");
-		basicInfoRun.setBold(true);
+		XWPFRun basicInfoRun = createTitleRun("Електронна адреса: ", emails, true);
 
 		if (!user.getEmails().isEmpty()) {
 			for (final Email email : user.getEmails()) {
 				basicInfoRun.addBreak();
-				basicInfoRun = emails.createRun();
-				basicInfoRun.setFontFamily("Times New Roman");
-				basicInfoRun.setFontSize(FONT_SIZE);
-
+				basicInfoRun = createRun(emails);
 				basicInfoRun.setText(email.getEmailAddress() + DOT_WHITE_SPACE);
 			}
 		} else {
@@ -354,22 +292,12 @@ public class DOCXFileFormatterServiceImpl implements FileFormatterService<List<X
 
 	private XWPFParagraph getUserCarsInfoParagraph() {
 		final XWPFParagraph cars = document.createParagraph();
-		cars.setSpacingBetween(1.0);
-
-		XWPFRun basicInfoRun = cars.createRun();
-		basicInfoRun.setFontFamily("Times New Roman");
-		basicInfoRun.setFontSize(FONT_SIZE);
-
-		basicInfoRun.addBreak();
-		basicInfoRun.setText("Машини: ");
-		basicInfoRun.setBold(true);
+		XWPFRun basicInfoRun = createTitleRun("Машини: ", cars, true);
 
 		if (!user.getCars().isEmpty()) {
 			for (final Car car : user.getCars()) {
 				basicInfoRun.addBreak();
-				basicInfoRun = cars.createRun();
-				basicInfoRun.setFontFamily("Times New Roman");
-				basicInfoRun.setFontSize(FONT_SIZE);
+				basicInfoRun = createRun(cars);
 
 				basicInfoRun.setText("Номерний знак: " + car.getPlateNumber() + DOT_WHITE_SPACE);
 				basicInfoRun.setText("Колір: " + car.getColor() + DOT_WHITE_SPACE);
@@ -387,20 +315,11 @@ public class DOCXFileFormatterServiceImpl implements FileFormatterService<List<X
 
 	private XWPFParagraph getDriverLicenseInfoParagraph() {
 		final XWPFParagraph driverLicense = document.createParagraph();
-		driverLicense.setSpacingBetween(1.0);
-		XWPFRun basicInfoRun = driverLicense.createRun();
-		basicInfoRun.setFontFamily("Times New Roman");
-		basicInfoRun.setFontSize(FONT_SIZE);
-
-		basicInfoRun.addBreak();
-		basicInfoRun.setText("Водійське посвідчення: ");
-		basicInfoRun.setBold(true);
+		XWPFRun basicInfoRun = createTitleRun("Водійське посвідчення: ", driverLicense, true);
 
 		if (!user.getPassports().isEmpty()) {
 			for (final DriverLicense license : user.getDriverLicense()) {
-				basicInfoRun = driverLicense.createRun();
-				basicInfoRun.setFontFamily("Times New Roman");
-				basicInfoRun.setFontSize(FONT_SIZE);
+				basicInfoRun = createRun(driverLicense);
 
 				basicInfoRun.setText("Номер: " + license.getLicenseNumber() + DOT_WHITE_SPACE);
 				basicInfoRun.setText("Категорія: ");
@@ -430,20 +349,11 @@ public class DOCXFileFormatterServiceImpl implements FileFormatterService<List<X
 
 	private XWPFParagraph getForeignPassportInfoParagraph() {
 		final XWPFParagraph passports = document.createParagraph();
-		passports.setSpacingBetween(1.0);
-		XWPFRun basicInfoRun = passports.createRun();
-		basicInfoRun.setFontFamily("Times New Roman");
-		basicInfoRun.setFontSize(FONT_SIZE);
-
-		basicInfoRun.addBreak();
-		basicInfoRun.setText("Закордонний паспорт: ");
-		basicInfoRun.setBold(true);
+		XWPFRun basicInfoRun = createTitleRun("Закордонний паспорт: ", passports, true);
 
 		if (!user.getPassports().isEmpty()) {
 			for (final ForeignPassport passport : user.getForeignPassports()) {
-				basicInfoRun = passports.createRun();
-				basicInfoRun.setFontFamily("Times New Roman");
-				basicInfoRun.setFontSize(FONT_SIZE);
+				basicInfoRun = createRun(passports);
 
 				basicInfoRun.setText("Номер: " + passport.getPassportNumber() + DOT_WHITE_SPACE);
 
@@ -469,20 +379,11 @@ public class DOCXFileFormatterServiceImpl implements FileFormatterService<List<X
 
 	private XWPFParagraph getPassportsInfoParagraph() {
 		final XWPFParagraph passports = document.createParagraph();
-		passports.setSpacingBetween(1.0);
-		XWPFRun basicInfoRun = passports.createRun();
-		basicInfoRun.setFontFamily("Times New Roman");
-		basicInfoRun.setFontSize(FONT_SIZE);
-
-		basicInfoRun.setText("Паспорт: ");
-		basicInfoRun.setBold(true);
+		XWPFRun basicInfoRun = createTitleRun("Паспорт: ", passports, true);
 
 		if (!user.getPassports().isEmpty()) {
 			for (final Passport passport : user.getPassports()) {
-				basicInfoRun = passports.createRun();
-				basicInfoRun.setFontFamily("Times New Roman");
-				basicInfoRun.setFontSize(FONT_SIZE);
-
+				basicInfoRun = createRun(passports);
 				basicInfoRun.setText("Номер: " + passport.getPassportNumber() + DOT_WHITE_SPACE);
 
 				if (passport.getIssueDate() != null) {
@@ -507,21 +408,12 @@ public class DOCXFileFormatterServiceImpl implements FileFormatterService<List<X
 
 	private XWPFParagraph getIndividualEntrepreneurAddressesInfoParagraph(){
 		final XWPFParagraph addresses = document.createParagraph();
-		addresses.setSpacingBetween(1.0);
-
-		XWPFRun basicInfoRun = addresses.createRun();
-		basicInfoRun.setFontFamily("Times New Roman");
-		basicInfoRun.setFontSize(FONT_SIZE);
-
-		basicInfoRun.addBreak();
-		basicInfoRun.setText("ФОП Адреси: ");
-		basicInfoRun.setBold(true);
+		XWPFRun basicInfoRun = createTitleRun("ФОП Адреси: ", addresses, true);
 
 		if (!user.getAddresses().isEmpty()) {
 			for (final Address address : user.getAddresses()) {
 				if (address.getCity() != null) {
-					basicInfoRun = addresses.createRun();
-					basicInfoRun.setFontFamily("Times New Roman");
+					basicInfoRun = createRun(addresses);
 					basicInfoRun.setText("  м." + address.getCity() + DOT_WHITE_SPACE);
 				}
 				if (address.getStreet() != null) {
@@ -543,21 +435,12 @@ public class DOCXFileFormatterServiceImpl implements FileFormatterService<List<X
 
 	private XWPFParagraph getAddressesInfoParagraph() {
 		final XWPFParagraph addresses = document.createParagraph();
-		addresses.setSpacingBetween(1.0);
-
-		XWPFRun basicInfoRun = addresses.createRun();
-		basicInfoRun.setFontFamily("Times New Roman");
-		basicInfoRun.setFontSize(FONT_SIZE);
-
-		basicInfoRun.addBreak();
-		basicInfoRun.setText("Місце проживання/перебування: ");
-		basicInfoRun.setBold(true);
+		XWPFRun basicInfoRun = createTitleRun("Місце проживання/перебування: ", addresses, true);
 
 		if (!user.getAddresses().isEmpty()) {
 			for (final Address address : user.getAddresses()) {
 				basicInfoRun.addBreak();
-				basicInfoRun = addresses.createRun();
-				basicInfoRun.setFontFamily("Times New Roman");
+				basicInfoRun = createRun(addresses);
 
 				if (address.getRegion() != null) {
 					basicInfoRun.setText("  обл." + address.getRegion() + DOT);
@@ -597,22 +480,11 @@ public class DOCXFileFormatterServiceImpl implements FileFormatterService<List<X
 
 	private XWPFParagraph getPhonesInfoParagraph() {
 		final XWPFParagraph phones = document.createParagraph();
-		phones.setSpacingBetween(1.0);
-
-		XWPFRun basicInfoRun = phones.createRun();
-		basicInfoRun.setFontFamily("Times New Roman");
-		basicInfoRun.setFontSize(FONT_SIZE);
-
-		basicInfoRun.addBreak();
-		basicInfoRun.setText("Телефони: ");
-		basicInfoRun.setBold(true);
+		XWPFRun basicInfoRun = createTitleRun("Телефони: ", phones, true);
 
 		if (!user.getPhones().isEmpty()) {
 			for (final Phone phone : user.getPhones()) {
-				basicInfoRun = phones.createRun();
-				basicInfoRun.setFontFamily("Times New Roman");
-				basicInfoRun.setFontSize(FONT_SIZE);
-
+				basicInfoRun = createRun(phones);
 				basicInfoRun.setText("38" + phone.getNumber() + DOT_WHITE_SPACE);
 			}
 		} else {
@@ -626,9 +498,7 @@ public class DOCXFileFormatterServiceImpl implements FileFormatterService<List<X
 		final XWPFParagraph basicInfoParagraph = document.createParagraph();
 		basicInfoParagraph.setSpacingBetween(1.0);
 
-		XWPFRun basicInfoRun = basicInfoParagraph.createRun();
-		basicInfoRun.setFontFamily("Times New Roman");
-		basicInfoRun.setFontSize(FONT_SIZE);
+		XWPFRun basicInfoRun = createRun(basicInfoParagraph);
 
 		if (user.getSurName() != null) {
 			basicInfoRun.setText(user.getSurName().toUpperCase(Locale.ROOT) + WHITE_SPACE);
@@ -651,14 +521,9 @@ public class DOCXFileFormatterServiceImpl implements FileFormatterService<List<X
 		}
 		basicInfoRun.addBreak();
 		basicInfoRun.addBreak();
-		basicInfoRun = basicInfoParagraph.createRun();
-		basicInfoRun.setFontFamily("Times New Roman");
-		basicInfoRun.setFontSize(FONT_SIZE);
+		basicInfoRun = createTitleRun("РНОКПП: ", basicInfoParagraph, true);
 
-		basicInfoRun.setText("РНОКПП: ");
 		if (user.getRnokpp() != null) {
-
-			basicInfoRun.setBold(true);
 
 			basicInfoRun = basicInfoParagraph.createRun();
 			basicInfoRun.setText(user.getRnokpp() + DOT);
@@ -670,10 +535,30 @@ public class DOCXFileFormatterServiceImpl implements FileFormatterService<List<X
 	}
 
 	private void setNotPresentMessage(final XWPFRun basicInfoRun) {
-		basicInfoRun.setFontFamily("Times New Roman");
+		basicInfoRun.setFontFamily(TIMES_NEW_ROMAN);
 		basicInfoRun.setFontSize(FONT_SIZE);
 
 		basicInfoRun.setText(INFO_NOT_PRESENT_MESSAGE);
-		basicInfoRun.setColor("FF0000");
+		basicInfoRun.setColor(RED_COLOR);
+	}
+
+	private XWPFRun createTitleRun(final String title, final XWPFParagraph paragraph, final boolean isBold){
+		paragraph.setSpacingBetween(1.0);
+		final XWPFRun run = paragraph.createRun();
+		run.setFontFamily(TIMES_NEW_ROMAN);
+		run.setFontSize(FONT_SIZE);
+		run.addBreak();
+		run.setText(title);
+		run.setBold(isBold);
+
+		return run;
+	}
+
+	private XWPFRun createRun(final XWPFParagraph paragraph){
+		final XWPFRun run = paragraph.createRun();
+		run.setFontFamily(TIMES_NEW_ROMAN);
+		run.setFontSize(FONT_SIZE);
+
+		return run;
 	}
 }

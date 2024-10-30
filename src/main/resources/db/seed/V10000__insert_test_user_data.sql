@@ -2,7 +2,7 @@
 INSERT INTO users (sur_name, name, middle_name, rnokpp, sex, illegal_actions, created_date, updated_date, individual_entrepreneur)
 VALUES
     ('Іванов', 'Іван', 'Іванович', '1234567890', 'MALE', 'Протиправна діяльність №199', '2023-01-01 10:00:00', '2023-01-01 10:00:00', 'UNKNOWN'),
-    ('Шевченко', 'Тарас', 'Григорович', '7890654321', 'MALE', 'Протиправна діяльність №200', '2023-01-02 10:00:00', '2023-01-02 10:00:00', true),
+    ('Шевченко', 'Тарас', 'Григорович', '7890654321', 'MALE', 'Протиправна діяльність №200', '2023-01-02 10:00:00', '2023-01-02 10:00:00', 'UNKNOWN'),
     ('Шевченко', 'Григорій', 'Іванович', '1112225555', 'MALE', NULL, '2023-01-03 10:00:00', '2023-01-03 10:00:00', 'UNKNOWN'),
     ('Шевченко', 'Катирина', 'Якимівна', '3334448888', 'FEMALE', NULL, '2023-01-04 10:00:00', '2023-01-04 10:00:00', 'UNKNOWN'),
     ('Шевченко', 'Марта', 'Іванівна', '5556660945', 'FEMALE', NULL, '2023-01-05 10:00:00', '2023-01-05 10:00:00', 'UNKNOWN'),
@@ -71,11 +71,11 @@ VALUES
 -- Foreign Passports
 INSERT INTO foreign_passports (passport_number, issue_date, valid_until, valid, unlimited, authority, user_id, created_date, updated_date)
 VALUES
-    ('FG123456', '2020-01-01', '2029-01-01', TRUE, FALSE, 'Kiev, Heroyev street, home number 4', 1, '2023-01-01 10:00:00', '2023-01-01 10:00:00'),
-    ('FA242333', '1999-01-01', '2029-01-01', TRUE, FALSE, 'Kiev, Heroyev street, home number 4', 2, '2023-01-01 10:00:00', '2023-01-01 10:00:00'),
-    ('FA543775', '2011-01-01', '2029-01-01', TRUE, FALSE, 'Kiev, Heroyev street, home number 4', 3, '2023-01-01 10:00:00', '2023-01-01 10:00:00'),
-    ('FA657834', '2039-01-01', '2029-01-01', TRUE, FALSE, 'Kiev, Heroyev street, home number 4', 4, '2023-01-01 10:00:00', '2023-01-01 10:00:00'),
-    ('FB654321', '2020-01-01', '2030-01-01', TRUE, FALSE, 'Kiev, Heroyev street, home number 4', 5, '2023-01-01 10:00:00', '2023-01-01 10:00:00');
+    ('FG123456', '2020-01-01', '2029-01-01', 'NO', 'NO', 'Kiev, Heroyev street, home number 4', 1, '2023-01-01 10:00:00', '2023-01-01 10:00:00'),
+    ('FA242333', '1999-01-01', '2029-01-01', 'NO', 'NO', 'Kiev, Heroyev street, home number 4', 2, '2023-01-01 10:00:00', '2023-01-01 10:00:00'),
+    ('FA543775', '2011-01-01', '2029-01-01', 'NO', 'NO', 'Kiev, Heroyev street, home number 4', 3, '2023-01-01 10:00:00', '2023-01-01 10:00:00'),
+    ('FA657834', '2039-01-01', '2029-01-01', 'NO', 'NO', 'Kiev, Heroyev street, home number 4', 4, '2023-01-01 10:00:00', '2023-01-01 10:00:00'),
+    ('FB654321', '2020-01-01', '2030-01-01', 'NO', 'NO', 'Kiev, Heroyev street, home number 4', 5, '2023-01-01 10:00:00', '2023-01-01 10:00:00');
 
 -- Addresses
 INSERT INTO addresses (region, city, street, home_number, flat_number, created_date, updated_date)

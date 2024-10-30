@@ -17,7 +17,6 @@ CREATE TABLE user_siblings (
     PRIMARY KEY                                       (user_id, sibling_id),
     CONSTRAINT no_self_sibling                        CHECK (user_id != sibling_id)
 );
--- todo add indexes to most uses columns like phone num and rnokpp
 
 CREATE TABLE users_children(
     user_id                                           BIGINT NOT NULL REFERENCES users(id) ON UPDATE CASCADE,
@@ -195,7 +194,6 @@ CREATE TABLE birth_certificates (
 );
 
 -- Indexes
-
 CREATE INDEX idx_users_rnokpp ON users (rnokpp);
 
 CREATE INDEX idx_phones_number ON phones (number);
