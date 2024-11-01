@@ -35,6 +35,7 @@ public class DOCXFileFormatterServiceImpl implements AbstractDOCXFormatterServic
 	private XWPFDocument document;
 
 	private User user;
+// TODO Rewrite all methods to use the same XWPFParagraph no not create it for each get method.
 
 	@Override
 	public List<XWPFParagraph> format(final User user) throws IOException {
