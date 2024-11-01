@@ -47,11 +47,11 @@ public class FileServiceImpl implements FileService {
 	public byte[] createDOCXFromUser(final User user) throws IOException, InvalidFormatException {
 		final XWPFDocument document = new XWPFDocument();
 		final CTDocument1 CTDdocument = document.getDocument();
-
 		final CTBody body = CTDdocument.getBody();
-		final CTSectPr section = body.getSectPr();
 
 		setPageSize(body);
+
+		final CTSectPr section = body.getSectPr();
 		setProperties(section);
 
 		final CTPageSz pageSize = section.getPgSz();
