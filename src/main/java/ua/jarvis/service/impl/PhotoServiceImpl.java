@@ -13,6 +13,7 @@ import java.nio.file.Paths;
 public class PhotoServiceImpl implements PhotoService {
 //	private static final String PHOTO_PATH = "/app/photos/";
 	private static final String PHOTO_PATH = "/Users/antonshapovalov/git/JarvisPhoto/";
+
 	@Override
 	public void savePhoto(final MultipartFile multipartFile, final String fileName) throws IOException {
 		final Path filePath = Paths.get(PHOTO_PATH + fileName);

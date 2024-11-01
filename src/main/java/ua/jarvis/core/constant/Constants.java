@@ -1,5 +1,7 @@
 package ua.jarvis.core.constant;
 
+import java.time.format.DateTimeFormatter;
+
 public final class Constants {
 
 	private Constants() {}
@@ -55,5 +57,18 @@ public final class Constants {
 	public static final class AdminCommands {
 		public static final String ADD = "add";
 		public static final String DELETE = "delete";
+	}
+
+	public static final class FileFormatter{
+		public static final DateTimeFormatter DATE_FORMATTER = DateTimeFormatter.ofPattern("dd.MM.yyyy");
+		public static final String DOT_WHITE_SPACE = ". ";
+		public static final String WHITE_SPACE = " ";
+		public static final String DOT = ".";
+		public static final String COMA_WHITE_SPACE = ", ";
+		public static final int FONT_SIZE = 14;
+		public static final String TIMES_NEW_ROMAN = "Times New Roman";
+		public static final String RED_COLOR = "FF0000";
+
+		private FileFormatter() {}
 	}
 }

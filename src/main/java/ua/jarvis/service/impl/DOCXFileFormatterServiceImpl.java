@@ -16,27 +16,21 @@ import ua.jarvis.core.model.Passport;
 import ua.jarvis.core.model.Phone;
 import ua.jarvis.core.model.User;
 import ua.jarvis.core.model.enums.BooleanType;
-import ua.jarvis.service.FileFormatterService;
 
 import java.io.IOException;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 import java.util.Set;
 
-import static ua.jarvis.core.constant.Constants.UAMessages.INFO_NOT_PRESENT_MESSAGE;
+import static ua.jarvis.core.constant.Constants.FileFormatter.COMA_WHITE_SPACE;
+import static ua.jarvis.core.constant.Constants.FileFormatter.DATE_FORMATTER;
+import static ua.jarvis.core.constant.Constants.FileFormatter.DOT;
+import static ua.jarvis.core.constant.Constants.FileFormatter.DOT_WHITE_SPACE;
+import static ua.jarvis.core.constant.Constants.FileFormatter.WHITE_SPACE;
 
 @Service
-public class DOCXFileFormatterServiceImpl implements FileFormatterService<List<XWPFParagraph>, User> {
-	private static final DateTimeFormatter DATE_FORMATTER = DateTimeFormatter.ofPattern("dd.MM.yyyy");
-	private static final String DOT_WHITE_SPACE = ". ";
-	private static final String WHITE_SPACE = " ";
-	private static final String DOT = ".";
-	private static final String COMA_WHITE_SPACE = ", ";
-	private static final int FONT_SIZE = 14;
-	private static final String TIMES_NEW_ROMAN = "Times New Roman";
-	private static final String RED_COLOR = "FF0000";
+public class DOCXFileFormatterServiceImpl implements AbstractDOCXFormatterService {
 
 	private XWPFDocument document;
 
@@ -532,33 +526,5 @@ public class DOCXFileFormatterServiceImpl implements FileFormatterService<List<X
 		}
 
 		return basicInfoParagraph;
-	}
-
-	private void setNotPresentMessage(final XWPFRun basicInfoRun) {
-		basicInfoRun.setFontFamily(TIMES_NEW_ROMAN);
-		basicInfoRun.setFontSize(FONT_SIZE);
-
-		basicInfoRun.setText(INFO_NOT_PRESENT_MESSAGE);
-		basicInfoRun.setColor(RED_COLOR);
-	}
-
-	private XWPFRun createTitleRun(final String title, final XWPFParagraph paragraph, final boolean isBold){
-		paragraph.setSpacingBetween(1.0);
-		final XWPFRun run = paragraph.createRun();
-		run.setFontFamily(TIMES_NEW_ROMAN);
-		run.setFontSize(FONT_SIZE);
-		run.addBreak();
-		run.setText(title);
-		run.setBold(isBold);
-
-		return run;
-	}
-
-	private XWPFRun createRun(final XWPFParagraph paragraph){
-		final XWPFRun run = paragraph.createRun();
-		run.setFontFamily(TIMES_NEW_ROMAN);
-		run.setFontSize(FONT_SIZE);
-
-		return run;
 	}
 }

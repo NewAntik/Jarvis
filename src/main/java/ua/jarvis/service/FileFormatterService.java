@@ -1,10 +1,12 @@
 package ua.jarvis.service;
 
+import org.apache.poi.xwpf.usermodel.XWPFParagraph;
+import ua.jarvis.core.model.User;
+
 import java.io.IOException;
+import java.util.List;
 
-public interface FileFormatterService<T, R> {
-	//todo rewrite FileFormatterService to use factory or strategy or another pattern.
-	// to provide common methods/vars add abstract class
+public interface FileFormatterService {
 
-	T format(R source) throws IOException;
+	List<XWPFParagraph> format(User user) throws IOException;
 }
