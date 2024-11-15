@@ -11,10 +11,6 @@ import java.util.Optional;
 
 public interface UserRepository extends JpaRepository<User, Long>, JpaSpecificationExecutor<User> {
 
-	Optional<User> findUserByRnokpp(String rnokpp);
-
-	Optional<User> findUserBySurNameAndName(String surName, String name);
-
 	@Query("SELECT u FROM User u JOIN u.phones p WHERE p.number = :number")
 	List<User> findUsersByPhoneNumber(@Param("number") String number);
 
@@ -24,10 +20,4 @@ public interface UserRepository extends JpaRepository<User, Long>, JpaSpecificat
 	@Query("SELECT u FROM User u JOIN u.foreignPassports p WHERE p.passportNumber = :foreignPassportNumber")
 	Optional<User> findUserByForeignPassportNumber(@Param("foreignPassportNumber") String foreignPassportNumber);
 
-	@Query("SELECT u FROM User u WHERE u.surName = :surName AND u.name = :name AND u.middleName = :middleName")
-	Optional<User> findUserByThreeNames(
-		@Param("surName") String surName,
-		@Param("name") String name,
-		@Param("middleName") String midlName
-	);
 }

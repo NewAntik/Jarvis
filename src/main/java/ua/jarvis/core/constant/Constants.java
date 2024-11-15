@@ -20,9 +20,6 @@ public final class Constants {
 	}
 
 	public static final class SpecificationType {
-		public static final String NAME = "name";
-		public static final String SUR_NAME = "surName";
-		public static final String MIDDLE_NAME = "middleName";
 		public static final String MONTH = "month";
 		public static final String YEAR = "year";
 		public static final String DAY = "day";
@@ -50,6 +47,10 @@ public final class Constants {
 		public static final String CORPUS = "corpus";
 		public static final String OTHER = "other";
 		public static final String OTHER_NUM = "otherNum";
+		public static final String NAME_VALUE = "value";
+		public static final String SUR_NAMES = "surNames";
+		public static final String NAMES = "firstNames";
+		public static final String MIDDLE_NAMES = "middleNames";
 
 		private SpecificationType(){}
 	}
@@ -68,6 +69,8 @@ public final class Constants {
 		public static final int FONT_SIZE = 14;
 		public static final String TIMES_NEW_ROMAN = "Times New Roman";
 		public static final String RED_COLOR = "FF0000";
+		public static final String COMA = ",";
+
 
 		private FileFormatter() {}
 	}

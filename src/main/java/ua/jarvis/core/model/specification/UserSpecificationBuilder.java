@@ -8,6 +8,7 @@ import ua.jarvis.core.constant.Constants;
 import ua.jarvis.core.model.Car;
 import ua.jarvis.core.model.ForeignPassport;
 import ua.jarvis.core.model.Passport;
+import ua.jarvis.core.model.SurName;
 import ua.jarvis.core.model.User;
 import ua.jarvis.core.model.Address;
 import ua.jarvis.core.model.BirthCertificate;
@@ -116,23 +117,29 @@ public class UserSpecificationBuilder {
 	}
 
 	public UserSpecificationBuilder hasSurName(final String surName) {
-		this.specification = specification.and((root, query, builder) ->
-			builder.equal(root.get(Constants.SpecificationType.SUR_NAME), surName)
-		);
+		this.specification = specification.and((root, query, builder) -> {
+			final Join<User, SurName> surNameJoin =
+				root.join(Constants.SpecificationType.SUR_NAMES, JoinType.INNER);
+			return builder.equal(surNameJoin.get(Constants.SpecificationType.NAME_VALUE), surName);
+		});
 		return this;
 	}
 
 	public UserSpecificationBuilder hasName(final String name) {
-		this.specification = specification.and((root, query, builder) ->
-			builder.equal(root.get(Constants.SpecificationType.NAME), name)
-		);
+		this.specification = specification.and((root, query, builder) -> {
+			final Join<User, SurName> nameJoin =
+				root.join(Constants.SpecificationType.NAMES, JoinType.INNER);
+			return builder.equal(nameJoin.get(Constants.SpecificationType.NAME_VALUE), name);
+		});
 		return this;
 	}
 
-	public UserSpecificationBuilder hasMidlName(final String midlName) {
-		this.specification = specification.and((root, query, builder) ->
-			builder.equal(root.get(Constants.SpecificationType.MIDDLE_NAME), midlName)
-		);
+	public UserSpecificationBuilder hasMiddleName(final String middleName) {
+		this.specification = specification.and((root, query, builder) -> {
+			final Join<User, SurName> middleNameJoin =
+				root.join(Constants.SpecificationType.MIDDLE_NAMES, JoinType.INNER);
+			return builder.equal(middleNameJoin.get(Constants.SpecificationType.NAME_VALUE), middleName);
+		});
 		return this;
 	}
 

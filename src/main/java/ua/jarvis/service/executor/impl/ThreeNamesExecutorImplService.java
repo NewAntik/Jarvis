@@ -45,7 +45,7 @@ public class ThreeNamesExecutorImplService implements CommandExecutorService {
 
 		if(users.size() > 1){
 			responder.sendMessage(dto.getChatId(), "За ПІБ знайдено: " + users.size() + " людей.");
-		}
+		} // todo rewrite this logic to use only one if(users.size() > 1) than sendMessage and createShortDOCXDocumentAndSend else createDOCXDocumentAndSend
 		if(users.size() == 1 ){
 			responder.createDOCXDocumentAndSend(dto.getChatId(), users.get(0));
 		} else {

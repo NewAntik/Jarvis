@@ -5,6 +5,7 @@ import org.apache.poi.xwpf.usermodel.XWPFParagraph;
 import org.apache.poi.xwpf.usermodel.XWPFRun;
 import org.springframework.stereotype.Service;
 import ua.jarvis.core.model.Address;
+import ua.jarvis.core.model.BaseNameEntity;
 import ua.jarvis.core.model.BirthCertificate;
 import ua.jarvis.core.model.Car;
 import ua.jarvis.core.model.DriverLicense;
@@ -14,6 +15,7 @@ import ua.jarvis.core.model.ForeignPassport;
 import ua.jarvis.core.model.JuridicalPerson;
 import ua.jarvis.core.model.Passport;
 import ua.jarvis.core.model.Phone;
+import ua.jarvis.core.model.SurName;
 import ua.jarvis.core.model.User;
 import ua.jarvis.core.model.enums.BooleanType;
 
@@ -23,6 +25,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Set;
 
+import static ua.jarvis.core.constant.Constants.FileFormatter.COMA;
 import static ua.jarvis.core.constant.Constants.FileFormatter.COMA_WHITE_SPACE;
 import static ua.jarvis.core.constant.Constants.FileFormatter.DATE_FORMATTER;
 import static ua.jarvis.core.constant.Constants.FileFormatter.DOT;
@@ -67,14 +70,14 @@ public class DOCXFileFormatterServiceImpl implements AbstractDOCXFormatterServic
 	}
 
 	private void setShortUserInfo(final XWPFRun infoRun, final User user) {
-		if (user.getSurName() != null) {
-			infoRun.setText(user.getSurName() + WHITE_SPACE);
+		if (!user.getSurNames().isEmpty()) {
+			addNames(infoRun, user.getSurNames());
 		}
-		if (user.getName() != null) {
-			infoRun.setText(user.getName() + WHITE_SPACE);
+		if (!user.getFirstNames().isEmpty()) {
+			addNames(infoRun, user.getFirstNames());
 		}
-		if (user.getMiddleName() != null) {
-			infoRun.setText(user.getMiddleName() + WHITE_SPACE);
+		if (!user.getMiddleNames().isEmpty()) {
+			addNames(infoRun, user.getMiddleNames());
 		}
 		if (user.getRnokpp() != null) {
 			infoRun.setText("РНОКПП:" + user.getRnokpp() + COMA_WHITE_SPACE);
@@ -495,16 +498,19 @@ public class DOCXFileFormatterServiceImpl implements AbstractDOCXFormatterServic
 
 		XWPFRun basicInfoRun = createRun(basicInfoParagraph);
 
-		if (user.getSurName() != null) {
-			basicInfoRun.setText(user.getSurName().toUpperCase(Locale.ROOT) + WHITE_SPACE);
+		if (!user.getSurNames().isEmpty()) {
+			user.getSurNames().forEach(n -> n.setValue(n.getValue().toUpperCase(Locale.ROOT)));
+			addNames(basicInfoRun, user.getSurNames());
+			basicInfoRun.addBreak();
 		}
 
-		if (user.getName() != null) {
-			basicInfoRun.setText(user.getName() + WHITE_SPACE);
+		if (!user.getFirstNames().isEmpty()) {
+			addNames(basicInfoRun, user.getFirstNames());
+			basicInfoRun.addBreak();
 		}
-
-		if (user.getMiddleName() != null) {
-			basicInfoRun.setText(user.getMiddleName() + WHITE_SPACE);
+		if (!user.getMiddleNames().isEmpty()) {
+			addNames(basicInfoRun, user.getMiddleNames());
+			basicInfoRun.addBreak();
 		}
 
 		if (user.getBirthCertificate() != null) {
@@ -527,5 +533,19 @@ public class DOCXFileFormatterServiceImpl implements AbstractDOCXFormatterServic
 		}
 
 		return basicInfoParagraph;
+	}
+
+	private <T extends BaseNameEntity> void addNames(final XWPFRun infoRun, final Set<T> names) {
+		final int n = names.size();
+		int i = 1;
+
+		for (final T name : names) {
+			if(i == n){
+				infoRun.setText(name.getValue());
+			}else{
+				infoRun.setText(name.getValue() + COMA_WHITE_SPACE);
+				i++;
+			}
+		}
 	}
 }

@@ -30,18 +30,6 @@ public class User extends BaseEntity {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
-	@Size(max = 50)
-	@Column(length = 50, name = "name")
-	private String name;
-
-	@Size(max = 50)
-	@Column(length = 50, name = "middle_name")
-	private String middleName;
-
-	@Size(max = 50)
-	@Column(length = 50, name = "sur_name")
-	private String surName;
-
 	@Size(max = 10)
 	@Column(length = 10, name = "rnokpp")
 	private String rnokpp;
@@ -63,6 +51,15 @@ public class User extends BaseEntity {
 
 	@OneToOne(mappedBy = "user", fetch = FetchType.EAGER)
 	private Photo photo;
+
+	@OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
+	private Set<FirstName> firstNames = new HashSet<>();
+
+	@OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
+	private Set<MiddleName> middleNames = new HashSet<>();
+
+	@OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
+	private Set<SurName> surNames = new HashSet<>();
 
 	@ManyToMany(fetch = FetchType.LAZY)
 	@JoinTable(
@@ -184,28 +181,28 @@ public class User extends BaseEntity {
 		this.id = id;
 	}
 
-	public String getName() {
-		return name;
+	public Set<FirstName> getFirstNames() {
+		return firstNames;
 	}
 
-	public void setName(final String name) {
-		this.name = name;
+	public void setFirstNames(final Set<FirstName> firstNames) {
+		this.firstNames = firstNames;
 	}
 
-	public String getMiddleName() {
-		return middleName;
+	public Set<MiddleName> getMiddleNames() {
+		return middleNames;
 	}
 
-	public void setMiddleName(final String midlName) {
-		this.middleName = midlName;
+	public void setMiddleNames(final Set<MiddleName> middleNames) {
+		this.middleNames = middleNames;
 	}
 
-	public String getSurName() {
-		return surName;
+	public Set<SurName> getSurNames() {
+		return surNames;
 	}
 
-	public void setSurName(final String surName) {
-		this.surName = surName;
+	public void setSurNames(final Set<SurName> surNames) {
+		this.surNames = surNames;
 	}
 
 	public String getRnokpp() {
@@ -302,11 +299,11 @@ public class User extends BaseEntity {
 	public String toString() {
 		return "User{" +
 			"id=" + id +
-			", name='" + name + '\'' +
-			", midlName='" + middleName + '\'' +
-			", surName='" + surName + '\'' +
+			", names=" + firstNames +
+			", middleNames=" + middleNames +
+			", surNames=" + surNames +
 			", rnokpp='" + rnokpp + '\'' +
-			", sex='" + sex + '\'' +
+			", sex=" + sex +
 			'}';
 	}
 

@@ -5,13 +5,14 @@ import org.slf4j.LoggerFactory;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import org.springframework.transaction.annotation.Transactional;
 import ua.jarvis.core.model.JuridicalPerson;
 import ua.jarvis.core.model.User;
 import ua.jarvis.core.model.criteria.UserCriteria;
-import ua.jarvis.core.model.enums.BooleanType;
 import ua.jarvis.core.model.specification.SpecificationProvider;
 import ua.jarvis.repository.UserRepository;
 import ua.jarvis.service.UserService;
@@ -47,13 +48,19 @@ public class UserServiceImpl implements UserService {
 		}
 
 		if(users.size() == 1){
-			initializeLazyLoad(users);
+			initializeAllData(users);
+		}else{
+			initializeSortData(users);
 		}
 
 		return users;
 	}
 
-	private void initializeLazyLoad(final List<User> users){
+	private void initializeSortData(final List<User> users) {
+		initBaseInfo(new HashSet<>(users));
+	}
+
+	private void initializeAllData(final List<User> users){
 		for(final User user : users ){
 			user.getCars().stream().count();
 			user.getPassports().stream().count();
@@ -63,34 +70,41 @@ public class UserServiceImpl implements UserService {
 			user.getEmails().stream().count();
 			user.getDriverLicense().stream().count();
 			user.getAddresses().stream().count();
+			user.getFirstNames().stream().count();
+			user.getSurNames().stream().count();
+			user.getMiddleNames().stream().count();
+			user.getIndividualEntrepreneurAddresses().stream().count();
 
 			if(!user.getChildren().isEmpty()){
-				for(final User child : user.getChildren()){
-					child.getPhones().stream().count();
-				}
+				initBaseInfo(user.getChildren());
 			}
 
 			if(!user.getParents().isEmpty()){
-				for(final User parent : user.getParents()){
-					parent.getPhones().stream().count();
-				}
+				initBaseInfo(user.getParents());
 			}
 
 			if(!user.getSiblings().isEmpty()){
-				for(final User sibling : user.getSiblings()){
-					sibling.getPhones().stream().count();
-				}
+				initBaseInfo(user.getSiblings());
 			}
 
 			if(!user.getJuridicalPersons().isEmpty()){
-				for(final JuridicalPerson jurPerson : user.getJuridicalPersons()){
-					jurPerson.getJurAddresses().stream().count();
-				}
+				initJurPersonsInfo(user.getJuridicalPersons());
 			}
+		}
+	}
 
-			if(!user.getIndividualEntrepreneur().equals(BooleanType.UNKNOWN)){
-				user.getIndividualEntrepreneurAddresses().stream().count();
-			}
+	private void initJurPersonsInfo(final Set<JuridicalPerson> jurPersons){
+		for(final JuridicalPerson jurPerson : jurPersons){
+			jurPerson.getJurAddresses().stream().count();
+		}
+	}
+
+	private void initBaseInfo(final Set<User> users){
+		for(final User user : users){
+			user.getPhones().stream().count();
+			user.getFirstNames().stream().count();
+			user.getSurNames().stream().count();
+			user.getMiddleNames().stream().count();
 		}
 	}
 }

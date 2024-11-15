@@ -16,7 +16,7 @@ public class SpecificationProvider {
 	static {
 		criteriaMap.put("name", UserSpecificationBuilder::hasName);
 		criteriaMap.put("surName", UserSpecificationBuilder::hasSurName);
-		criteriaMap.put("middleName", UserSpecificationBuilder::hasMidlName);
+		criteriaMap.put("middleName", UserSpecificationBuilder::hasMiddleName);
 		criteriaMap.put("month", (builder, value) -> {
 			if (!"00".equals(value)) builder.hasBirthMonth(value);
 		});
