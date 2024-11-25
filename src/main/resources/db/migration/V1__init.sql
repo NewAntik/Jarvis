@@ -11,7 +11,7 @@ CREATE TABLE users (
 CREATE TABLE user_first_names (
                                   id BIGSERIAL PRIMARY KEY,
                                   user_id BIGINT NOT NULL REFERENCES users(id) ON DELETE CASCADE,
-                                  value VARCHAR(255) NOT NULL,
+                                  value VARCHAR(255),
                                   created_date                                      TIMESTAMP NOT NULL,
                                   updated_date                                      TIMESTAMP NOT NULL
 );
@@ -19,7 +19,7 @@ CREATE TABLE user_first_names (
 CREATE TABLE user_sur_names (
                                  id BIGSERIAL PRIMARY KEY,
                                  user_id BIGINT NOT NULL REFERENCES users(id) ON DELETE CASCADE,
-                                 value VARCHAR(255) NOT NULL,
+                                 value VARCHAR(255),
                                  created_date                                      TIMESTAMP NOT NULL,
                                  updated_date                                      TIMESTAMP NOT NULL
 );
@@ -27,7 +27,7 @@ CREATE TABLE user_sur_names (
 CREATE TABLE user_middle_names (
                                    id BIGSERIAL PRIMARY KEY,
                                    user_id BIGINT NOT NULL REFERENCES users(id) ON DELETE CASCADE,
-                                   value VARCHAR(255) NOT NULL,
+                                   value VARCHAR(255),
                                    created_date                                      TIMESTAMP NOT NULL,
                                    updated_date                                      TIMESTAMP NOT NULL
 );

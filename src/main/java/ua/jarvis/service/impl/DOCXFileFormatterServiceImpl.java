@@ -8,6 +8,7 @@ import ua.jarvis.core.model.Address;
 import ua.jarvis.core.model.BaseNameEntity;
 import ua.jarvis.core.model.BirthCertificate;
 import ua.jarvis.core.model.Car;
+import ua.jarvis.core.model.DocumentEntity;
 import ua.jarvis.core.model.DriverLicense;
 import ua.jarvis.core.model.DriverLicenseCategory;
 import ua.jarvis.core.model.Email;
@@ -15,7 +16,6 @@ import ua.jarvis.core.model.ForeignPassport;
 import ua.jarvis.core.model.JuridicalPerson;
 import ua.jarvis.core.model.Passport;
 import ua.jarvis.core.model.Phone;
-import ua.jarvis.core.model.SurName;
 import ua.jarvis.core.model.User;
 import ua.jarvis.core.model.enums.BooleanType;
 
@@ -25,7 +25,6 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Set;
 
-import static ua.jarvis.core.constant.Constants.FileFormatter.COMA;
 import static ua.jarvis.core.constant.Constants.FileFormatter.COMA_WHITE_SPACE;
 import static ua.jarvis.core.constant.Constants.FileFormatter.DATE_FORMATTER;
 import static ua.jarvis.core.constant.Constants.FileFormatter.DOT;
@@ -35,76 +34,42 @@ import static ua.jarvis.core.constant.Constants.FileFormatter.WHITE_SPACE;
 @Service
 public class DOCXFileFormatterServiceImpl implements AbstractDOCXFormatterService {
 
-	private XWPFDocument document;
-
 	private User user;
-// TODO Rewrite all methods to use the same XWPFParagraph no not create it for each get method.
 
 	@Override
 	public List<XWPFParagraph> format(final User user) throws IOException {
 		this.user = user;
-		this.document = new XWPFDocument();
+		final XWPFDocument document = new XWPFDocument();
 		final List<XWPFParagraph> docxParagraphs = new ArrayList<>();
+		final XWPFParagraph reusableParagraph = document.createParagraph();
 
-		docxParagraphs.add(getBasicInfoParagraph());
-		docxParagraphs.add(getPhonesInfoParagraph());
+		getBasicInfoParagraph(reusableParagraph);
+		getPhonesInfoParagraph(reusableParagraph);
+		getBirthAddressInfoParagraph(reusableParagraph);
+		getAddressesInfoParagraph(reusableParagraph);
+		getIndividualEntrepreneurAddressesInfoParagraph(reusableParagraph);
+		getBirthCertificateInfoParagraph(reusableParagraph);
 
-		docxParagraphs.add(getBirthAddressInfoParagraph());
-		docxParagraphs.add(getAddressesInfoParagraph());
-		docxParagraphs.add(getIndividualEntrepreneurAddressesInfoParagraph());
-		docxParagraphs.add(getBirthCertificateInfoParagraph());
+		getUserJuridicalPersonsInfoParagraph(reusableParagraph);
+		getPassportsInfoParagraph(reusableParagraph);
+		getForeignPassportInfoParagraph(reusableParagraph);
+		getDriverLicenseInfoParagraph(reusableParagraph);
+		getUserCarsInfoParagraph(reusableParagraph);
+		getUserEmailsInfoParagraph(reusableParagraph);
 
-		docxParagraphs.add(getUserJuridicalPersonsInfoParagraph());
-		docxParagraphs.add(getPassportsInfoParagraph());
-		docxParagraphs.add(getForeignPassportInfoParagraph());
-		docxParagraphs.add(getDriverLicenseInfoParagraph());
-		docxParagraphs.add(getUserCarsInfoParagraph());
-		docxParagraphs.add(getUserEmailsInfoParagraph());
+		getIllegalActionsInfoParagraph(reusableParagraph);
+		getRelationshipInfoParagraph(reusableParagraph);
 
-		docxParagraphs.add(getIllegalActionsInfoParagraph());
-		docxParagraphs.add(getRelationshipInfoParagraph());
+		docxParagraphs.add(reusableParagraph);
 
 		document.close();
 
 		return docxParagraphs;
 	}
 
-	private void setShortUserInfo(final XWPFRun infoRun, final User user) {
-		if (!user.getSurNames().isEmpty()) {
-			addNames(infoRun, user.getSurNames());
-		}
-		if (!user.getFirstNames().isEmpty()) {
-			addNames(infoRun, user.getFirstNames());
-		}
-		if (!user.getMiddleNames().isEmpty()) {
-			addNames(infoRun, user.getMiddleNames());
-		}
-		if (user.getRnokpp() != null) {
-			infoRun.setText("РНОКПП:" + user.getRnokpp() + COMA_WHITE_SPACE);
-		}
-		if (!user.getPhones().isEmpty()) {
-			infoRun.setText("телефон: " + user.getPhones().stream().findFirst().map(Phone::getNumber).orElse("") + COMA_WHITE_SPACE);
-		}
-		if (user.getBirthCertificate() != null) {
-			final BirthCertificate certificate = user.getBirthCertificate();
-			if (certificate.getDay() != null) {
-				infoRun.setText(certificate.getDay() + DOT);
-			}
-			if (certificate.getMonth() != null) {
-				infoRun.setText(certificate.getMonth() + DOT);
-			}
-			if (certificate.getYear() != null) {
-				infoRun.setText(certificate.getYear());
-			}
-			infoRun.setText(" р.н.");
-		}
-	}
-
-	private XWPFParagraph getRelationshipInfoParagraph(){
-		final XWPFParagraph familyInfo = document.createParagraph();
-		XWPFRun infoRun = createTitleRun("Родинні зв’язки: ", familyInfo, true);
-		infoRun = createTitleRun("Батько(и): ", familyInfo, false);
-		infoRun.addBreak();
+	private void getRelationshipInfoParagraph(final XWPFParagraph familyInfo){
+		XWPFRun infoRun = createBoldTitleRun("Родинні зв’язки: ", familyInfo);
+		infoRun = createTitleRun("Батько(и): ", familyInfo);
 
 		if(!user.getParents().isEmpty()){
 	    	infoRun = createRun(familyInfo);
@@ -116,8 +81,7 @@ public class DOCXFileFormatterServiceImpl implements AbstractDOCXFormatterServic
 			setNotPresentMessage(familyInfo.createRun());
 		}
 
-		infoRun.addBreak();
-		infoRun.addBreak();
+		emptyLine(infoRun);
 		infoRun.setText("Брат/Сестра: ");
 		if(!user.getSiblings().isEmpty()){
 			infoRun = createRun(familyInfo);
@@ -130,8 +94,7 @@ public class DOCXFileFormatterServiceImpl implements AbstractDOCXFormatterServic
 			setNotPresentMessage(familyInfo.createRun());
 		}
 
-		infoRun.addBreak();
-		infoRun.addBreak();
+		emptyLine(infoRun);
 		infoRun.setText("Діти: ");
 		if(!user.getChildren().isEmpty()){
 			infoRun = createRun(familyInfo);
@@ -143,13 +106,10 @@ public class DOCXFileFormatterServiceImpl implements AbstractDOCXFormatterServic
 		} else {
 			setNotPresentMessage(familyInfo.createRun());
 		}
-
-		return familyInfo;
 	}
 
-	private XWPFParagraph getIllegalActionsInfoParagraph() {
-		final XWPFParagraph actionsInfo = document.createParagraph();
-		XWPFRun basicInfoRun = createTitleRun("Причетність до протиправної діяльності: ", actionsInfo, true);
+	private void getIllegalActionsInfoParagraph(final XWPFParagraph actionsInfo) {
+		XWPFRun basicInfoRun = createBoldTitleRun("Причетність до протиправної діяльності: ", actionsInfo);
 
 		if (user.getIllegalActions() != null) {
 			basicInfoRun.addBreak();
@@ -159,80 +119,10 @@ public class DOCXFileFormatterServiceImpl implements AbstractDOCXFormatterServic
 		} else {
 			setNotPresentMessage(actionsInfo.createRun());
 		}
-
-		return actionsInfo;
 	}
 
-	private XWPFParagraph getBirthCertificateInfoParagraph() {
-		final XWPFParagraph bithInfo = document.createParagraph();
-		XWPFRun basicInfoRun = createTitleRun("Свідотство про народження: ", bithInfo, true);
-
-		if (user.getBirthCertificate() != null) {
-			final BirthCertificate certificate = user.getBirthCertificate();
-			basicInfoRun = createRun(bithInfo);
-
-			if (certificate.getNumber() != null) {
-				basicInfoRun.setText(certificate.getNumber() + DOT_WHITE_SPACE);
-			}
-			if (certificate.getIssueDate() != null) {
-				basicInfoRun.setText("Дата видачі: " +
-					certificate.getIssueDate().format(DATE_FORMATTER) + DOT_WHITE_SPACE
-				);
-			}
-			if (certificate.getUnlimited().equals(BooleanType.YES)) {
-				basicInfoRun.setText("Дійсний до: необмежений" + DOT_WHITE_SPACE);
-			} else if (certificate.getUnlimited().equals(BooleanType.NO)) {
-				basicInfoRun.setText("Дійсний до: " +
-					certificate.getIssueDate().format(DATE_FORMATTER) + DOT_WHITE_SPACE
-				);
-			} else if (certificate.getValidUntil() != null) {
-				basicInfoRun.setText("Дійсний до: " +
-					certificate.getIssueDate().format(DATE_FORMATTER) + DOT_WHITE_SPACE
-				);
-			}
-			if (certificate.getAuthority() != null) {
-				basicInfoRun.addBreak();
-				basicInfoRun.setText("Орган видачі:" + certificate.getAuthority() + DOT_WHITE_SPACE);
-			}
-		} else {
-			setNotPresentMessage(bithInfo.createRun());
-		}
-
-		return bithInfo;
-	}
-
-	private XWPFParagraph getBirthAddressInfoParagraph() {
-		final XWPFParagraph addressInfo = document.createParagraph();
-		XWPFRun basicInfoRun = createTitleRun("Місце народження: ", addressInfo, true);
-
-		if (user.getBirthCertificate() != null) {
-			final BirthCertificate certificate = user.getBirthCertificate();
-
-			if (certificate.getBirthAddress() != null) {
-				final Address address = certificate.getBirthAddress();
-				basicInfoRun = createRun(addressInfo);
-
-				basicInfoRun.setText("  м." + address.getCity() + DOT_WHITE_SPACE);
-				if (address.getStreet() != null) {
-					basicInfoRun.setText("вул." + address.getStreet() + DOT_WHITE_SPACE);
-				}
-				if (address.getHomeNumber() != null) {
-					basicInfoRun.setText("буд." + address.getHomeNumber() + DOT_WHITE_SPACE);
-				}
-				if (address.getFlatNumber() != null) {
-					basicInfoRun.setText("кв." + address.getFlatNumber() + DOT_WHITE_SPACE);
-				}
-			}
-		} else {
-			setNotPresentMessage(addressInfo.createRun());
-		}
-
-		return addressInfo;
-	}
-
-	private XWPFParagraph getUserJuridicalPersonsInfoParagraph() {
-		final XWPFParagraph jurInfo = document.createParagraph();
-		XWPFRun basicInfoRun = createTitleRun("Пов’язані юридичні особи: ", jurInfo, true);
+	private void getUserJuridicalPersonsInfoParagraph(final XWPFParagraph jurInfo) {
+		XWPFRun basicInfoRun = createBoldTitleRun("Пов’язані юридичні особи: ", jurInfo);
 		basicInfoRun.addBreak();
 
 		if (user.getJuridicalPersons() != null) {
@@ -262,35 +152,30 @@ public class DOCXFileFormatterServiceImpl implements AbstractDOCXFormatterServic
 						}
 					}
 				}
-				basicInfoRun.addBreak();
 			}
 		} else {
 			setNotPresentMessage(jurInfo.createRun());
 		}
-
-		return jurInfo;
 	}
 
-	private XWPFParagraph getUserEmailsInfoParagraph() {
-		final XWPFParagraph emails = document.createParagraph();
-		XWPFRun basicInfoRun = createTitleRun("Електронна адреса: ", emails, true);
+	private void getUserEmailsInfoParagraph(final XWPFParagraph emails) {
+		XWPFRun basicInfoRun = createBoldTitleRun("Електронна адреса: ", emails);
 
 		if (!user.getEmails().isEmpty()) {
+			basicInfoRun.addBreak();
+
 			for (final Email email : user.getEmails()) {
-				basicInfoRun.addBreak();
 				basicInfoRun = createRun(emails);
 				basicInfoRun.setText(email.getEmailAddress() + DOT_WHITE_SPACE);
+				basicInfoRun.addBreak();
 			}
 		} else {
 			setNotPresentMessage(emails.createRun());
 		}
-
-		return emails;
 	}
 
-	private XWPFParagraph getUserCarsInfoParagraph() {
-		final XWPFParagraph cars = document.createParagraph();
-		XWPFRun basicInfoRun = createTitleRun("Машини: ", cars, true);
+	private void getUserCarsInfoParagraph(final XWPFParagraph cars) {
+		XWPFRun basicInfoRun = createBoldTitleRun("Машини: ", cars);
 
 		if (!user.getCars().isEmpty()) {
 			for (final Car car : user.getCars()) {
@@ -307,13 +192,11 @@ public class DOCXFileFormatterServiceImpl implements AbstractDOCXFormatterServic
 		} else {
 			setNotPresentMessage(cars.createRun());
 		}
-
-		return cars;
 	}
 
-	private XWPFParagraph getDriverLicenseInfoParagraph() {
-		final XWPFParagraph driverLicense = document.createParagraph();
-		XWPFRun basicInfoRun = createTitleRun("Водійське посвідчення: ", driverLicense, true);
+	private void getDriverLicenseInfoParagraph(final XWPFParagraph driverLicense) {
+		XWPFRun basicInfoRun = createBoldTitleRun("Водійське посвідчення: ", driverLicense);
+		basicInfoRun.addBreak();
 
 		if (!user.getPassports().isEmpty()) {
 			for (final DriverLicense license : user.getDriverLicense()) {
@@ -325,29 +208,17 @@ public class DOCXFileFormatterServiceImpl implements AbstractDOCXFormatterServic
 				for (final DriverLicenseCategory category : license.getCategories()) {
 					basicInfoRun.setText(category.getCategoryType() + DOT_WHITE_SPACE);
 				}
-				if (license.getIssueDate() != null) {
-					basicInfoRun.setText("Дата видачі: " + license.getIssueDate().format(DATE_FORMATTER) +
-						DOT_WHITE_SPACE);
-				}
-				if (license.getValidUntil() != null) {
-					basicInfoRun.setText("Дійсний до: " + license.getValidUntil().format(DATE_FORMATTER) +
-						DOT_WHITE_SPACE);
-				}
-				if (license.getAuthority() != null) {
-					basicInfoRun.addBreak();
-					basicInfoRun.setText("Орган видачі: " + license.getAuthority() + DOT);
-				}
+				addDocumentInfo(basicInfoRun, license);
+
 			}
 		} else {
 			setNotPresentMessage(driverLicense.createRun());
 		}
-
-		return driverLicense;
 	}
 
-	private XWPFParagraph getForeignPassportInfoParagraph() {
-		final XWPFParagraph passports = document.createParagraph();
-		XWPFRun basicInfoRun = createTitleRun("Закордонний паспорт: ", passports, true);
+	private void getForeignPassportInfoParagraph(final XWPFParagraph passports) {
+		XWPFRun basicInfoRun = createBoldTitleRun("Закордонний паспорт: ", passports);
+		basicInfoRun.addBreak();
 
 		if (!user.getPassports().isEmpty()) {
 			for (final ForeignPassport passport : user.getForeignPassports()) {
@@ -355,130 +226,125 @@ public class DOCXFileFormatterServiceImpl implements AbstractDOCXFormatterServic
 
 				basicInfoRun.setText("Номер: " + passport.getPassportNumber() + DOT_WHITE_SPACE);
 
-				if (passport.getIssueDate() != null) {
-					basicInfoRun.setText("Дата видачі: " + passport.getIssueDate().format(DATE_FORMATTER) +
-						DOT_WHITE_SPACE);
-				}
-				if (passport.getValidUntil() != null) {
-					basicInfoRun.setText("Дійсний до: " + passport.getValidUntil().format(DATE_FORMATTER) +
-						DOT_WHITE_SPACE);
-				}
-				if (passport.getAuthority() != null) {
-					basicInfoRun.addBreak();
-					basicInfoRun.setText("Орган видачі: " + passport.getAuthority() + DOT);
-				}
+				addDocumentInfo(basicInfoRun, passport);
+
 			}
 		} else {
 			setNotPresentMessage(passports.createRun());
 		}
-
-		return passports;
 	}
 
-	private XWPFParagraph getPassportsInfoParagraph() {
-		final XWPFParagraph passports = document.createParagraph();
-		XWPFRun basicInfoRun = createTitleRun("Паспорт: ", passports, true);
+	private void getPassportsInfoParagraph(final XWPFParagraph passports) {
+		XWPFRun basicInfoRun = createBoldTitleRun("Паспорт: ", passports);
+		basicInfoRun.addBreak();
 
 		if (!user.getPassports().isEmpty()) {
 			for (final Passport passport : user.getPassports()) {
 				basicInfoRun = createRun(passports);
 				basicInfoRun.setText("Номер: " + passport.getPassportNumber() + DOT_WHITE_SPACE);
 
-				if (passport.getIssueDate() != null) {
-					basicInfoRun.setText("Дата видачі: " + passport.getIssueDate().format(DATE_FORMATTER) +
-						DOT_WHITE_SPACE);
-				}
-				if (passport.getValidUntil() != null) {
-					basicInfoRun.setText("Дійсний до: " + passport.getValidUntil().format(DATE_FORMATTER) +
-						DOT_WHITE_SPACE);
-				}
-				if (passport.getAuthority() != null) {
-					basicInfoRun.addBreak();
-					basicInfoRun.setText("Орган видачі: " + passport.getAuthority() + DOT);
-				}
+				addDocumentInfo(basicInfoRun, passport);
 			}
 		} else {
 			setNotPresentMessage(passports.createRun());
 		}
-
-		return passports;
 	}
 
-	private XWPFParagraph getIndividualEntrepreneurAddressesInfoParagraph(){
-		final XWPFParagraph addresses = document.createParagraph();
-		XWPFRun basicInfoRun = createTitleRun("ФОП Адреси: ", addresses, true);
+	private void getBirthCertificateInfoParagraph(final XWPFParagraph bithInfo) {
+		XWPFRun basicInfoRun = createBoldTitleRun("Свідотство про народження: ", bithInfo);
+		basicInfoRun.addBreak();
+
+		if (user.getBirthCertificate() != null) {
+			final BirthCertificate certificate = user.getBirthCertificate();
+			basicInfoRun = createRun(bithInfo);
+
+			if (certificate.getNumber() != null) {
+				basicInfoRun.setText(certificate.getNumber() + DOT_WHITE_SPACE);
+			}
+			addDocumentInfo(basicInfoRun, certificate);
+
+		} else {
+			setNotPresentMessage(bithInfo.createRun());
+		}
+	}
+
+	private void getIndividualEntrepreneurAddressesInfoParagraph(final XWPFParagraph addresses){
+		final XWPFRun basicInfoRun = createTitleRun("ФОП Адреси: ", addresses);
 
 		if (!user.getAddresses().isEmpty()) {
 			for (final Address address : user.getAddresses()) {
-				if (address.getCity() != null) {
-					basicInfoRun = createRun(addresses);
-					basicInfoRun.setText("  м." + address.getCity() + DOT_WHITE_SPACE);
-				}
-				if (address.getStreet() != null) {
-					basicInfoRun.setText("вул." + address.getStreet() + DOT_WHITE_SPACE);
-				}
-				if (address.getHomeNumber() != null) {
-					basicInfoRun.setText("буд." + address.getHomeNumber() + DOT_WHITE_SPACE);
-				}
-				if (address.getFlatNumber() != null) {
-					basicInfoRun.setText("кв." + address.getFlatNumber() + DOT_WHITE_SPACE);
-				}
+				addAddressPart(address, basicInfoRun);
 			}
 		} else {
 			setNotPresentMessage(addresses.createRun());
 		}
-
-		return addresses;
 	}
 
-	private XWPFParagraph getAddressesInfoParagraph() {
-		final XWPFParagraph addresses = document.createParagraph();
-		XWPFRun basicInfoRun = createTitleRun("Місце проживання/перебування: ", addresses, true);
+	private void getBirthAddressInfoParagraph(final XWPFParagraph addressInfo) {
+		XWPFRun basicInfoRun = createBoldTitleRun("Місце народження: ", addressInfo);
+		basicInfoRun.addBreak();
+		if (user.getBirthCertificate() != null) {
+			final BirthCertificate certificate = user.getBirthCertificate();
+
+			if (certificate.getBirthAddress() != null) {
+				final Address address = certificate.getBirthAddress();
+				basicInfoRun = createRun(addressInfo);
+
+				addAddressPart(address, basicInfoRun);
+			}
+		} else {
+			setNotPresentMessage(addressInfo.createRun());
+		}
+	}
+
+	private void addAddressPart(final Address address,final XWPFRun run ){
+		if (address.getRegion() != null) {
+			run.setText("  обл." + address.getRegion() + DOT);
+		}
+		if (address.getCity() != null) {
+			run.setText("  нп." + address.getCity() + DOT);
+		}
+		if (address.getDistrict() != null) {
+			run.setText("  р-н." + address.getDistrict() + DOT);
+		}
+		if (address.getStreet() != null) {
+			run.setText(" вул." + address.getStreet() + DOT);
+		}
+		if (address.getCorpus() != null) {
+			run.setText("  кор." + address.getCorpus() + DOT);
+		}
+		if (address.getOther() != null) {
+			run.setText("  інше." + address.getOther());
+			if (address.getOtherNum() != null){
+				run.setText(" ." + address.getOtherNum());
+			}
+			run.setText(DOT);
+		}
+		if (address.getHomeNumber() != null) {
+			run.setText(" буд." + address.getHomeNumber() + DOT);
+		}
+		if (address.getFlatNumber() != null) {
+			run.setText(" кв." + address.getFlatNumber() + DOT);
+		}
+	}
+
+	private void getAddressesInfoParagraph(final XWPFParagraph addresses) {
+		XWPFRun basicInfoRun = createBoldTitleRun("Місце проживання/перебування: ", addresses);
 
 		if (!user.getAddresses().isEmpty()) {
 			for (final Address address : user.getAddresses()) {
 				basicInfoRun.addBreak();
 				basicInfoRun = createRun(addresses);
-
-				if (address.getRegion() != null) {
-					basicInfoRun.setText("  обл." + address.getRegion() + DOT);
-				}
-				if (address.getCity() != null) {
-					basicInfoRun.setText("  нп." + address.getCity() + DOT);
-				}
-				if (address.getDistrict() != null) {
-					basicInfoRun.setText("  р-н." + address.getDistrict() + DOT);
-				}
-				if (address.getStreet() != null) {
-					basicInfoRun.setText(" вул." + address.getStreet() + DOT);
-				}
-				if (address.getCorpus() != null) {
-					basicInfoRun.setText("  кор." + address.getCorpus() + DOT);
-				}
-				if (address.getOther() != null) {
-					basicInfoRun.setText("  кор." + address.getOther());
-					if (address.getOtherNum() != null){
-						basicInfoRun.setText(" ." + address.getOtherNum());
-					}
-					basicInfoRun.setText(DOT);
-				}
-				if (address.getHomeNumber() != null) {
-					basicInfoRun.setText(" буд." + address.getHomeNumber() + DOT);
-				}
-				if (address.getFlatNumber() != null) {
-					basicInfoRun.setText(" кв." + address.getFlatNumber() + DOT);
-				}
+				addAddressPart(address, basicInfoRun);
 			}
 		} else {
 			setNotPresentMessage(addresses.createRun());
 		}
-
-		return addresses;
 	}
 
-	private XWPFParagraph getPhonesInfoParagraph() {
-		final XWPFParagraph phones = document.createParagraph();
-		XWPFRun basicInfoRun = createTitleRun("Телефони: ", phones, true);
+	private void getPhonesInfoParagraph(final XWPFParagraph phones) {
+		XWPFRun basicInfoRun = createBoldTitleRun("Телефони: ", phones);
+		basicInfoRun.addBreak();
 
 		if (!user.getPhones().isEmpty()) {
 			for (final Phone phone : user.getPhones()) {
@@ -488,12 +354,9 @@ public class DOCXFileFormatterServiceImpl implements AbstractDOCXFormatterServic
 		} else {
 			setNotPresentMessage(phones.createRun());
 		}
-
-		return phones;
 	}
 
-	private XWPFParagraph getBasicInfoParagraph() {
-		final XWPFParagraph basicInfoParagraph = document.createParagraph();
+	private void getBasicInfoParagraph(final XWPFParagraph basicInfoParagraph) {
 		basicInfoParagraph.setSpacingBetween(1.0);
 
 		XWPFRun basicInfoRun = createRun(basicInfoParagraph);
@@ -520,19 +383,76 @@ public class DOCXFileFormatterServiceImpl implements AbstractDOCXFormatterServic
 					+ " р.н."
 			);
 		}
+
+		basicInfoRun = createBoldTitleRun("РНОКПП: ", basicInfoParagraph);
 		basicInfoRun.addBreak();
-		basicInfoRun.addBreak();
-		basicInfoRun = createTitleRun("РНОКПП: ", basicInfoParagraph, true);
 
 		if (user.getRnokpp() != null) {
-
 			basicInfoRun = basicInfoParagraph.createRun();
 			basicInfoRun.setText(user.getRnokpp() + DOT);
 		} else {
 			setNotPresentMessage(basicInfoParagraph.createRun());
 		}
+	}
 
-		return basicInfoParagraph;
+	private void setShortUserInfo(final XWPFRun infoRun, final User user) {
+		if (!user.getSurNames().isEmpty()) {
+			infoRun.addBreak();
+			addNames(infoRun, user.getSurNames());
+		}
+		if (!user.getFirstNames().isEmpty()) {
+			infoRun.addBreak();
+			addNames(infoRun, user.getFirstNames());
+		}
+		if (!user.getMiddleNames().isEmpty()) {
+			infoRun.addBreak();
+			addNames(infoRun, user.getMiddleNames());
+		}
+		if (user.getRnokpp() != null) {
+			infoRun.addBreak();
+			infoRun.setText("РНОКПП:" + user.getRnokpp() + COMA_WHITE_SPACE);
+		}
+		if (!user.getPhones().isEmpty())
+			infoRun.addBreak();{
+			infoRun.setText("телефон: " + user.getPhones().stream().findFirst().map(Phone::getNumber).orElse("") + COMA_WHITE_SPACE);
+		}
+		if (user.getBirthCertificate() != null) {
+			infoRun.addBreak();
+			final BirthCertificate certificate = user.getBirthCertificate();
+			if (certificate.getDay() != null) {
+				infoRun.setText(certificate.getDay() + DOT);
+			}
+			if (certificate.getMonth() != null) {
+				infoRun.setText(certificate.getMonth() + DOT);
+			}
+			if (certificate.getYear() != null) {
+				infoRun.setText(certificate.getYear());
+			}
+			infoRun.setText(" р.н.");
+		}
+	}
+
+	private <T extends DocumentEntity> void addDocumentInfo(final XWPFRun run, final T document){
+		if (document.getIssueDate() != null) {
+			run.setText("Дата видачі: " +
+				document.getIssueDate().format(DATE_FORMATTER) + DOT_WHITE_SPACE
+			);
+		}
+		if (document.getUnlimited().equals(BooleanType.YES)) {
+			run.setText("Дійсний до: необмежений" + DOT_WHITE_SPACE);
+		} else if (document.getUnlimited().equals(BooleanType.NO)) {
+			run.setText("Дійсний до: " +
+				document.getIssueDate().format(DATE_FORMATTER) + DOT_WHITE_SPACE
+			);
+		} else if (document.getValidUntil() != null) {
+			run.setText("Дійсний до: " +
+				document.getIssueDate().format(DATE_FORMATTER) + DOT_WHITE_SPACE
+			);
+		}
+		if (document.getAuthority() != null) {
+			run.addBreak();
+			run.setText("Орган видачі:" + document.getAuthority() + DOT_WHITE_SPACE);
+		}
 	}
 
 	private <T extends BaseNameEntity> void addNames(final XWPFRun infoRun, final Set<T> names) {
@@ -541,7 +461,7 @@ public class DOCXFileFormatterServiceImpl implements AbstractDOCXFormatterServic
 
 		for (final T name : names) {
 			if(i == n){
-				infoRun.setText(name.getValue());
+				infoRun.setText(name.getValue() + WHITE_SPACE);
 			}else{
 				infoRun.setText(name.getValue() + COMA_WHITE_SPACE);
 				i++;

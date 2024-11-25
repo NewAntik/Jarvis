@@ -19,14 +19,27 @@ public interface AbstractDOCXFormatterService extends FileFormatterService {
 		basicInfoRun.setColor(RED_COLOR);
 	}
 
-	default XWPFRun createTitleRun(final String title, final XWPFParagraph paragraph, final boolean isBold){
+	default XWPFRun createTitleRun(final String title, final XWPFParagraph paragraph){
 		paragraph.setSpacingBetween(1.0);
 		final XWPFRun run = paragraph.createRun();
 		run.setFontFamily(TIMES_NEW_ROMAN);
 		run.setFontSize(FONT_SIZE);
 		run.addBreak();
+		run.addBreak();
 		run.setText(title);
-		run.setBold(isBold);
+
+		return run;
+	}
+
+	default XWPFRun createBoldTitleRun(final String title, final XWPFParagraph paragraph){
+		paragraph.setSpacingBetween(1.0);
+		final XWPFRun run = paragraph.createRun();
+		run.setFontFamily(TIMES_NEW_ROMAN);
+		run.setFontSize(FONT_SIZE);
+		run.addBreak();
+		run.addBreak();
+		run.setText(title);
+		run.setBold(true);
 
 		return run;
 	}
@@ -38,5 +51,10 @@ public interface AbstractDOCXFormatterService extends FileFormatterService {
 		run.setFontSize(FONT_SIZE);
 
 		return run;
+	}
+
+	default void emptyLine(final XWPFRun run){
+		run.addBreak();
+		run.addBreak();
 	}
 }
