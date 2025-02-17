@@ -7,23 +7,23 @@ import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.TelegramBotsApi;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 import org.telegram.telegrambots.updatesreceivers.DefaultBotSession;
-import ua.jarvis.service.impl.TelegramBotService;
+import ua.jarvis.controller.TelegramBotController;
 
 @Component
 public class BotInitializer {
 
-	private final TelegramBotService telegramBotService;
+	private final TelegramBotController telegramBotController;
 
 	@Autowired
-	public BotInitializer(TelegramBotService telegramBotService) {
-		this.telegramBotService = telegramBotService;
+	public BotInitializer(TelegramBotController telegramBotController) {
+		this.telegramBotController = telegramBotController;
 	}
 
 	@EventListener({ContextRefreshedEvent.class})
 	public void init()throws TelegramApiException{
 		TelegramBotsApi telegramBotsApi = new TelegramBotsApi(DefaultBotSession.class);
 		try{
-			telegramBotsApi.registerBot(telegramBotService);
+			telegramBotsApi.registerBot(telegramBotController);
 		} catch (TelegramApiException e){
 			e.printStackTrace();
 		}

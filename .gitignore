@@ -30,7 +30,6 @@ hs_err_pid*
 
 # Gradle
 .gradle/*
-ngo-client/.gradle/
 !gradle/wrapper/gradle-wrapper.jar
 build/
 

@@ -1,0 +1,89 @@
+-- Rollback for Users table
+ALTER TABLE users DROP CONSTRAINT fk_users_parental_family;
+
+-- Rollback for Parental Families table
+ALTER TABLE parental_families DROP CONSTRAINT parental_families_father_id_fkey;
+ALTER TABLE parental_families DROP CONSTRAINT parental_families_mother_id_fkey;
+ALTER TABLE parental_families DROP CONSTRAINT parental_families_brother_id_fkey;
+ALTER TABLE parental_families DROP CONSTRAINT parental_families_sister_id_fkey;
+
+-- Rollback for Juridical Persons table
+ALTER TABLE juridical_persons DROP CONSTRAINT juridical_persons_user_id_fkey;
+
+-- Rollback for Passports table
+ALTER TABLE passports DROP CONSTRAINT passports_user_id_fkey;
+
+-- Rollback for Driver Licenses table
+ALTER TABLE driver_licenses DROP CONSTRAINT driver_licenses_user_id_fkey;
+
+-- Rollback for Driver License Categories table
+ALTER TABLE driver_license_categories DROP CONSTRAINT driver_license_categories_driver_license_id_fkey;
+
+-- Rollback for Foreign Passports table
+ALTER TABLE foreign_passports DROP CONSTRAINT foreign_passports_user_id_fkey;
+
+-- Rollback for Addresses table
+ALTER TABLE addresses DROP CONSTRAINT addresses_juridical_person_id_fkey;
+
+-- Rollback for Addresses Users table
+ALTER TABLE addresses_users DROP CONSTRAINT addresses_users_users_id_fkey;
+ALTER TABLE addresses_users DROP CONSTRAINT addresses_users_addresses_id_fkey;
+
+-- Rollback for Cars table
+ALTER TABLE cars DROP CONSTRAINT cars_juridical_person_id_fkey;
+ALTER TABLE cars DROP CONSTRAINT cars_owner_id_fkey;
+
+-- Rollback for Emails table
+ALTER TABLE emails DROP CONSTRAINT emails_user_id_fkey;
+ALTER TABLE emails DROP CONSTRAINT emails_juridical_person_id_fkey;
+
+-- Rollback for Photos table
+ALTER TABLE photos DROP CONSTRAINT photos_user_id_fkey;
+
+-- Rollback for Phones table
+ALTER TABLE phones DROP CONSTRAINT phones_user_id_fkey;
+ALTER TABLE phones DROP CONSTRAINT phones_juridical_person_id_fkey;
+
+-- Rollback for Cars Drivers table
+ALTER TABLE cars_drivers DROP CONSTRAINT cars_drivers_drivers_id_fkey;
+ALTER TABLE cars_drivers DROP CONSTRAINT cars_drivers_cars_id_fkey;
+
+-- Rollback for Participants table
+-- No foreign key constraints to drop
+
+-- Rollback for Own Families table
+ALTER TABLE own_families DROP CONSTRAINT fk_husband;
+ALTER TABLE own_families DROP CONSTRAINT fk_wife;
+
+-- Rollback for Users Own Families table
+ALTER TABLE users_own_families DROP CONSTRAINT fk_user;
+ALTER TABLE users_own_families DROP CONSTRAINT fk_own_family;
+
+-- Rollback for Own Families Children table
+ALTER TABLE own_families_children DROP CONSTRAINT fk_family;
+ALTER TABLE own_families_children DROP CONSTRAINT fk_child;
+
+-- Rollback for Birth Certificates table
+ALTER TABLE birth_certificates DROP CONSTRAINT fk_user;
+ALTER TABLE birth_certificates DROP CONSTRAINT fk_address;
+
+-- Drop tables
+DROP TABLE IF EXISTS birth_certificates;
+DROP TABLE IF EXISTS own_families_children;
+DROP TABLE IF EXISTS users_own_families;
+DROP TABLE IF EXISTS own_families;
+DROP TABLE IF EXISTS participants;
+DROP TABLE IF EXISTS cars_drivers;
+DROP TABLE IF EXISTS phones;
+DROP TABLE IF EXISTS photos;
+DROP TABLE IF EXISTS emails;
+DROP TABLE IF EXISTS cars;
+DROP TABLE IF EXISTS addresses_users;
+DROP TABLE IF EXISTS addresses;
+DROP TABLE IF EXISTS foreign_passports;
+DROP TABLE IF EXISTS driver_license_categories;
+DROP TABLE IF EXISTS driver_licenses;
+DROP TABLE IF EXISTS passports;
+DROP TABLE IF EXISTS juridical_persons;
+DROP TABLE IF EXISTS parental_families;
+DROP TABLE IF EXISTS users;
